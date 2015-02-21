@@ -30,8 +30,6 @@ typedef NS_ENUM(NSInteger, PKAlertControllerStyle) {
 @property (nonatomic, readonly) NSArray *actionButtons;
 
 + (void)registerStoryboard:(UIStoryboard *)storyboard;
-+ (instancetype)instantiateOwnerViewController;
 + (instancetype)alertControllerWithTitle:(NSString *)title message:(NSString *)message preferredStyle:(PKAlertControllerStyle)preferredStyle;
-- (void)addActionButton:(UIButton *)button;
 
 @end

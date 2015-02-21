@@ -10,6 +10,7 @@
 
 static UIStoryboard *pk_registeredStoryboard;
 static NSString *pk_defaultStoryboardName = @"PKAlert";
+static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSegue";
 
 #pragma mark - Functions
 
@@ -27,6 +28,8 @@ NSBundle *PKAlertControllerBundle(void) {
 @property (nonatomic) CGFloat mainScreenShortSideLength;
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIView *actionContainerView;
 
 #pragma mark - User defined runtime attributes
 
@@ -231,7 +234,7 @@ NSBundle *PKAlertControllerBundle(void) {
         UIColor *origianlContentViewBackgroundColor = self.contentView.backgroundColor;
         [containerView addSubview:toView];
         self.contentView.transform = CGAffineTransformMakeScale(1.2, 1.2);
-        self.contentView.backgroundColor = [origianlContentViewBackgroundColor colorWithAlphaComponent:.5];
+        self.contentView.backgroundColor = [origianlContentViewBackgroundColor colorWithAlphaComponent:1.];
         toView.alpha = 0;
         fromView.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
         [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
@@ -260,14 +263,12 @@ NSBundle *PKAlertControllerBundle(void) {
     }
 }
 
-/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:ActionsViewEmbededSegueIdentifier]) {
+    }
 }
-*/
 
 @end
