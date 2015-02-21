@@ -29,10 +29,10 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Pod/Classes/**/*'
   s.resource_bundles = {
-    'PKAlertController' => ['Pod/Assets/*.png']
+    'PKAlertController' => ['Pod/Assets/*.png', 'Pod/Assets/*.storyboard']
   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
+  # s.frameworks = 'UIKit'
   # s.dependency 'AFNetworking', '~> 2.3'
 end

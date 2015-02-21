@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="D0V-NO-R5y">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <scenes>
+        <!--Alert Controller-->
+        <scene sceneID="SlG-NW-zWj">
+            <objects>
+                <viewController storyboardIdentifier="PKAlertController" id="D0V-NO-R5y" customClass="PKAlertController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="08V-Pf-AK5"/>
+                        <viewControllerLayoutGuide type="bottom" id="ogX-gL-ioM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zRb-PG-ev1">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rq2-oz-jH8" userLabel="Alert Content View">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T6a-y8-cXW">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
+                                    </scrollView>
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0dg-hu-dha">
+                                        <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="750" constant="44" id="qLa-wv-Dqc"/>
+                                        </constraints>
+                                        <connections>
+                                            <segue destination="DAy-YB-CPE" kind="embed" id="LVw-rl-Sj7"/>
+                                        </connections>
+                                    </containerView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="0dg-hu-dha" secondAttribute="trailing" id="0a5-gm-NRu"/>
+                                    <constraint firstAttribute="bottom" secondItem="0dg-hu-dha" secondAttribute="bottom" id="Mfl-P8-5vd"/>
+                                    <constraint firstItem="0dg-hu-dha" firstAttribute="top" secondItem="T6a-y8-cXW" secondAttribute="bottom" id="RqX-UP-mBF"/>
+                                    <constraint firstItem="0dg-hu-dha" firstAttribute="leading" secondItem="Rq2-oz-jH8" secondAttribute="leading" id="eDW-9B-MQn"/>
+                                    <constraint firstItem="0dg-hu-dha" firstAttribute="top" secondItem="T6a-y8-cXW" secondAttribute="bottom" id="gXG-hM-R74"/>
+                                    <constraint firstItem="T6a-y8-cXW" firstAttribute="leading" secondItem="Rq2-oz-jH8" secondAttribute="leading" id="hUp-ii-diT"/>
+                                    <constraint firstAttribute="trailing" secondItem="T6a-y8-cXW" secondAttribute="trailing" id="l1H-kO-amO"/>
+                                    <constraint firstItem="T6a-y8-cXW" firstAttribute="top" secondItem="Rq2-oz-jH8" secondAttribute="top" id="lnr-PD-HFr"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="6"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ogX-gL-ioM" firstAttribute="top" secondItem="Rq2-oz-jH8" secondAttribute="bottom" placeholder="YES" id="8Th-jK-2iz"/>
+                            <constraint firstAttribute="trailing" secondItem="Rq2-oz-jH8" secondAttribute="trailing" placeholder="YES" id="98C-sN-6DS"/>
+                            <constraint firstItem="Rq2-oz-jH8" firstAttribute="top" secondItem="zRb-PG-ev1" secondAttribute="top" placeholder="YES" id="JC9-ph-bqf"/>
+                            <constraint firstItem="Rq2-oz-jH8" firstAttribute="leading" secondItem="zRb-PG-ev1" secondAttribute="leading" placeholder="YES" id="t2e-kL-NQk"/>
+                        </constraints>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="alertOffset">
+                            <integer key="value" value="25"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="actionSheetOffset">
+                            <integer key="value" value="16"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="contentView" destination="Rq2-oz-jH8" id="BFq-vg-JbE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="upr-Nz-Ohv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="367" y="-101"/>
+        </scene>
+        <!--Collection View Controller-->
+        <scene sceneID="n9k-jy-ryV">
+            <objects>
+                <collectionViewController id="DAy-YB-CPE" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="vaD-vU-lvY">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Tke-CE-IqQ">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PKAlertControllerCollectionViewCellReuseIdentifier" id="vT9-t2-7Sb">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="DAy-YB-CPE" id="QMX-1a-k1b"/>
+                            <outlet property="delegate" destination="DAy-YB-CPE" id="dK0-H0-Z3G"/>
+                        </connections>
+                    </collectionView>
+                    <nil key="simulatedStatusBarMetrics"/>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cor-xg-Zcc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1060" y="177"/>
+        </scene>
+    </scenes>
+</document>
