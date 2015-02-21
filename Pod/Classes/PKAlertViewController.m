@@ -1,175 +1,22 @@
 //
-//  PKAlertController.m
+//  PKAlertViewController.m
 //  Pods
 //
 //  Created by Satoshi Ohki on 2015/02/21.
 //
 //
 
-#import "PKAlertController.h"
+#import "PKAlertViewController.h"
+
+#import "PKAlertAction.h"
+#import "PKAlertControllerConfiguration.h"
+#import "PKAlertActionCollectionViewController.h"
 
 static UIStoryboard *pk_registeredStoryboard;
 static NSString *pk_defaultStoryboardName = @"PKAlert";
 static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSegue";
 
-#pragma mark - Functions
-
-NSString *PKAlert_UIKitLocalizedString(NSString *key, NSString *comment)
-{
-    NSBundle *uikitBundle = [NSBundle bundleWithIdentifier:@"com.apple.UIKit"];
-    return [uikitBundle localizedStringForKey:key value:@"" table:nil];
-}
-
-NSBundle *PKAlertControllerBundle(void)
-{
-    NSString *path = [[NSBundle mainBundle] pathForResource:NSStringFromClass([PKAlertController class]) ofType:@"bundle"];
-    return [NSBundle bundleWithPath:path];
-}
-
-#pragma mark - PKAlertAction
-
-@interface PKAlertAction ()
-
-@property (nonatomic) NSString *title;
-
-@end
-
-@implementation PKAlertAction
-
-+ (instancetype)actionWithTitle:(NSString *)title handler:(void(^)(PKAlertAction *))handler {
-    PKAlertAction *object = [[self alloc] init];
-    object.title = title;
-    object.handler = handler;
-    return object;
-}
-
-+ (instancetype)cancelAction {
-    PKAlertAction *object = [self actionWithTitle:PKAlert_UIKitLocalizedString(@"Cancel", @"") handler:nil];
-    return object;
-}
-
-+ (instancetype)cancelActionWithHandler:(void(^)(PKAlertAction *))handler {
-    PKAlertAction *object = [self actionWithTitle:PKAlert_UIKitLocalizedString(@"Cancel", @"") handler:handler];
-    return object;
-}
-
-+ (instancetype)okAction {
-    PKAlertAction *object = [self actionWithTitle:PKAlert_UIKitLocalizedString(@"OK", @"") handler:nil];
-    return object;
-}
-
-+ (instancetype)okActionWithHandler:(void(^)(PKAlertAction *))handler {
-    PKAlertAction *object = [self actionWithTitle:PKAlert_UIKitLocalizedString(@"OK", @"") handler:handler];
-    return object;
-}
-
-+ (instancetype)doneAction {
-    PKAlertAction *object = [self actionWithTitle:PKAlert_UIKitLocalizedString(@"Done", @"") handler:nil];
-    return object;
-}
-
-+ (instancetype)doneActionWithHandler:(void(^)(PKAlertAction *))handler {
-    PKAlertAction *object = [self actionWithTitle:PKAlert_UIKitLocalizedString(@"Done", @"") handler:handler];
-    return object;
-}
-
-#pragma mark - NSCoping
-
-- (id)copyWithZone:(NSZone *)zone {
-    PKAlertAction *copiedObject = [[[self class] allocWithZone:zone] init];
-    if (copiedObject) {
-        copiedObject->_title = [_title copyWithZone:zone];
-        copiedObject->_enabled = _enabled;
-        copiedObject->_handler = [_handler copy];
-    }
-    return copiedObject;
-}
-
-#pragma mark - Init & dealloc
-
-- (id)init {
-    self = [super init];
-    if (self) {
-        _enabled = YES;
-    }
-    return self;
-}
-
-@end
-
-#pragma mark - PKAlertControllerConfiguration
-
-@interface PKAlertControllerConfiguration ()
-
-@end
-
-@implementation PKAlertControllerConfiguration
-
-+ (instancetype)defaultConfiguration {
-    PKAlertControllerConfiguration *object = [[PKAlertControllerConfiguration alloc] init];
-    [object addAction:[PKAlertAction cancelAction]];
-    return object;
-}
-
-+ (instancetype)defaultConfigurationWithCancelHandler:(void(^)(PKAlertAction *action))handler {
-    PKAlertControllerConfiguration *object = [[PKAlertControllerConfiguration alloc] init];
-    [object addAction:[PKAlertAction cancelActionWithHandler:handler]];
-    return object;
-}
-
-+ (instancetype)simpleAlertConfigurationWithHandler:(void(^)(PKAlertAction *action))handler {
-    PKAlertControllerConfiguration *object = [[PKAlertControllerConfiguration alloc] init];
-    [object addAction:[PKAlertAction okActionWithHandler:handler]];
-    return object;
-}
-
-#pragma mark - NSCoping
-
-- (id)copyWithZone:(NSZone *)zone {
-    PKAlertControllerConfiguration *copiedObject = [[[self class] allocWithZone:zone] init];
-    if (copiedObject) {
-        copiedObject->_title = [_title copyWithZone:zone];
-        copiedObject->_message = [_message copyWithZone:zone];
-        copiedObject->_preferredStyle = _preferredStyle;
-        copiedObject->_actions = [_actions copyWithZone:zone];
-        copiedObject->_allowsMotionEffect = _allowsMotionEffect;
-    }
-    return copiedObject;
-}
-
-#pragma mark - Init & dealloc
-
-- (id)init {
-    self = [super init];
-    if (self) {
-        _actions = @[];
-        _allowsMotionEffect = YES;
-    }
-    return self;
-}
-
-#pragma mark -
-
-- (void)addAction:(PKAlertAction *)action {
-    NSMutableArray *mAction = _actions.mutableCopy;
-    [mAction addObject:action];
-    _actions = mAction.copy;
-}
-
-- (void)addActions:(NSArray *)actions {
-    NSMutableArray *mAction = _actions.mutableCopy;
-    for (id action in actions) {
-        NSAssert([action isKindOfClass:[PKAlertAction class]], @"");
-        [mAction addObject:action];
-    }
-    _actions = mAction.copy;
-}
-
-@end
-
-#pragma mark - PKAlertController
-
-@interface PKAlertController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning>
+@interface PKAlertViewController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning>
 
 @property (nonatomic, getter=isViewInitialized) BOOL viewInitialized;
 @property (nonatomic) CGFloat mainScreenShortSideLength;
@@ -186,7 +33,7 @@ NSBundle *PKAlertControllerBundle(void)
 
 @end
 
-@implementation PKAlertController
+@implementation PKAlertViewController
 
 + (void)initialize {
     pk_registeredStoryboard = [UIStoryboard storyboardWithName:pk_defaultStoryboardName bundle:PKAlertControllerBundle()];
@@ -205,7 +52,7 @@ NSBundle *PKAlertControllerBundle(void)
     NSParameterAssert(preferredStyle >= PKAlertControllerStyleAlert);
     NSParameterAssert(preferredStyle <= PKAlertControllerStyleFullScreen);
 
-    PKAlertController *viewController = [self instantiateOwnerViewController];
+    PKAlertViewController *viewController = [self instantiateOwnerViewController];
     viewController.configuration.preferredStyle = preferredStyle;
     viewController.configuration.title = title;
     viewController.configuration.message = message;
@@ -215,7 +62,7 @@ NSBundle *PKAlertControllerBundle(void)
 
 + (instancetype)alertControllerWithConfigurationBlock:(PKAlertControllerConfigurationBlock)configurationBlock {
     NSParameterAssert(configurationBlock);
-    PKAlertController *viewController = [self instantiateOwnerViewController];
+    PKAlertViewController *viewController = [self instantiateOwnerViewController];
     PKAlertControllerConfiguration *configuration = [[PKAlertControllerConfiguration alloc] init];
     configurationBlock(configuration);
     viewController.configuration = configuration;
@@ -224,7 +71,7 @@ NSBundle *PKAlertControllerBundle(void)
 
 + (instancetype)simpleAlertControllerWithConfigurationBlock:(PKAlertControllerConfigurationBlock)configurationBlock {
     NSParameterAssert(configurationBlock);
-    PKAlertController *viewController = [self instantiateOwnerViewController];
+    PKAlertViewController *viewController = [self instantiateOwnerViewController];
     PKAlertControllerConfiguration *configuration = [PKAlertControllerConfiguration simpleAlertConfigurationWithHandler:nil];
     configurationBlock(configuration);
     viewController.configuration = configuration;
@@ -233,7 +80,7 @@ NSBundle *PKAlertControllerBundle(void)
 
 + (instancetype)alertControllerWithConfiguration:(PKAlertControllerConfiguration *)configuration {
     NSParameterAssert(configuration);
-    PKAlertController *viewController = [self instantiateOwnerViewController];
+    PKAlertViewController *viewController = [self instantiateOwnerViewController];
     viewController.configuration = configuration;
     return viewController;
 }
@@ -450,109 +297,5 @@ NSBundle *PKAlertControllerBundle(void)
     if ([segue.identifier isEqualToString:ActionsViewEmbededSegueIdentifier]) {
     }
 }
-
-@end
-
-#pragma mark - PKAlertActionCollectionViewController
-
-@interface PKAlertActionCollectionViewController ()
-
-@property (nonatomic) NSArray *actions;
-
-@end
-
-@implementation PKAlertActionCollectionViewController
-
-static NSString * const reuseIdentifier = @"Cell";
-
-- (void)viewDidLoad {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Register cell classes
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-    
-    // Do any additional setup after loading the view.
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    [super viewDidAppear:animated];
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-#pragma mark <UICollectionViewDataSource>
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-#warning Incomplete method implementation -- Return the number of sections
-    return 0;
-}
-
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-#warning Incomplete method implementation -- Return the number of items in the section
-    return 0;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    
-    // Configure the cell
-    
-    return cell;
-}
-
-#pragma mark <UICollectionViewDelegate>
-
-/*
-// Uncomment this method to specify if the specified item should be highlighted during tracking
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
-}
-*/
-
-/*
-// Uncomment this method to specify if the specified item should be selected
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
-
-/*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
-}
-
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
-}
-*/
 
 @end

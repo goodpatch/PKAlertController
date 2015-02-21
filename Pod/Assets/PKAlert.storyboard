@@ -5,10 +5,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
-        <!--Alert Controller-->
+        <!--Alert View Controller-->
         <scene sceneID="SlG-NW-zWj">
             <objects>
-                <viewController storyboardIdentifier="PKAlertController" id="D0V-NO-R5y" customClass="PKAlertController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PKAlertViewController" id="D0V-NO-R5y" customClass="PKAlertViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="08V-Pf-AK5"/>
                         <viewControllerLayoutGuide type="bottom" id="ogX-gL-ioM"/>
