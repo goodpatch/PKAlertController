@@ -12,10 +12,10 @@ extern NSBundle *PKAlertControllerBundle(void)  __attribute__((const));
 
 typedef NS_ENUM(NSInteger, PKAlertControllerStyle) {
     PKAlertControllerStyleAlert = 0,
-    PKAlertControllerStyleAlertLong,
+    PKAlertControllerStyleFlexibleAlert,
     PKAlertControllerStyleFullScreen,
     PKAlertControllerStyleActionSheet,
-    PKAlertControllerStyleActionSheetLong,
+    PKAlertControllerStyleFlexibleActionSheet,
 };
 
 #pragma mark - PKAlertController

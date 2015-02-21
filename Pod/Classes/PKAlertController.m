@@ -124,7 +124,7 @@ NSBundle *PKAlertControllerBundle(void) {
             [superview addConstraints:constraints];
             break;
         }
-        case PKAlertControllerStyleAlertLong:
+        case PKAlertControllerStyleFlexibleAlert:
         {
             NSLayoutConstraint *contentHeightConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1. constant:width];
             contentHeightConstraint.priority = UILayoutPriorityDefaultHigh;
@@ -151,7 +151,7 @@ NSBundle *PKAlertControllerBundle(void) {
         }
         case PKAlertControllerStyleActionSheet:
             break;
-        case PKAlertControllerStyleActionSheetLong:
+        case PKAlertControllerStyleFlexibleActionSheet:
             break;
     }
 }
