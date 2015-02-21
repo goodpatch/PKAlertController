@@ -42,6 +42,8 @@
 		20EA2F95CEA46A7F833B01DD /* PKAlertController.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = PKAlertController.podspec; path = ../PKAlertController.podspec; sourceTree = "<group>"; };
 		264C5FF71A982C020060DBFE /* PKAlertTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKAlertTableViewController.h; sourceTree = "<group>"; };
 		264C5FF81A982C020060DBFE /* PKAlertTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKAlertTableViewController.m; sourceTree = "<group>"; };
+		264C60041A98BF160060DBFE /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		264C60051A98BF160060DBFE /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3CD3E274A8CACDCBE65821DF /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		56902EAB550E43894CA9594E /* Pods-PKAlertController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PKAlertController.release.xcconfig"; path = "Pods/Target Support Files/Pods-PKAlertController/Pods-PKAlertController.release.xcconfig"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* PKAlertController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PKAlertController.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -265,6 +267,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = 6003F581195388D10070C39A;
 			productRefGroup = 6003F58B195388D20070C39A /* Products */;
@@ -398,6 +401,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				6003F597195388D20070C39A /* en */,
+				264C60041A98BF160060DBFE /* ja */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -422,6 +426,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				6003F5B9195388D20070C39A /* en */,
+				264C60051A98BF160060DBFE /* ja */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

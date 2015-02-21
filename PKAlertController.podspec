@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Pod/Classes/**/*'
   s.resource_bundles = {
-    'PKAlertController' => ['Pod/Assets/*.png', 'Pod/Assets/*.storyboard']
+    'PKAlertController' => ['Pod/Assets/*.{png,storyboard,lproj}']
   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
