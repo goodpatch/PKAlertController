@@ -22,12 +22,14 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 @property (nonatomic) CGFloat mainScreenShortSideLength;
 @property (nonatomic) PKAlertControllerConfiguration *configuration;
 @property (nonatomic) PKAlertActionCollectionViewController *actionCollectionViewController;
+@property (nonatomic) CGSize labelSize;
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *actionContainerView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *actionContainerViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewHeightConstraint;
 
 #pragma mark - User defined runtime attributes
 
@@ -114,6 +116,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     CGSize size = [UIScreen mainScreen].bounds.size;
     _mainScreenShortSideLength = MIN(size.width, size.height);
     _configuration = [[PKAlertControllerConfiguration alloc] init];
+    _labelSize = CGSizeZero;
 }
 
 - (void)setupMotionEffect {
@@ -127,6 +130,23 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     UIMotionEffectGroup *group = [[UIMotionEffectGroup alloc] init];
     group.motionEffects = @[xMotionEffect, yMotionEffect];
     [self.contentView addMotionEffect:group];
+}
+
+- (void)setupAlertContents {
+    // TODO: title, message
+    UILabel *label = [[UILabel alloc] init];
+    label.numberOfLines = 0;
+    label.lineBreakMode = NSLineBreakByWordWrapping;
+    label.preferredMaxLayoutWidth = [UIScreen mainScreen].bounds.size.width / 2;
+    label.text = self.configuration.message;
+//    [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+//    [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+//    [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+//    [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [label setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.scrollView addSubview:label];
+    CGSize size = [label sizeThatFits:CGSizeMake(label.preferredMaxLayoutWidth, CGFLOAT_MAX)];
+    self.labelSize = size;
 }
 
 - (void)configureConstraintsInLayoutSubviews {
@@ -144,8 +164,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     switch (self.configuration.preferredStyle) {
         case PKAlertControllerStyleAlert:
         {
-            NSLayoutConstraint *contentHeightConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1. constant:actionViewHeight + self.scrollView.contentSize.height];
-            contentHeightConstraint.priority = UILayoutPriorityDefaultHigh;
+            self.contentViewHeightConstraint.constant = actionViewHeight + self.labelSize.height;
             NSArray *constraints = @[
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:superview
                  attribute:NSLayoutAttributeCenterX multiplier:1. constant:0],
@@ -153,21 +172,26 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
                  attribute:NSLayoutAttributeCenterY multiplier:1. constant:0],
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil
                  attribute:NSLayoutAttributeWidth multiplier:1. constant:width],
-                contentHeightConstraint,
+                [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:nil
+                 attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertOffset],
+                [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:nil
+                 attribute:NSLayoutAttributeBottom multiplier:1. constant:self.alertOffset],
             ];
             [superview addConstraints:constraints];
             break;
         }
         case PKAlertControllerStyleFlexibleAlert:
         {
-            NSLayoutConstraint *contentHeightConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1. constant:actionViewHeight + self.scrollView.contentSize.height];
-            contentHeightConstraint.priority = UILayoutPriorityDefaultHigh;
+            self.contentViewHeightConstraint.constant = actionViewHeight + self.labelSize.height;
             NSArray *constraints = @[
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview
                  attribute:NSLayoutAttributeCenterY multiplier:1. constant:0],
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeLeft multiplier:1. constant:self.alertOffset],
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeRight multiplier:1. constant:-self.alertOffset],
-                contentHeightConstraint,
+                [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:nil
+                 attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertOffset],
+                [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:nil
+                 attribute:NSLayoutAttributeBottom multiplier:1. constant:self.alertOffset],
             ];
             [superview addConstraints:constraints];
             break;
@@ -188,6 +212,24 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         case PKAlertControllerStyleFlexibleActionSheet:
             break;
     }
+    UILabel *label = [[self.scrollView.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *binding) {
+        if ([evaluatedObject isKindOfClass:[UILabel class]]) {
+            return YES;
+        }
+        return NO;
+    }]] firstObject];
+    if (label) {
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.contentView
+                                                                     attribute:NSLayoutAttributeCenterX multiplier:1. constant:0]];
+        NSArray *contentConstraints = @[
+                                        [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:16],
+                                        [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeBottom multiplier:1 constant:0],
+                                        ];
+        [self.scrollView addConstraints:contentConstraints];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:label attribute:NSLayoutAttributeWidth multiplier:1 constant:40]];
+    //    [self.scrollView addConstraint:[NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:self.labelSize.height + 84]];
+
+    }
 }
 
 #pragma mark - View life cycle
@@ -201,7 +243,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     if (self.configuration.allowsMotionEffect) {
         [self setupMotionEffect];
     }
-    // TODO: title, message
+    [self setupAlertContents];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -226,6 +268,16 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
+
+    UILabel *label = [[self.scrollView.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *binding) {
+        if ([evaluatedObject isKindOfClass:[UILabel class]]) {
+            return YES;
+        }
+        return NO;
+    }]] firstObject];
+    if (label) {
+        label.preferredMaxLayoutWidth = self.contentView.bounds.size.width - 40;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {

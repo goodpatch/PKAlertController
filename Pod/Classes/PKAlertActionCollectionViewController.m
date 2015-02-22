@@ -67,7 +67,7 @@ static NSString * const reuseIdentifier = @"PKAlertViewControllerCellReuseIdenti
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     // FIXME: iOS7 not working invalidateLayout in willRoateToInterfaceOrientation
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
-        [UIView animateWithDuration:0 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+        [UIView animateWithDuration:.15 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
             [self.collectionView.collectionViewLayout invalidateLayout];
         } completion:nil];
     }
