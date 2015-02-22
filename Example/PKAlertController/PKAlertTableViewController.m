@@ -20,6 +20,7 @@
     [super viewDidLoad];
 
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg"]];
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.tableView.backgroundView = imageView;
 }
 
