@@ -144,7 +144,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     switch (self.configuration.preferredStyle) {
         case PKAlertControllerStyleAlert:
         {
-            NSLayoutConstraint *contentHeightConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1. constant:width];
+            NSLayoutConstraint *contentHeightConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1. constant:actionViewHeight + self.scrollView.contentSize.height];
             contentHeightConstraint.priority = UILayoutPriorityDefaultHigh;
             NSArray *constraints = @[
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:superview
@@ -160,7 +160,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         }
         case PKAlertControllerStyleFlexibleAlert:
         {
-            NSLayoutConstraint *contentHeightConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1. constant:width];
+            NSLayoutConstraint *contentHeightConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1. constant:actionViewHeight + self.scrollView.contentSize.height];
             contentHeightConstraint.priority = UILayoutPriorityDefaultHigh;
             NSArray *constraints = @[
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview
@@ -195,13 +195,13 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    NSLog(@"%s window: %@ %@", __PRETTY_FUNCTION__, self.view.window, @(self.shouldAutomaticallyForwardAppearanceMethods));
     if (self.configuration.preferredStyle == PKAlertControllerStyleFullScreen) {
         self.contentView.layer.cornerRadius = 0;
     }
     if (self.configuration.allowsMotionEffect) {
         [self setupMotionEffect];
     }
+    // TODO: title, message
 }
 
 - (void)didReceiveMemoryWarning {
@@ -210,7 +210,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     [super viewWillAppear:animated];
 
     self.contentView.backgroundColor = [UIColor colorWithWhite:1 alpha:.9];
@@ -218,7 +217,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 }
 
 - (void)viewWillLayoutSubviews {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     [super viewWillLayoutSubviews];
 
     if (!self.isViewInitialized) {
@@ -227,16 +225,10 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 }
 
 - (void)viewDidLayoutSubviews {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     [super viewDidLayoutSubviews];
-    CGSize size = [UIScreen mainScreen].bounds.size;
-    CGSize windowSize = [[UIApplication sharedApplication] keyWindow].bounds.size;
-    NSLog(@"%s %@", __PRETTY_FUNCTION__, NSStringFromCGSize(size));
-    NSLog(@"%s window: %@", __PRETTY_FUNCTION__, NSStringFromCGSize(windowSize));
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     [super viewDidAppear:animated];
     self.viewInitialized = YES;
 }
@@ -264,7 +256,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     UIView *containerView = [transitionContext containerView];
@@ -273,9 +264,10 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
     // AlertView
     if (toViewController == self) {
+        toView.frame = containerView.frame;
         UIColor *origianlContentViewBackgroundColor = self.contentView.backgroundColor;
         [containerView addSubview:toView];
-        self.contentView.transform = CGAffineTransformMakeScale(1.2, 1.2);
+        self.contentView.transform = CGAffineTransformMakeScale(1.1, 1.1);
         self.contentView.backgroundColor = [origianlContentViewBackgroundColor colorWithAlphaComponent:1.];
         toView.alpha = 0;
         fromView.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
@@ -309,7 +301,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     if ([segue.identifier isEqualToString:ActionsViewEmbededSegueIdentifier]) {
         PKAlertActionCollectionViewController *viewController = (PKAlertActionCollectionViewController *)segue.destinationViewController;
         viewController.actions = self.configuration.actions;

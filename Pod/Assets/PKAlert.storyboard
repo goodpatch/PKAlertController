@@ -94,7 +94,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PKAlertViewControllerCellReuseIdentifier" id="5Xe-hH-KqT">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PKAlertViewControllerCellReuseIdentifier" id="5Xe-hH-KqT" customClass="PKAlertActionViewCell">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -117,6 +117,9 @@
                                     <constraint firstItem="gMD-KT-iax" firstAttribute="leading" secondItem="5Xe-hH-KqT" secondAttribute="leading" constant="8" id="UGt-2n-FKq"/>
                                     <constraint firstItem="gMD-KT-iax" firstAttribute="top" secondItem="5Xe-hH-KqT" secondAttribute="top" constant="8" id="p2x-s4-lBW"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="titleLabel" destination="gMD-KT-iax" id="UXR-VQ-v1F"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>

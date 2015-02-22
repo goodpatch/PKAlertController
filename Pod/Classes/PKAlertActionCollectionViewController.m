@@ -9,6 +9,7 @@
 #import "PKAlertActionCollectionViewController.h"
 
 #import "PKAlertAction.h"
+#import "PKAlertActionViewCell.h"
 
 @interface PKAlertActionCollectionViewController () <UICollectionViewDelegateFlowLayout>
 
@@ -21,6 +22,13 @@ static NSString * const reuseIdentifier = @"PKAlertViewControllerCellReuseIdenti
 - (CGSize)collectionViewContentSize {
     return self.collectionView.collectionViewLayout.collectionViewContentSize;
 }
+
+- (void)configureCell:(PKAlertActionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+    PKAlertAction *action = self.actions[indexPath.item];
+    cell.title = action.title;
+}
+
+#pragma mark - View life cycles
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -49,8 +57,22 @@ static NSString * const reuseIdentifier = @"PKAlertViewControllerCellReuseIdenti
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [self.collectionView.collectionViewLayout invalidateLayout];
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        [self.collectionView.collectionViewLayout invalidateLayout];
+    }
 }
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    // FIXME: iOS7 not working invalidateLayout in willRoateToInterfaceOrientation
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+        [UIView animateWithDuration:0 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+            [self.collectionView.collectionViewLayout invalidateLayout];
+        } completion:nil];
+    }
+}
+
 /*
 #pragma mark - Navigation
 
@@ -74,12 +96,7 @@ static NSString * const reuseIdentifier = @"PKAlertViewControllerCellReuseIdenti
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-
-    // Configure the cell
-    UILabel *label = (UILabel *)[cell viewWithTag:1];
-    PKAlertAction *action = self.actions[indexPath.item];
-    label.text = action.title;
-
+    [self configureCell:(PKAlertActionViewCell *)cell atIndexPath:indexPath];
     return cell;
 }
 
@@ -104,9 +121,7 @@ static NSString * const reuseIdentifier = @"PKAlertViewControllerCellReuseIdenti
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGSize itemSize = [(UICollectionViewFlowLayout *)collectionViewLayout itemSize];
-    NSLog(@"%s %@", __PRETTY_FUNCTION__, NSStringFromCGSize(itemSize));
     itemSize.width = collectionView.bounds.size.width;
-    NSLog(@"%s %@", __PRETTY_FUNCTION__, NSStringFromCGSize(itemSize));
     if (self.actions.count == 2) {
         itemSize.width /= 2.0;
     }
