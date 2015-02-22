@@ -8,25 +8,29 @@
 
 #import "PKAlertActionCollectionViewController.h"
 
-@interface PKAlertActionCollectionViewController ()
+#import "PKAlertAction.h"
 
-@property (nonatomic) NSArray *actions;
+@interface PKAlertActionCollectionViewController () <UICollectionViewDelegateFlowLayout>
 
 @end
 
 @implementation PKAlertActionCollectionViewController
 
-static NSString * const reuseIdentifier = @"Cell";
+static NSString * const reuseIdentifier = @"PKAlertViewControllerCellReuseIdentifier";
+
+- (CGSize)collectionViewContentSize {
+    return self.collectionView.collectionViewLayout.collectionViewContentSize;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Register cell classes
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-    
+//    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+
     // Do any additional setup after loading the view.
 }
 
@@ -35,6 +39,18 @@ static NSString * const reuseIdentifier = @"Cell";
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [self.collectionView.collectionViewLayout invalidateLayout];
+}
 /*
 #pragma mark - Navigation
 
@@ -48,53 +64,43 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-#warning Incomplete method implementation -- Return the number of sections
-    return 0;
+    return 1;
 }
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-#warning Incomplete method implementation -- Return the number of items in the section
-    return 0;
+    return self.actions.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    
+
     // Configure the cell
-    
+    UILabel *label = (UILabel *)[cell viewWithTag:1];
+    PKAlertAction *action = self.actions[indexPath.item];
+    label.text = action.title;
+
     return cell;
 }
 
 #pragma mark <UICollectionViewDelegate>
 
-/*
-// Uncomment this method to specify if the specified item should be highlighted during tracking
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
-}
-*/
-
-/*
-// Uncomment this method to specify if the specified item should be selected
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
-
-/*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    PKAlertAction *action = self.actions[indexPath.item];
+    [self.delegate actionCollectionViewController:self didSelectForAction:action];
 }
 
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
-}
+#pragma mark <UICollectionViewDelegateFlowLayout>
 
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CGSize itemSize = [(UICollectionViewFlowLayout *)collectionViewLayout itemSize];
+    NSLog(@"%s %@", __PRETTY_FUNCTION__, NSStringFromCGSize(itemSize));
+    itemSize.width = collectionView.bounds.size.width;
+    NSLog(@"%s %@", __PRETTY_FUNCTION__, NSStringFromCGSize(itemSize));
+    if (self.actions.count == 2) {
+        itemSize.width /= 2.0;
+    }
+    return itemSize;
 }
-*/
 
 @end

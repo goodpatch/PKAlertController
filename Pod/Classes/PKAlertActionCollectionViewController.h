@@ -8,6 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@class PKAlertAction;
+@class PKAlertActionCollectionViewController;
+
+@protocol PKAlertActionCollectionViewControllerDelegate <NSObject>
+
+- (void)actionCollectionViewController:(PKAlertActionCollectionViewController *)viewController didSelectForAction:(PKAlertAction *)action;
+
+@end
+
 @interface PKAlertActionCollectionViewController : UICollectionViewController
+
+@property (weak, nonatomic) IBOutlet id<PKAlertActionCollectionViewControllerDelegate> delegate;
+@property (nonatomic) NSArray *actions;
+@property (nonatomic, readonly) CGSize collectionViewContentSize;
 
 @end

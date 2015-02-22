@@ -16,15 +16,18 @@ static UIStoryboard *pk_registeredStoryboard;
 static NSString *pk_defaultStoryboardName = @"PKAlert";
 static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSegue";
 
-@interface PKAlertViewController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning>
+@interface PKAlertViewController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, PKAlertActionCollectionViewControllerDelegate>
 
 @property (nonatomic, getter=isViewInitialized) BOOL viewInitialized;
 @property (nonatomic) CGFloat mainScreenShortSideLength;
 @property (nonatomic) PKAlertControllerConfiguration *configuration;
+@property (nonatomic) PKAlertActionCollectionViewController *actionCollectionViewController;
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *actionContainerView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *actionContainerViewHeightConstraint;
 
 #pragma mark - User defined runtime attributes
 
@@ -129,6 +132,15 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 - (void)configureConstraintsInLayoutSubviews {
     UIView *superview = self.contentView.superview;
     CGFloat width = self.mainScreenShortSideLength - self.alertOffset * 2;
+    NSInteger actionCount = self.configuration.actions.count;
+    CGFloat actionViewHeight = 0;
+    if (actionCount > 0 && actionCount < 3) {
+        actionViewHeight = 44.0;
+    } else if (actionCount >= 3) {
+        actionViewHeight = 44.0 * actionCount;
+    }
+    self.actionContainerViewHeightConstraint.constant = actionViewHeight;
+
     switch (self.configuration.preferredStyle) {
         case PKAlertControllerStyleAlert:
         {
@@ -183,6 +195,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    NSLog(@"%s window: %@ %@", __PRETTY_FUNCTION__, self.view.window, @(self.shouldAutomaticallyForwardAppearanceMethods));
     if (self.configuration.preferredStyle == PKAlertControllerStyleFullScreen) {
         self.contentView.layer.cornerRadius = 0;
     }
@@ -205,6 +218,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 }
 
 - (void)viewWillLayoutSubviews {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     [super viewWillLayoutSubviews];
 
     if (!self.isViewInitialized) {
@@ -213,17 +227,18 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 }
 
 - (void)viewDidLayoutSubviews {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     [super viewDidLayoutSubviews];
+    CGSize size = [UIScreen mainScreen].bounds.size;
+    CGSize windowSize = [[UIApplication sharedApplication] keyWindow].bounds.size;
+    NSLog(@"%s %@", __PRETTY_FUNCTION__, NSStringFromCGSize(size));
+    NSLog(@"%s window: %@", __PRETTY_FUNCTION__, NSStringFromCGSize(windowSize));
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     [super viewDidAppear:animated];
     self.viewInitialized = YES;
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self dismiss:nil];
-    });
 }
 
 #pragma mark - Target actions
@@ -249,6 +264,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     UIView *containerView = [transitionContext containerView];
@@ -295,7 +311,17 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
     if ([segue.identifier isEqualToString:ActionsViewEmbededSegueIdentifier]) {
+        PKAlertActionCollectionViewController *viewController = (PKAlertActionCollectionViewController *)segue.destinationViewController;
+        viewController.actions = self.configuration.actions;
+        viewController.delegate = self;
+        self.actionCollectionViewController = viewController;
     }
+}
+
+#pragma mark - PKAlertActionCollectionViewControllerDelegate
+
+- (void)actionCollectionViewController:(PKAlertActionCollectionViewController *)viewController didSelectForAction:(PKAlertAction *)action {
+    [self dismiss:viewController];
 }
 
 @end

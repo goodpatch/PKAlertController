@@ -39,11 +39,17 @@
 
 - (void)performDisplayAlertAtIndexPath:(NSIndexPath *)indexPath {
     PKAlertControllerStyle style = (PKAlertControllerStyle)indexPath.row;
-    PKAlertViewController *alertController = [PKAlertViewController simpleAlertControllerWithConfigurationBlock:^(PKAlertControllerConfiguration *configuration) {
-        configuration.title = @"Alert title";
-        configuration.message = @"Alert message message message msg.";
-        configuration.preferredStyle = style;
-    }];
+    PKAlertControllerConfiguration *configuration = [PKAlertControllerConfiguration defaultConfiguration];
+    [configuration addActions:@[
+                                [PKAlertAction okAction],
+                                ]];
+    configuration.preferredStyle = style;
+    PKAlertViewController *alertController = [PKAlertViewController alertControllerWithConfiguration:configuration];
+//    PKAlertViewController *alertController = [PKAlertViewController simpleAlertControllerWithConfigurationBlock:^(PKAlertControllerConfiguration *configuration) {
+//        configuration.title = @"Alert title";
+//        configuration.message = @"Alert message message message msg.";
+//        configuration.preferredStyle = style;
+//    }];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
