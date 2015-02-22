@@ -85,6 +85,16 @@ static NSString * const reuseIdentifier = @"PKAlertViewControllerCellReuseIdenti
 
 #pragma mark <UICollectionViewDelegate>
 
+- (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    cell.contentView.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath {
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+    cell.contentView.backgroundColor = nil;
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     PKAlertAction *action = self.actions[indexPath.item];
     [self.delegate actionCollectionViewController:self didSelectForAction:action];
