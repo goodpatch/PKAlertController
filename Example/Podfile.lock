@@ -22,7 +22,7 @@ SPEC CHECKSUMS:
   Expecta: ee641011fe10aa1855d487b40e4976dac50ec342
   Expecta+Snapshots: 4a56b9411c6ed156987072e52c39de67d864015a
   FBSnapshotTestCase: e2914fbaabccea1dcc773d6a16b1c24540642488
-  PKAlertController: ac5a8b4f8095299ad077436ae8a2a780c2aa6a13
+  PKAlertController: 0a07f8fec3bd18629c660b7e5009a2cb8d7a181f
   Specta: 698a58ffa5ec948327d3b92eab50ca58d7f4fbe8
 
 COCOAPODS: 0.35.0

@@ -20,10 +20,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rq2-oz-jH8" userLabel="Alert Content View">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T6a-y8-cXW">
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T6a-y8-cXW" customClass="PKAlertEffectScrollView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="translatesAutoresizingMaskIntoConstraints" value="NO"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="transparentEdgeEnabled" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="gradientFactor">
+                                                <real key="value" value="0.5"/>
+                                            </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </scrollView>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0dg-hu-dha">
