@@ -16,6 +16,9 @@
 static UIStoryboard *pk_registeredStoryboard;
 static NSString *pk_defaultStoryboardName = @"PKAlert";
 static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSegue";
+static const CGFloat DefaultMargin = 8.0;
+static const CGFloat DefaultTappableHeight = 44.0;
+static const CGFloat AlertMessageMargin = 20.0;
 
 @interface PKAlertViewController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, PKAlertActionCollectionViewControllerDelegate>
 
@@ -175,16 +178,16 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     NSInteger actionCount = self.configuration.actions.count;
     CGFloat actionViewHeight = 0;
     if (actionCount > 0 && actionCount < 3) {
-        actionViewHeight = 44.0;
+        actionViewHeight = DefaultTappableHeight;
     } else if (actionCount >= 3) {
-        actionViewHeight = 44.0 * actionCount;
+        actionViewHeight = DefaultTappableHeight * actionCount;
     }
     self.actionContainerViewHeightConstraint.constant = actionViewHeight;
 
     switch (self.configuration.preferredStyle) {
         case PKAlertControllerStyleAlert:
         {
-            self.contentViewHeightConstraint.constant = actionViewHeight + self.alertMessageSize.height;
+            self.contentViewHeightConstraint.constant = actionViewHeight + self.alertMessageSize.height + DefaultMargin * 4;
             NSArray *constraints = @[
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:superview
                  attribute:NSLayoutAttributeCenterX multiplier:1. constant:0],
@@ -202,7 +205,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         }
         case PKAlertControllerStyleFlexibleAlert:
         {
-            self.contentViewHeightConstraint.constant = actionViewHeight + self.alertMessageSize.height;
+            self.contentViewHeightConstraint.constant = actionViewHeight + self.alertMessageSize.height + DefaultMargin * 4;
             NSArray *constraints = @[
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview
                  attribute:NSLayoutAttributeCenterY multiplier:1. constant:0],
@@ -234,18 +237,18 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     }
     if (self.scrollViewComponents.count > 0) {
         [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
-            [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeWidth multiplier:1 constant:40]];
+            [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeWidth multiplier:1 constant:AlertMessageMargin * 2]];
             [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual
                                              toItem:self.contentView
                                              attribute:NSLayoutAttributeCenterX multiplier:1. constant:0]];
 
             NSMutableArray *contentConstraints = [NSMutableArray array];
             if (idx == 0) {
-                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:16]];
+                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:DefaultMargin * 2]];
             } else {
                 UIView *previousView = [self.scrollViewComponents objectAtIndex:idx - 1];
                 if (previousView) {
-                    [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:previousView attribute:NSLayoutAttributeBottom multiplier:1 constant:8]];
+                    [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:previousView attribute:NSLayoutAttributeBottom multiplier:1 constant:DefaultMargin]];
                 }
             }
             if (idx == self.scrollViewComponents.count - 1) {
@@ -296,7 +299,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
     for (UIView *view in self.scrollViewComponents) {
         if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
-            [(id)view setPreferredMaxLayoutWidth:self.contentView.bounds.size.width - 40];
+            [(id)view setPreferredMaxLayoutWidth:self.contentView.bounds.size.width - AlertMessageMargin];
         }
     }
 }
