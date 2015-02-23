@@ -290,18 +290,29 @@ static const CGFloat AlertMessageMargin = 20.0;
 
     if (!self.isViewInitialized) {
         [self configureConstraintsInLayoutSubviews];
-    } else {
     }
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
 
     for (UIView *view in self.scrollViewComponents) {
         if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
             [(id)view setPreferredMaxLayoutWidth:self.contentView.bounds.size.width - AlertMessageMargin];
         }
     }
+
+    // MARK: Resize Alert view size.
+    CGFloat actionViewHeight = self.actionContainerViewHeightConstraint.constant;
+    CGFloat height = 0;
+    for (UIView *view in self.scrollViewComponents) {
+        if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
+            CGFloat width = MAX([(id)view preferredMaxLayoutWidth], view.bounds.size.width);
+            CGSize size = [view sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+            height += size.height;
+        }
+    }
+    self.contentViewHeightConstraint.constant = actionViewHeight + height + DefaultMargin * 4;
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -309,19 +320,6 @@ static const CGFloat AlertMessageMargin = 20.0;
     self.viewInitialized = YES;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-//    CGFloat actionViewHeight = self.actionContainerViewHeightConstraint.constant;
-//    CGFloat height = 0;
-//    for (UIView *view in self.scrollViewComponents) {
-//        if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
-//            CGFloat width = MAX([(id)view preferredMaxLayoutWidth], view.bounds.size.width);
-//            CGSize size = [view sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-//            height += size.height;
-//        }
-//    }
-//    self.contentViewHeightConstraint.constant = actionViewHeight + height;
-}
 #pragma mark - Target actions
 
 - (void)dismiss:(id)sender {
