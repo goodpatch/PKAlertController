@@ -142,28 +142,35 @@ static const CGFloat AlertMessageMargin = 20.0;
     CGFloat preferredMaxLayoutWidth = [UIScreen mainScreen].bounds.size.width / 2;
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.numberOfLines = 0;
+    titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     titleLabel.font = [UIFont boldSystemFontOfSize:17];
     titleLabel.preferredMaxLayoutWidth = preferredMaxLayoutWidth;
     titleLabel.text = self.configuration.title;
+    [titleLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [titleLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [titleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.scrollView addSubview:titleLabel];
-    CGSize size = [titleLabel sizeThatFits:CGSizeMake(preferredMaxLayoutWidth, CGFLOAT_MAX)];
-    self.alertMessageSize = size;
     [self.scrollViewComponents addObject:titleLabel];
 
     UILabel *label = [[UILabel alloc] init];
     label.numberOfLines = 0;
+    label.textAlignment = NSTextAlignmentCenter;
     label.lineBreakMode = NSLineBreakByWordWrapping;
     label.preferredMaxLayoutWidth = preferredMaxLayoutWidth;
     label.font = [UIFont systemFontOfSize:13];
     label.text = self.configuration.message;
-//    [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-//    [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-//    [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-//    [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     [label setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.scrollView addSubview:label];
+
+    CGSize size = [titleLabel sizeThatFits:CGSizeMake(preferredMaxLayoutWidth, CGFLOAT_MAX)];
+    self.alertMessageSize = size;
     size = [label sizeThatFits:CGSizeMake(preferredMaxLayoutWidth, CGFLOAT_MAX)];
     CGSize storeSize = self.alertMessageSize;
     storeSize.width = size.width;
@@ -244,15 +251,15 @@ static const CGFloat AlertMessageMargin = 20.0;
 
             NSMutableArray *contentConstraints = [NSMutableArray array];
             if (idx == 0) {
-                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:DefaultMargin * 2]];
+                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:AlertMessageMargin]];
             } else {
                 UIView *previousView = [self.scrollViewComponents objectAtIndex:idx - 1];
                 if (previousView) {
-                    [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:previousView attribute:NSLayoutAttributeBottom multiplier:1 constant:DefaultMargin]];
+                    [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:previousView attribute:NSLayoutAttributeBottom multiplier:1 constant:8]];
                 }
             }
             if (idx == self.scrollViewComponents.count - 1) {
-                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeBottom multiplier:1 constant:-1 * AlertMessageMargin]];
             }
             [self.scrollView addConstraints:contentConstraints];
         }];
@@ -291,28 +298,31 @@ static const CGFloat AlertMessageMargin = 20.0;
     if (!self.isViewInitialized) {
         [self configureConstraintsInLayoutSubviews];
     }
-
-    for (UIView *view in self.scrollViewComponents) {
-        if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
-            [(id)view setPreferredMaxLayoutWidth:self.contentView.bounds.size.width - AlertMessageMargin];
-        }
-    }
-
-    // MARK: Resize Alert view size.
-    CGFloat actionViewHeight = self.actionContainerViewHeightConstraint.constant;
-    CGFloat height = 0;
-    for (UIView *view in self.scrollViewComponents) {
-        if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
-            CGFloat width = MAX([(id)view preferredMaxLayoutWidth], view.bounds.size.width);
-            CGSize size = [view sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-            height += size.height;
-        }
-    }
-    self.contentViewHeightConstraint.constant = actionViewHeight + height + DefaultMargin * 4;
 }
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
+
+    [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
+        if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
+            [(id)view setPreferredMaxLayoutWidth:self.contentView.bounds.size.width - AlertMessageMargin * 2];
+        }
+    }];
+
+    // FIXME: iOS 7
+    // MARK: Resize Alert view size.
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        CGFloat actionViewHeight = self.actionContainerViewHeightConstraint.constant;
+        CGFloat height = 0;
+        for (UIView *view in self.scrollViewComponents) {
+            if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
+                CGFloat width = MAX([(id)view preferredMaxLayoutWidth], view.bounds.size.width);
+                CGSize size = [view sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+                height += size.height;
+            }
+        }
+        self.contentViewHeightConstraint.constant = actionViewHeight + height + DefaultMargin * 4;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
