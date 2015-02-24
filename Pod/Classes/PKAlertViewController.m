@@ -179,19 +179,17 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 - (void)configureConstraintsInLayoutSubviews {
     UIView *superview = self.contentView.superview;
     CGFloat width = self.mainScreenShortSideLength - self.alertOffset * 2;
-    NSInteger actionCount = self.configuration.actions.count;
-    CGFloat actionViewHeight = 0;
-    if (actionCount > 0 && actionCount < 3) {
-        actionViewHeight = PKAlertDefaultTappableHeight;
-    } else if (actionCount >= 3) {
-        actionViewHeight = PKAlertDefaultTappableHeight * actionCount;
-    }
+    CGFloat actionViewHeight = self.actionCollectionViewController.estimatedContentHeight;
     self.actionContainerViewHeightConstraint.constant = actionViewHeight;
+    CGFloat messageHeight = self.alertMessageSize.height;
 
     switch (self.configuration.preferredStyle) {
         case PKAlertControllerStyleAlert:
         {
-            self.contentViewHeightConstraint.constant = actionViewHeight + self.alertMessageSize.height + PKAlertDefaultMargin * 4;
+            if (messageHeight > 0) {
+                messageHeight += PKAlertDefaultMargin * 4;
+            }
+            self.contentViewHeightConstraint.constant = actionViewHeight + messageHeight;
             NSArray *constraints = @[
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:superview
                  attribute:NSLayoutAttributeCenterX multiplier:1. constant:0],
@@ -209,7 +207,10 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         }
         case PKAlertControllerStyleFlexibleAlert:
         {
-            self.contentViewHeightConstraint.constant = actionViewHeight + self.alertMessageSize.height + PKAlertDefaultMargin * 4;
+            if (messageHeight > 0) {
+                messageHeight += PKAlertDefaultMargin * 4;
+            }
+            self.contentViewHeightConstraint.constant = actionViewHeight + self.alertMessageSize.height + messageHeight;
             NSArray *constraints = @[
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview
                  attribute:NSLayoutAttributeCenterY multiplier:1. constant:0],
@@ -304,7 +305,9 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
             height += size.height;
         }
     }
-    self.contentViewHeightConstraint.constant = actionViewHeight + height + PKAlertDefaultMargin * 4;
+    if (height > 0) {
+        self.contentViewHeightConstraint.constant = actionViewHeight + height + PKAlertDefaultMargin * 4;
+    }
 }
 
 - (void)viewDidLayoutSubviews {

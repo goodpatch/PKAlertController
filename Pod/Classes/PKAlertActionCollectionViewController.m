@@ -23,6 +23,16 @@ static NSString * const reuseIdentifier = @"PKAlertViewControllerCellReuseIdenti
     return self.collectionView.collectionViewLayout.collectionViewContentSize;
 }
 
+- (CGFloat)estimatedContentHeight {
+    NSUInteger count = self.actions.count;
+    if (count == 0) {
+        return 0;
+    } else if (count <= 2) {
+        return PKAlertDefaultTappableHeight;
+    }
+    return PKAlertDefaultTappableHeight * count;
+}
+
 - (void)configureCell:(PKAlertActionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     PKAlertAction *action = self.actions[indexPath.item];
     cell.titleLabel.text = action.title;
