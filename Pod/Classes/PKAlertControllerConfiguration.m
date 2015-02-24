@@ -42,8 +42,13 @@
         copiedObject->_title = [_title copyWithZone:zone];
         copiedObject->_message = [_message copyWithZone:zone];
         copiedObject->_preferredStyle = _preferredStyle;
+        copiedObject->_titleTextAlignment = _titleTextAlignment;
+        copiedObject->_messageTextAlignment = _messageTextAlignment;
         copiedObject->_actions = [_actions copyWithZone:zone];
         copiedObject->_allowsMotionEffect = _allowsMotionEffect;
+        copiedObject->_motionEffectMinimumRelativeValue = _motionEffectMinimumRelativeValue;
+        copiedObject->_motionEffectMaximumRelativeValue = _motionEffectMaximumRelativeValue;
+        copiedObject->_scrollViewTransparentEdgeEnabled = _scrollViewTransparentEdgeEnabled;
     }
     return copiedObject;
 }
@@ -53,8 +58,12 @@
 - (id)init {
     self = [super init];
     if (self) {
+        _titleTextAlignment = NSTextAlignmentCenter;
+        _messageTextAlignment = NSTextAlignmentCenter;
         _actions = @[];
         _allowsMotionEffect = YES;
+        _motionEffectMinimumRelativeValue = -10.0;
+        _motionEffectMaximumRelativeValue = 10.0;
     }
     return self;
 }

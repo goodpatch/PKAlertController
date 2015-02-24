@@ -8,6 +8,10 @@
 
 #import "PKAlertUtility.h"
 
+const CGFloat PKAlertDefaultMargin = 8.0;
+const CGFloat PKAlertDefaultTappableHeight = 44.0;
+const CGFloat PKAlertMessageMargin = 20.0;
+
 #pragma mark - Functions
 
 NSString *PKAlert_UIKitLocalizedString(NSString *key, NSString *comment)

@@ -8,12 +8,13 @@
 
 #import "PKAlertEffectScrollView.h"
 
+static const CGFloat DefaultGradientFactor = .2;
+
 @interface PKAlertEffectScrollView ()
 
 @property (nonatomic) BOOL showTransparentBottomEdge;
 
 @end
-
 
 @implementation PKAlertEffectScrollView
 
@@ -42,7 +43,7 @@
 #pragma mark - Configure & setup
 
 - (void)configureInit {
-    _gradientFactor = .1;
+    _gradientFactor = DefaultGradientFactor;
     // MARK: Responds to scroll transitions.
     [self addObserver:self forKeyPath:NSStringFromSelector(@selector(contentOffset)) options:0 context:NULL];
 }

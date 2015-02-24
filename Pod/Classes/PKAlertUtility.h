@@ -12,6 +12,9 @@
 @class PKAlertControllerConfiguration;
 @class PKAlertController;
 
+extern const CGFloat PKAlertDefaultMargin;
+extern const CGFloat PKAlertDefaultTappableHeight;
+extern const CGFloat PKAlertMessageMargin;
 extern NSString *PKAlert_UIKitLocalizedString(NSString *key, NSString *comment) __attribute__((const));
 extern NSBundle *PKAlertControllerBundle(void)  __attribute__((const));
 

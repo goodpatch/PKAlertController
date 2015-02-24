@@ -16,9 +16,6 @@
 static UIStoryboard *pk_registeredStoryboard;
 static NSString *pk_defaultStoryboardName = @"PKAlert";
 static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSegue";
-static const CGFloat DefaultMargin = 8.0;
-static const CGFloat DefaultTappableHeight = 44.0;
-static const CGFloat AlertMessageMargin = 20.0;
 
 @interface PKAlertViewController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, PKAlertActionCollectionViewControllerDelegate>
 
@@ -129,10 +126,10 @@ static const CGFloat AlertMessageMargin = 20.0;
     // TODO: MotionEffect settings
     UIInterpolatingMotionEffect *xMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
     UIInterpolatingMotionEffect *yMotionEffect = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-    xMotionEffect.maximumRelativeValue = @10.0;
-    xMotionEffect.minimumRelativeValue = @-10.0;
-    yMotionEffect.maximumRelativeValue = @10.0;
-    yMotionEffect.minimumRelativeValue = @-10.0;
+    xMotionEffect.maximumRelativeValue = @(self.configuration.motionEffectMaximumRelativeValue);
+    xMotionEffect.minimumRelativeValue = @(self.configuration.motionEffectMinimumRelativeValue);
+    yMotionEffect.maximumRelativeValue = @(self.configuration.motionEffectMaximumRelativeValue);
+    yMotionEffect.minimumRelativeValue = @(self.configuration.motionEffectMinimumRelativeValue);
     UIMotionEffectGroup *group = [[UIMotionEffectGroup alloc] init];
     group.motionEffects = @[xMotionEffect, yMotionEffect];
     [self.contentView addMotionEffect:group];
@@ -142,7 +139,7 @@ static const CGFloat AlertMessageMargin = 20.0;
     CGFloat preferredMaxLayoutWidth = [UIScreen mainScreen].bounds.size.width / 2;
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.numberOfLines = 0;
-    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.textAlignment = self.configuration.titleTextAlignment;
     titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     titleLabel.font = [UIFont boldSystemFontOfSize:17];
     titleLabel.preferredMaxLayoutWidth = preferredMaxLayoutWidth;
@@ -157,7 +154,7 @@ static const CGFloat AlertMessageMargin = 20.0;
 
     UILabel *label = [[UILabel alloc] init];
     label.numberOfLines = 0;
-    label.textAlignment = NSTextAlignmentCenter;
+    label.textAlignment = self.configuration.messageTextAlignment;
     label.lineBreakMode = NSLineBreakByWordWrapping;
     label.preferredMaxLayoutWidth = preferredMaxLayoutWidth;
     label.font = [UIFont systemFontOfSize:13];
@@ -185,16 +182,16 @@ static const CGFloat AlertMessageMargin = 20.0;
     NSInteger actionCount = self.configuration.actions.count;
     CGFloat actionViewHeight = 0;
     if (actionCount > 0 && actionCount < 3) {
-        actionViewHeight = DefaultTappableHeight;
+        actionViewHeight = PKAlertDefaultTappableHeight;
     } else if (actionCount >= 3) {
-        actionViewHeight = DefaultTappableHeight * actionCount;
+        actionViewHeight = PKAlertDefaultTappableHeight * actionCount;
     }
     self.actionContainerViewHeightConstraint.constant = actionViewHeight;
 
     switch (self.configuration.preferredStyle) {
         case PKAlertControllerStyleAlert:
         {
-            self.contentViewHeightConstraint.constant = actionViewHeight + self.alertMessageSize.height + DefaultMargin * 4;
+            self.contentViewHeightConstraint.constant = actionViewHeight + self.alertMessageSize.height + PKAlertDefaultMargin * 4;
             NSArray *constraints = @[
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:superview
                  attribute:NSLayoutAttributeCenterX multiplier:1. constant:0],
@@ -212,7 +209,7 @@ static const CGFloat AlertMessageMargin = 20.0;
         }
         case PKAlertControllerStyleFlexibleAlert:
         {
-            self.contentViewHeightConstraint.constant = actionViewHeight + self.alertMessageSize.height + DefaultMargin * 4;
+            self.contentViewHeightConstraint.constant = actionViewHeight + self.alertMessageSize.height + PKAlertDefaultMargin * 4;
             NSArray *constraints = @[
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview
                  attribute:NSLayoutAttributeCenterY multiplier:1. constant:0],
@@ -244,14 +241,14 @@ static const CGFloat AlertMessageMargin = 20.0;
     }
     if (self.scrollViewComponents.count > 0) {
         [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
-            [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeWidth multiplier:1 constant:AlertMessageMargin * 2]];
+            [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeWidth multiplier:1 constant:PKAlertMessageMargin * 2]];
             [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual
                                              toItem:self.contentView
                                              attribute:NSLayoutAttributeCenterX multiplier:1. constant:0]];
 
             NSMutableArray *contentConstraints = [NSMutableArray array];
             if (idx == 0) {
-                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:AlertMessageMargin]];
+                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:PKAlertMessageMargin]];
             } else {
                 UIView *previousView = [self.scrollViewComponents objectAtIndex:idx - 1];
                 if (previousView) {
@@ -259,7 +256,7 @@ static const CGFloat AlertMessageMargin = 20.0;
                 }
             }
             if (idx == self.scrollViewComponents.count - 1) {
-                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeBottom multiplier:1 constant:-1 * AlertMessageMargin]];
+                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeBottom multiplier:1 constant:-1 * PKAlertMessageMargin]];
             }
             [self.scrollView addConstraints:contentConstraints];
         }];
@@ -305,7 +302,7 @@ static const CGFloat AlertMessageMargin = 20.0;
 
     [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
         if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
-            [(id)view setPreferredMaxLayoutWidth:self.contentView.bounds.size.width - AlertMessageMargin * 2];
+            [(id)view setPreferredMaxLayoutWidth:self.contentView.bounds.size.width - PKAlertMessageMargin * 2];
         }
     }];
 
@@ -321,7 +318,7 @@ static const CGFloat AlertMessageMargin = 20.0;
                 height += size.height;
             }
         }
-        self.contentViewHeightConstraint.constant = actionViewHeight + height + DefaultMargin * 4;
+        self.contentViewHeightConstraint.constant = actionViewHeight + height + PKAlertDefaultMargin * 4;
     }
 }
 

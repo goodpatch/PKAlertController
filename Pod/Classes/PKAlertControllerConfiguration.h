@@ -15,8 +15,19 @@
 @property (copy) NSString *title;
 @property (copy) NSString *message;
 @property PKAlertControllerStyle preferredStyle;
+@property NSTextAlignment titleTextAlignment;
+@property NSTextAlignment messageTextAlignment;
+
 @property (readonly) NSArray *actions;
+
 @property BOOL allowsMotionEffect;
+@property CGFloat motionEffectMinimumRelativeValue;
+@property CGFloat motionEffectMaximumRelativeValue;
+@property BOOL scrollViewTransparentEdgeEnabled;
+
+// TODO: title font(NSAttributedString), color, backgroundColor
+// TODO: message font(NSAttributedString), color, backgroundColor
+// TODO: action font(NSAttributedString>, color, backgroundColor
 
 + (instancetype)defaultConfiguration;
 + (instancetype)defaultConfigurationWithCancelHandler:(void(^)(PKAlertAction *action))handler;
