@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26145A621A9C7F0D00F28C59 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 26145A611A9C7F0D00F28C59 /* Launch Screen.xib */; };
 		264C5FF91A982C020060DBFE /* PKAlertTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 264C5FF81A982C020060DBFE /* PKAlertTableViewController.m */; };
 		264C5FFA1A982C020060DBFE /* PKAlertTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 264C5FF81A982C020060DBFE /* PKAlertTableViewController.m */; };
 		34AF0CDFBE90290D8217AF74 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73E3EDE0242CDDD9E9D49443 /* libPods-Tests.a */; };
@@ -40,6 +41,7 @@
 
 /* Begin PBXFileReference section */
 		20EA2F95CEA46A7F833B01DD /* PKAlertController.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = PKAlertController.podspec; path = ../PKAlertController.podspec; sourceTree = "<group>"; };
+		26145A611A9C7F0D00F28C59 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		264C5FF71A982C020060DBFE /* PKAlertTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKAlertTableViewController.h; sourceTree = "<group>"; };
 		264C5FF81A982C020060DBFE /* PKAlertTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKAlertTableViewController.m; sourceTree = "<group>"; };
 		264C60041A98BF160060DBFE /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
+				26145A611A9C7F0D00F28C59 /* Launch Screen.xib */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* PKAlertController */,
 				6003F5B5195388D20070C39A /* Tests */,
@@ -289,6 +292,7 @@
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F5A1195388D20070C39A /* Main_iPhone.storyboard in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
+				26145A621A9C7F0D00F28C59 /* Launch Screen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

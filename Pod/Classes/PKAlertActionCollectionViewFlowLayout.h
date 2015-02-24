@@ -30,7 +30,7 @@
 
 @property (nonatomic, getter=isSeparatorDisabled) BOOL separatorDisabled;
 @property (nonatomic) UIEdgeInsets separatorInset;
-@property (nonatomic) UIColor *separatorColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor *separatorColor;
 
 @property (weak, nonatomic) IBOutlet id <PKAlertActionCollectionViewFlowLayoutDelegate> delegate;
 
