@@ -25,7 +25,12 @@ static NSString * const reuseIdentifier = @"PKAlertViewControllerCellReuseIdenti
 
 - (void)configureCell:(PKAlertActionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
     PKAlertAction *action = self.actions[indexPath.item];
-    cell.title = action.title;
+    cell.titleLabel.text = action.title;
+    if (indexPath.item == [self.collectionView numberOfItemsInSection:indexPath.section] - 1) {
+        UIFontDescriptor *fontDescriptor = cell.titleLabel.font.fontDescriptor;
+        UIFontDescriptor *boldFontDescriptor = [fontDescriptor fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold];
+        cell.titleLabel.font = [UIFont fontWithDescriptor:boldFontDescriptor size:fontDescriptor.pointSize];
+    }
 }
 
 #pragma mark - View life cycles

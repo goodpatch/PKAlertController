@@ -10,6 +10,6 @@
 
 @interface PKAlertActionViewCell : UICollectionViewCell
 
-@property (nonatomic, copy) NSString *title;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
