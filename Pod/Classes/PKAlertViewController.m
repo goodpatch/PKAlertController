@@ -12,6 +12,7 @@
 #import "PKAlertAction.h"
 #import "PKAlertControllerConfiguration.h"
 #import "PKAlertActionCollectionViewController.h"
+#import "PKAlertDefaultLabel.h"
 
 static UIStoryboard *pk_registeredStoryboard;
 static NSString *pk_defaultStoryboardName = @"PKAlert";
@@ -137,33 +138,20 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 - (void)setupAlertContents {
     CGFloat preferredMaxLayoutWidth = [UIScreen mainScreen].bounds.size.width / 2;
-    UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.numberOfLines = 0;
-    titleLabel.textAlignment = self.configuration.titleTextAlignment;
-    titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+
+    PKAlertTitleLabel *titleLabel = [[PKAlertTitleLabel alloc] init];
     titleLabel.font = [UIFont boldSystemFontOfSize:17];
     titleLabel.preferredMaxLayoutWidth = preferredMaxLayoutWidth;
     titleLabel.text = self.configuration.title;
-    [titleLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    [titleLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    [titleLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [titleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    titleLabel.textAlignment = self.configuration.titleTextAlignment;
     [self.scrollView addSubview:titleLabel];
     [self.scrollViewComponents addObject:titleLabel];
 
-    UILabel *label = [[UILabel alloc] init];
-    label.numberOfLines = 0;
-    label.textAlignment = self.configuration.messageTextAlignment;
-    label.lineBreakMode = NSLineBreakByWordWrapping;
+    PKAlertMessageLabel *label = [[PKAlertMessageLabel alloc] init];
     label.preferredMaxLayoutWidth = preferredMaxLayoutWidth;
     label.font = [UIFont systemFontOfSize:13];
     label.text = self.configuration.message;
-    [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    [label setTranslatesAutoresizingMaskIntoConstraints:NO];
+    label.textAlignment = self.configuration.messageTextAlignment;
     [self.scrollView addSubview:label];
 
     CGSize size = [titleLabel sizeThatFits:CGSizeMake(preferredMaxLayoutWidth, CGFLOAT_MAX)];
@@ -318,6 +306,16 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         }
     }];
 
+    if (!self.viewInitialized) {
+        [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
+            view.alpha = 0;
+            view.transform = CGAffineTransformMakeScale(1.0, 0.5);
+            [UIView animateWithDuration:.8 delay:.1 usingSpringWithDamping:.8 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
+                view.alpha = 1;
+                view.transform = CGAffineTransformIdentity;
+            } completion:nil];
+        }];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
