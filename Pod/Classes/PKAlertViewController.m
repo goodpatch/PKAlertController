@@ -57,7 +57,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 + (instancetype)alertControllerWithTitle:(NSString *)title message:(NSString *)message preferredStyle:(PKAlertControllerStyle)preferredStyle {
     NSParameterAssert(preferredStyle >= PKAlertControllerStyleAlert);
-    NSParameterAssert(preferredStyle <= PKAlertControllerStyleFullScreen);
+    NSParameterAssert(preferredStyle < PKAlertControllerStyleFullScreen);
 
     PKAlertViewController *viewController = [self instantiateOwnerViewController];
     viewController.configuration.preferredStyle = preferredStyle;
@@ -224,16 +224,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
             break;
         }
         case PKAlertControllerStyleFullScreen:
-        {
-            NSArray *constraints = @[
-                [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeTop multiplier:1. constant:0],
-                [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeLeft multiplier:1. constant:0],
-                [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeBottom multiplier:1. constant:0],
-                [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeRight multiplier:1. constant:0],
-            ];
-            [superview addConstraints:constraints];
             break;
-        }
         case PKAlertControllerStyleActionSheet:
             break;
         case PKAlertControllerStyleFlexibleActionSheet:
@@ -241,22 +232,22 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     }
     if (self.scrollViewComponents.count > 0) {
         [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
-            [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeWidth multiplier:1 constant:PKAlertMessageMargin * 2]];
+            [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeWidth multiplier:1 constant:PKAlertDefaultMargin * 2]];
             [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual
                                              toItem:self.contentView
                                              attribute:NSLayoutAttributeCenterX multiplier:1. constant:0]];
 
             NSMutableArray *contentConstraints = [NSMutableArray array];
             if (idx == 0) {
-                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:PKAlertMessageMargin]];
+                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:PKAlertDefaultMargin]];
             } else {
                 UIView *previousView = [self.scrollViewComponents objectAtIndex:idx - 1];
                 if (previousView) {
-                    [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:previousView attribute:NSLayoutAttributeBottom multiplier:1 constant:8]];
+                    [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:previousView attribute:NSLayoutAttributeBottom multiplier:1 constant:PKAlertDefaultMargin]];
                 }
             }
             if (idx == self.scrollViewComponents.count - 1) {
-                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeBottom multiplier:1 constant:-1 * PKAlertMessageMargin]];
+                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeBottom multiplier:1 constant:-1 * PKAlertDefaultMargin]];
             }
             [self.scrollView addConstraints:contentConstraints];
         }];
@@ -295,31 +286,35 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     if (!self.isViewInitialized) {
         [self configureConstraintsInLayoutSubviews];
     }
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
 
     [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
         if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
-            [(id)view setPreferredMaxLayoutWidth:self.contentView.bounds.size.width - PKAlertMessageMargin * 2];
+            [(id)view setPreferredMaxLayoutWidth:self.contentView.bounds.size.width - PKAlertDefaultMargin * 2];
         }
     }];
 
     // FIXME: iOS 7
     // MARK: Resize Alert view size.
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
-        CGFloat actionViewHeight = self.actionContainerViewHeightConstraint.constant;
-        CGFloat height = 0;
-        for (UIView *view in self.scrollViewComponents) {
-            if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
-                CGFloat width = MAX([(id)view preferredMaxLayoutWidth], view.bounds.size.width);
-                CGSize size = [view sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-                height += size.height;
-            }
+    CGFloat actionViewHeight = self.actionContainerViewHeightConstraint.constant;
+    CGFloat height = 0;
+    for (UIView *view in self.scrollViewComponents) {
+        if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
+            CGFloat width = MAX([(id)view preferredMaxLayoutWidth], view.bounds.size.width);
+            CGSize size = [view sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+            height += size.height;
         }
-        self.contentViewHeightConstraint.constant = actionViewHeight + height + PKAlertDefaultMargin * 4;
     }
+    self.contentViewHeightConstraint.constant = actionViewHeight + height + PKAlertDefaultMargin * 4;
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
+        if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
+            [(id)view setPreferredMaxLayoutWidth:self.contentView.bounds.size.width - PKAlertDefaultMargin * 2];
+        }
+    }];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
