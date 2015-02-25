@@ -2,6 +2,8 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target 'PKAlertController', :exclusive => true do
   pod "PKAlertController", :path => "../"
+
+  pod 'FontAwesomeKit', '~> 2.2.0'
 end
 
 target 'Tests', :exclusive => true do
