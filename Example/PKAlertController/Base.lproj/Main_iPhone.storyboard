@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
-        <!--Root View Controller-->
+        <!--PKAlertController-->
         <scene sceneID="4bI-gK-L57">
             <objects>
                 <tableViewController id="tjv-ae-hTH" customClass="PKAlertTableViewController" sceneMemberID="viewController">
@@ -365,7 +365,17 @@
                             <outlet property="delegate" destination="tjv-ae-hTH" id="TaH-wS-1WE"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="gN3-AC-J5Q"/>
+                    <toolbarItems>
+                        <barButtonItem tag="20" title="Theme" id="duI-9f-SVJ">
+                            <connections>
+                                <action selector="changeTheme:" destination="tjv-ae-hTH" id="2cD-sL-zKP"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="PKAlertController" id="gN3-AC-J5Q"/>
+                    <connections>
+                        <outletCollection property="switchActionButtons" destination="duI-9f-SVJ" id="S2S-U9-BNr"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iJk-Zp-NwA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -374,13 +384,16 @@
         <!--Navigation Controller-->
         <scene sceneID="QyM-tr-wRa">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lgw-LS-57S" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="lgw-LS-57S" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="UIm-KT-lNQ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="dht-2R-47W">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="tjv-ae-hTH" kind="relationship" relationship="rootViewController" id="S1U-UN-Q6Z"/>
                     </connections>

@@ -320,17 +320,21 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     if (!self.viewInitialized) {
         [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
             view.alpha = 0;
-            view.transform = CGAffineTransformMakeScale(1.0, 0.5);
-            [UIView animateWithDuration:.8 delay:.1 usingSpringWithDamping:.8 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                view.alpha = 1;
-                view.transform = CGAffineTransformIdentity;
-            } completion:nil];
         }];
     }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    if (!self.viewInitialized) {
+        [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
+            view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -50);
+            [UIView animateWithDuration:.5 delay:.0 usingSpringWithDamping:.5 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
+                view.alpha = 1;
+                view.transform = CGAffineTransformIdentity;
+            } completion:nil];
+        }];
+    }
     self.viewInitialized = YES;
 }
 

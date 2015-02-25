@@ -10,10 +10,6 @@
 
 @implementation PKAlertBlueTheme
 
-- (UIColor *)mainColor {
-    return nil;
-}
-
 - (UIColor *)baseTintColor {
     return [UIColor colorWithWhite:1 alpha:1];
 }

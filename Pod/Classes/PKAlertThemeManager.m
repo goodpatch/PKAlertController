@@ -54,29 +54,21 @@ static id<PKAlertTheme> pkDefaultTheme;
 + (void)customizeAlertAppearance {
     id <PKAlertTheme> theme = [self defaultTheme];
     UIColor *barTintColor = [theme barTintColor];
-    if (barTintColor) {
-        [[UICollectionViewCell appearanceWhenContainedIn:[PKAlertActionCollectionViewController class], nil] setBackgroundColor:barTintColor];
-    }
+    [[UICollectionViewCell appearanceWhenContainedIn:[PKAlertActionCollectionViewController class], nil] setBackgroundColor:barTintColor];
     UIColor *baseTintColor = [theme baseTintColor];
-    if (baseTintColor) {
-        [[UILabel appearanceWhenContainedIn:[PKAlertActionCollectionViewController class], nil] setTextColor:[UIColor colorWithWhite:1 alpha:1]];
-    }
+    [[UILabel appearanceWhenContainedIn:[PKAlertActionCollectionViewController class], nil] setTextColor:baseTintColor];
 }
 
 + (void)customizeAlertDimView:(UIView *)view {
     id <PKAlertTheme> theme = [self defaultTheme];
     UIColor *dimColor = [theme dimColor];
-    if (dimColor) {
-        view.backgroundColor = dimColor;
-    }
+    view.backgroundColor = dimColor;
 }
 
 + (void)customizeAlertContentView:(UIView *)view {
     id <PKAlertTheme> theme = [self defaultTheme];
     UIColor *backgroundColor = [theme backgroundColor];
-    if (backgroundColor) {
-        view.backgroundColor = backgroundColor;
-    }
+    view.backgroundColor = backgroundColor;
 }
 
 @end

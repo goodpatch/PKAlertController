@@ -15,11 +15,11 @@
 }
 
 - (UIColor *)baseTintColor {
-    return nil;
+    return [UIColor colorWithRed:20./255. green:146./255. blue:250./255. alpha:1];
 }
 
 - (UIColor *)barTintColor {
-    return nil;
+    return [UIColor clearColor];
 }
 
 - (UIColor *)shadowColor {

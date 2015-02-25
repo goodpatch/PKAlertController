@@ -9,6 +9,7 @@
 #import "PKAlertTableViewController.h"
 
 #import <PKAlertController.h>
+#import <FontAwesomeKit.h>
 
 static NSString *const Title = @"When the Pawn...";
 static NSString *const LongTitle = @"When the Pawn Hits the Conflicts He Thinks like a King What He Knows Throws the Blows When He Goes to the Fight and He'll Win the Whole Thing 'fore He Enters the Ring There's No Body to Batter When Your Mind Is Your Might So When You Go Solo, You Hold Your Own Hand and Remember That Depth Is the Greatest of Heights and If You Know Where You Stand, Then You Know Where to Land and If You Fall It Won't Matter, Cuz You'll Know That You're Right";
@@ -25,7 +26,13 @@ static NSString *const TitleLeftMessageLeft = @"TitleLeftMessageLeft";
 static NSString *const LongTitleLongMessage = @"LongTitleLongMessage";
 static NSString *const LongTitleLeftLongMessageLeft = @"LongTitleLeftLongMessageLeft";
 
-@interface PKAlertTableViewController ()
+typedef NS_ENUM(NSInteger, PKActionButtonType) {
+    PKActionButtonTypeTheme = 20,
+};
+
+@interface PKAlertTableViewController () <UIActionSheetDelegate>
+
+@property (strong, nonatomic) IBOutletCollection(UIBarButtonItem) NSArray *switchActionButtons;
 
 @end
 
@@ -37,6 +44,12 @@ static NSString *const LongTitleLeftLongMessageLeft = @"LongTitleLeftLongMessage
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg"]];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.tableView.backgroundView = imageView;
+
+    for (UIBarButtonItem *item in self.switchActionButtons) {
+        if (item.tag == PKActionButtonTypeTheme) {
+            item.image = [[FAKFontAwesome paintBrushIconWithSize:22] imageWithSize:CGSizeMake(22, 22)];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -49,6 +62,21 @@ static NSString *const LongTitleLeftLongMessageLeft = @"LongTitleLeftLongMessage
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self performDisplayAlertAtIndexPath:indexPath];
+}
+
+#pragma mark - Target actions
+
+- (IBAction)changeTheme:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+    actionSheet.title = @"Change UI Theme";
+    actionSheet.tag = PKActionButtonTypeTheme + 500;
+    actionSheet.delegate = self;
+    [actionSheet addButtonWithTitle:@"Default"];
+    [actionSheet addButtonWithTitle:@"Blue"];
+    [actionSheet addButtonWithTitle:@"Cancel"];
+    actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
+
+    [actionSheet showFromToolbar:self.navigationController.toolbar];
 }
 
 #pragma mark - Navigation
@@ -91,6 +119,30 @@ static NSString *const LongTitleLeftLongMessageLeft = @"LongTitleLeftLongMessage
         }
     }];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+
+    if (actionSheet.tag == PKActionButtonTypeTheme + 500) {
+        [self performChangeUIThemeWithButtonIndex:buttonIndex];
+    }
+}
+
+- (void)performChangeUIThemeWithButtonIndex:(NSInteger)buttonIndex {
+    id <PKAlertTheme> theme = nil;
+    switch (buttonIndex) {
+        case 0:
+            theme = [[PKAlertDefaultTheme alloc] init];
+            break;
+        case 1:
+            theme = [[PKAlertBlueTheme alloc] init];
+            break;
+        default:
+            return;
+    }
+    [PKAlertThemeManager setRegisterDefaultTheme:theme];
 }
 
 @end
