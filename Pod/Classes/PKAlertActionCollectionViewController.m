@@ -10,6 +10,7 @@
 
 #import "PKAlertAction.h"
 #import "PKAlertActionViewCell.h"
+#import "PKAlertThemeManager.h"
 
 @interface PKAlertActionCollectionViewController () <UICollectionViewDelegateFlowLayout>
 
@@ -101,7 +102,10 @@ static NSString * const reuseIdentifier = @"PKAlertViewControllerCellReuseIdenti
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
     UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    cell.contentView.backgroundColor = [UIColor colorWithWhite:.8 alpha:1];
+    UIColor *highlightColor = [[PKAlertThemeManager defaultTheme] highlightColor];
+    if (highlightColor) {
+        cell.contentView.backgroundColor = highlightColor;
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath {

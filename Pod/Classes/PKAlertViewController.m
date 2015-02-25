@@ -13,6 +13,7 @@
 #import "PKAlertControllerConfiguration.h"
 #import "PKAlertActionCollectionViewController.h"
 #import "PKAlertDefaultLabel.h"
+#import "PKAlertThemeManager.h"
 
 static UIStoryboard *pk_registeredStoryboard;
 static NSString *pk_defaultStoryboardName = @"PKAlert";
@@ -45,6 +46,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 + (void)initialize {
     pk_registeredStoryboard = [UIStoryboard storyboardWithName:pk_defaultStoryboardName bundle:PKAlertControllerBundle()];
+    [PKAlertThemeManager customizeAlertAppearance];
 }
 
 + (void)registerStoryboard:(UIStoryboard *)storyboard {
@@ -111,6 +113,10 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     return self;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Configure & Setup
 
 - (void)configureInit {
@@ -121,6 +127,11 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     _configuration = [[PKAlertControllerConfiguration alloc] init];
     _alertMessageSize = CGSizeZero;
     _scrollViewComponents = [NSMutableArray array];
+}
+
+- (void)setupAppearance {
+    [PKAlertThemeManager customizeAlertDimView:self.view];
+    [PKAlertThemeManager customizeAlertContentView:self.contentView];
 }
 
 - (void)setupMotionEffect {
@@ -255,6 +266,9 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         [self setupMotionEffect];
     }
     [self setupAlertContents];
+    [self setupAppearance];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupAppearance) name:PKAlertDidReloadThemeNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -264,9 +278,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
-    self.contentView.backgroundColor = [UIColor colorWithWhite:1 alpha:.9];
-    self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
 }
 
 - (void)viewWillLayoutSubviews {

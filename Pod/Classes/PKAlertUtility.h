@@ -15,8 +15,15 @@
 extern const CGFloat PKAlertDefaultMargin;
 extern const CGFloat PKAlertDefaultTappableHeight;
 extern const CGFloat PKAlertMessageMargin;
+
+extern NSString *const PKAlertWillRefreshAppearanceNotification;
+extern NSString *const PKAlertDidRefreshAppearanceNotification;
+extern NSString *const PKAlertWillReloadThemeNotification;
+extern NSString *const PKAlertDidReloadThemeNotification;
+
 extern NSString *PKAlert_UIKitLocalizedString(NSString *key, NSString *comment) __attribute__((const));
 extern NSBundle *PKAlertControllerBundle(void)  __attribute__((const));
+extern void PKAlertReloadAppearance() __attribute__((const));
 
 typedef NS_ENUM(NSInteger, PKAlertControllerStyle) {
     PKAlertControllerStyleAlert = 0,
