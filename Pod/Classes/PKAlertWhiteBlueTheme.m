@@ -1,14 +1,14 @@
 //
-//  PKAlertBlueTheme.m
+//  PKAlertWhiteBlueTheme.m
 //  Pods
 //
 //  Created by Satoshi Ohki on 2015/02/24.
 //
 //
 
-#import "PKAlertBlueTheme.h"
+#import "PKAlertWhiteBlueTheme.h"
 
-@implementation PKAlertBlueTheme
+@implementation PKAlertWhiteBlueTheme
 
 - (UIColor *)baseTintColor {
     return [UIColor colorWithWhite:1 alpha:1];
@@ -20,6 +20,10 @@
 
 - (UIColor *)highlightColor {
     return [[self barTintColor] colorWithAlphaComponent:.8];
+}
+
+- (UIColor *)backgroundColor {
+    return [UIColor whiteColor];
 }
 
 @end

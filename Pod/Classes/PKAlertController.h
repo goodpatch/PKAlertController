@@ -16,6 +16,6 @@
 #import "PKAlertActionCollectionViewController.h"
 #import "PKAlertThemeManager.h"
 #import "PKAlertDefaultTheme.h"
-#import "PKAlertBlueTheme.h"
+#import "PKAlertWhiteBlueTheme.h"
 
 #endif

@@ -152,7 +152,7 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
             theme = [[PKAlertDefaultTheme alloc] init];
             break;
         case 1:
-            theme = [[PKAlertBlueTheme alloc] init];
+            theme = [[PKAlertWhiteBlueTheme alloc] init];
             break;
         default:
             return;

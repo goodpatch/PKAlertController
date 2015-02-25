@@ -9,7 +9,7 @@
 #import "PKAlertThemeManager.h"
 
 #import "PKAlertDefaultTheme.h"
-#import "PKAlertBlueTheme.h"
+#import "PKAlertWhiteBlueTheme.h"
 #import "PKAlertUtility.h"
 
 #import "PKAlertViewController.h"
