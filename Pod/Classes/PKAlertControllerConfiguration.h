@@ -17,6 +17,7 @@
 @property PKAlertControllerStyle preferredStyle;
 @property NSTextAlignment titleTextAlignment;
 @property NSTextAlignment messageTextAlignment;
+@property UIView *customView;
 
 @property (readonly) NSArray *actions;
 

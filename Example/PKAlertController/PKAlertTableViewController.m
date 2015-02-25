@@ -11,6 +11,8 @@
 #import <PKAlertController.h>
 #import <FontAwesomeKit.h>
 
+#import "PKCustomView.h"
+
 static NSString *const Title = @"When the Pawn...";
 static NSString *const LongTitle = @"When the Pawn Hits the Conflicts He Thinks like a King What He Knows Throws the Blows When He Goes to the Fight and He'll Win the Whole Thing 'fore He Enters the Ring There's No Body to Batter When Your Mind Is Your Might So When You Go Solo, You Hold Your Own Hand and Remember That Depth Is the Greatest of Heights and If You Know Where You Stand, Then You Know Where to Land and If You Fall It Won't Matter, Cuz You'll Know That You're Right";
 static NSString *const Message = @"人間はひとくきの葦にすぎない。自然の中で最も弱いものである。だが、それは考える葦である。\n Human being is a reed of one stalk. It is the weakest existence naturally. However , it is a thinking reed.";
@@ -25,6 +27,7 @@ static NSString *const TitleCenterMessageLeft = @"TitleCenterMessageLeft";
 static NSString *const TitleLeftMessageLeft = @"TitleLeftMessageLeft";
 static NSString *const LongTitleLongMessage = @"LongTitleLongMessage";
 static NSString *const LongTitleLeftLongMessageLeft = @"LongTitleLeftLongMessageLeft";
+static NSString *const CustomView = @"CustomView";
 
 typedef NS_ENUM(NSInteger, PKActionButtonType) {
     PKActionButtonTypeTheme = 20,
@@ -33,6 +36,7 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
 @interface PKAlertTableViewController () <UIActionSheetDelegate>
 
 @property (strong, nonatomic) IBOutletCollection(UIBarButtonItem) NSArray *switchActionButtons;
+@property (nonatomic) PKCustomView *customView;
 
 @end
 
@@ -50,6 +54,15 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
             item.image = [[FAKFontAwesome paintBrushIconWithSize:22] imageWithSize:CGSizeMake(22, 22)];
         }
     }
+
+    UINib *nib = [UINib nibWithNibName:NSStringFromClass([PKCustomView class]) bundle:[NSBundle mainBundle]];
+    PKCustomView *customView = [[nib instantiateWithOwner:nil options:nil] firstObject];
+    UILabel *titleLabel = (UILabel *)[customView viewWithTag:PKCustomViewTypeTitleLabel];
+    UILabel *subTitleLabel = (UILabel *)[customView viewWithTag:PKCustomViewTypeSubTitleLabel];
+    UILabel *descriptionLabel = (UILabel *)[customView viewWithTag:PKCustomViewTypeDescriptionLabel];
+
+
+    self.customView = customView;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,6 +114,8 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
                 [cell.reuseIdentifier isEqualToString:LongTitleLeftLongMessageLeft]) {
                 configuration.title = LongTitle;
                 configuration.message = LongMessage;
+            } else if ([cell.reuseIdentifier isEqualToString:CustomView]) {
+                configuration.customView = self.customView;
             } else {
                 configuration.title = Title;
                 configuration.message = Message;

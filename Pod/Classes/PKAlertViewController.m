@@ -149,30 +149,41 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 - (void)setupAlertContents {
     CGFloat preferredMaxLayoutWidth = [UIScreen mainScreen].bounds.size.width / 2;
+    CGSize size = CGSizeZero;
+    CGSize storeSize = CGSizeZero;
 
-    PKAlertTitleLabel *titleLabel = [[PKAlertTitleLabel alloc] init];
-    titleLabel.font = [UIFont boldSystemFontOfSize:17];
-    titleLabel.preferredMaxLayoutWidth = preferredMaxLayoutWidth;
-    titleLabel.text = self.configuration.title;
-    titleLabel.textAlignment = self.configuration.titleTextAlignment;
-    [self.scrollView addSubview:titleLabel];
-    [self.scrollViewComponents addObject:titleLabel];
-
-    PKAlertMessageLabel *label = [[PKAlertMessageLabel alloc] init];
-    label.preferredMaxLayoutWidth = preferredMaxLayoutWidth;
-    label.font = [UIFont systemFontOfSize:13];
-    label.text = self.configuration.message;
-    label.textAlignment = self.configuration.messageTextAlignment;
-    [self.scrollView addSubview:label];
-
-    CGSize size = [titleLabel sizeThatFits:CGSizeMake(preferredMaxLayoutWidth, CGFLOAT_MAX)];
-    self.alertMessageSize = size;
-    size = [label sizeThatFits:CGSizeMake(preferredMaxLayoutWidth, CGFLOAT_MAX)];
-    CGSize storeSize = self.alertMessageSize;
-    storeSize.width = size.width;
-    storeSize.height = size.height;
-    self.alertMessageSize = storeSize;
-    [self.scrollViewComponents addObject:label];
+    if (self.configuration.customView) {
+        UIView *customView = self.configuration.customView;
+        customView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.scrollView addSubview:customView];
+        size = [customView sizeThatFits:CGSizeMake(preferredMaxLayoutWidth, CGFLOAT_MAX)];
+        self.alertMessageSize = size;
+    } else {
+        if (self.configuration.title) {
+            PKAlertTitleLabel *titleLabel = [[PKAlertTitleLabel alloc] init];
+            titleLabel.font = [UIFont boldSystemFontOfSize:17];
+            titleLabel.preferredMaxLayoutWidth = preferredMaxLayoutWidth;
+            titleLabel.text = self.configuration.title;
+            titleLabel.textAlignment = self.configuration.titleTextAlignment;
+            [self.scrollView addSubview:titleLabel];
+            [self.scrollViewComponents addObject:titleLabel];
+            size = [titleLabel sizeThatFits:CGSizeMake(preferredMaxLayoutWidth, CGFLOAT_MAX)];
+            self.alertMessageSize = size;
+        }
+        if (self.configuration.message) {
+            PKAlertMessageLabel *label = [[PKAlertMessageLabel alloc] init];
+            label.preferredMaxLayoutWidth = preferredMaxLayoutWidth;
+            label.font = [UIFont systemFontOfSize:13];
+            label.text = self.configuration.message;
+            label.textAlignment = self.configuration.messageTextAlignment;
+            [self.scrollView addSubview:label];
+            [self.scrollViewComponents addObject:label];
+            size = [label sizeThatFits:CGSizeMake(preferredMaxLayoutWidth, CGFLOAT_MAX)];
+            storeSize = self.alertMessageSize;
+            storeSize.height += size.height;
+            self.alertMessageSize = storeSize;
+        }
+    }
 }
 
 - (void)configureConstraintsInLayoutSubviews {
@@ -251,6 +262,21 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
             }
             [self.scrollView addConstraints:contentConstraints];
         }];
+    } else if (self.configuration.customView) {
+        UIView *customView = self.configuration.customView;
+        NSArray *contentConstraints = @[
+            [NSLayoutConstraint constraintWithItem:customView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView
+             attribute:NSLayoutAttributeTop multiplier:1 constant:0],
+            [NSLayoutConstraint constraintWithItem:customView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.
+             scrollView attribute:NSLayoutAttributeLeading multiplier:1 constant:0],
+            [NSLayoutConstraint constraintWithItem:customView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.
+             scrollView attribute:NSLayoutAttributeTrailing multiplier:1 constant:0],
+            [NSLayoutConstraint constraintWithItem:customView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.
+             scrollView attribute:NSLayoutAttributeBottom multiplier:1 constant:0],
+        ];
+        [self.scrollView addConstraints:contentConstraints];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:customView attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:customView attribute:NSLayoutAttributeHeight multiplier:1 constant:0]];
     }
 }
 
