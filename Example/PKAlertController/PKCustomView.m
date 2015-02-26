@@ -8,9 +8,14 @@
 
 #import "PKCustomView.h"
 
-#import <PKAlertController.h>
+@interface PKCustomView ()
 
-@interface PKCustomView () <PKAlertViewControllerDelegate>
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *subTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelLeadingConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *subTitleHeightConstraint;
 
 @end
 
@@ -24,5 +29,15 @@
     // Drawing code
 }
 */
+
+- (CGSize)intrinsicContentSize {
+    CGFloat subviewWidth = self.bounds.size.width - self.titleLabelLeadingConstraint.constant * 2;
+    CGFloat subviewHeight = [self.titleLabel sizeThatFits:CGSizeMake(subviewWidth, CGFLOAT_MAX)].height;
+    subviewHeight += self.subTitleHeightConstraint.constant;
+    subviewHeight += [self.descriptionLabel sizeThatFits:CGSizeMake(subviewWidth, CGFLOAT_MAX)].height;
+
+    CGSize totalSize = CGSizeMake(self.bounds.size.width, subviewHeight);
+    return totalSize;
+}
 
 @end

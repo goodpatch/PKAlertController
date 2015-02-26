@@ -312,12 +312,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     if (!self.isViewInitialized) {
         [self configureConstraintsInLayoutSubviews];
     }
-    if (self.configuration.customView) {
-        UIView<PKAlertViewControllerDelegate> *customView = self.configuration.customView;
-        if ([customView respondsToSelector:@selector(viewWillLayoutAlertSubviewsWithContentView:scrollView:)]) {
-            [customView viewWillLayoutAlertSubviewsWithContentView:self.contentView scrollView:self.scrollView];
-        }
-    }
 
     [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
         if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
@@ -325,28 +319,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         }
     }];
 
-    // FIXME: iOS 7
-    // MARK: Resize Alert view size.
-    CGFloat actionViewHeight = self.actionContainerViewHeightConstraint.constant;
-    CGFloat height = 0;
-    for (UIView *view in self.scrollViewComponents) {
-        if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
-            CGFloat width = MAX([(id)view preferredMaxLayoutWidth], view.bounds.size.width);
-            CGSize size = [view sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-            height += size.height;
-        }
-    }
-    if (self.configuration.customView) {
-        UIView *customView = self.configuration.customView;
-        [self.configuration.customView layoutIfNeeded];
-        CGSize size = [customView sizeThatFits:CGSizeMake(self.contentView.bounds.size.width, CGFLOAT_MAX)];
-        NSLog(@"size: %@ %@", NSStringFromCGSize(size), NSStringFromCGSize(customView.intrinsicContentSize));
-        height += size.height;
-    }
-
-    if (height > 0) {
-        self.contentViewHeightConstraint.constant = actionViewHeight + height + PKAlertDefaultMargin * 4;
-    }
 }
 
 - (void)viewDidLayoutSubviews {
@@ -364,6 +336,27 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     }
     if (self.configuration.customView) {
         [self.configuration.customView layoutIfNeeded];
+    }
+    // FIXME: iOS 7
+    // MARK: Resize Alert view size.
+    CGFloat actionViewHeight = self.actionContainerViewHeightConstraint.constant;
+    CGFloat height = 0;
+    for (UIView *view in self.scrollViewComponents) {
+        if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
+            CGFloat width = MAX([(id)view preferredMaxLayoutWidth], view.bounds.size.width);
+            CGSize size = [view sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+            height += size.height;
+        }
+    }
+    if (self.configuration.customView) {
+        UIView *customView = self.configuration.customView;
+        [self.configuration.customView layoutIfNeeded];
+        CGSize size = [customView intrinsicContentSize];
+        height += size.height;
+    }
+
+    if (height > 0) {
+        self.contentViewHeightConstraint.constant = actionViewHeight + height + PKAlertDefaultMargin * 4;
     }
 }
 
