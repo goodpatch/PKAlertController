@@ -401,6 +401,7 @@
                                 <action selector="changeTheme:" destination="tjv-ae-hTH" id="2cD-sL-zKP"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="E9q-nX-65w"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="PKAlertController" id="gN3-AC-J5Q"/>
                     <connections>

@@ -10,6 +10,7 @@
 
 #import <PKAlertController.h>
 #import <FontAwesomeKit.h>
+#import <FLEXManager.h>
 
 #import "PKCustomView.h"
 
@@ -29,8 +30,11 @@ static NSString *const LongTitleLongMessage = @"LongTitleLongMessage";
 static NSString *const LongTitleLeftLongMessageLeft = @"LongTitleLeftLongMessageLeft";
 static NSString *const CustomView = @"CustomView";
 
+static const CGFloat DefaultBarButtonItemLength = 22.0;
+
 typedef NS_ENUM(NSInteger, PKActionButtonType) {
     PKActionButtonTypeTheme = 20,
+    PKActionButtonTypeFLEXMenu = 23,
 };
 
 @interface PKAlertTableViewController () <UIActionSheetDelegate>
@@ -49,11 +53,19 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.tableView.backgroundView = imageView;
 
+    NSMutableArray *toolbarButtonItems = self.toolbarItems.mutableCopy;
     for (UIBarButtonItem *item in self.switchActionButtons) {
         if (item.tag == PKActionButtonTypeTheme) {
-            item.image = [[FAKFontAwesome paintBrushIconWithSize:22] imageWithSize:CGSizeMake(22, 22)];
+            item.image = [[FAKFontAwesome paintBrushIconWithSize:DefaultBarButtonItemLength] imageWithSize:CGSizeMake(DefaultBarButtonItemLength, DefaultBarButtonItemLength)];
         }
     }
+    NSDictionary *env = [[NSProcessInfo processInfo] environment];
+    if (env[@"PK_DEBUGGER_ENABLED"]) {
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"FLEX" style:UIBarButtonItemStyleBordered target:self action:@selector(toggleFLEXMenu:)];
+        item.tag = PKActionButtonTypeFLEXMenu;
+        [toolbarButtonItems addObject:item];
+    }
+    self.toolbarItems = toolbarButtonItems;
 
     UINib *nib = [UINib nibWithNibName:NSStringFromClass([PKCustomView class]) bundle:[NSBundle mainBundle]];
     PKCustomView *customView = [[nib instantiateWithOwner:nil options:nil] firstObject];
@@ -61,6 +73,9 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     UILabel *subTitleLabel = (UILabel *)[customView viewWithTag:PKCustomViewTypeSubTitleLabel];
     UILabel *descriptionLabel = (UILabel *)[customView viewWithTag:PKCustomViewTypeDescriptionLabel];
 
+    titleLabel.text = Title;
+    subTitleLabel.text = @"Version 0.0.1";
+    descriptionLabel.text = Message;
 
     self.customView = customView;
 }
@@ -92,6 +107,15 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     [actionSheet showFromToolbar:self.navigationController.toolbar];
 }
 
+- (IBAction)toggleFLEXMenu:(id)sender {
+    FLEXManager *flexManager = [FLEXManager sharedManager];
+    if (flexManager.isHidden) {
+        [flexManager showExplorer];
+    } else {
+        [flexManager hideExplorer];
+    }
+}
+
 #pragma mark - Navigation
 
 - (void)performDisplayAlertAtIndexPath:(NSIndexPath *)indexPath {
@@ -104,6 +128,8 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     } else if ([cell.reuseIdentifier isEqualToString:Other] ||
                [cell.reuseIdentifier isEqualToString:NoMessage]) {
         [actions addObjectsFromArray:@[[PKAlertAction doneAction], [PKAlertAction okAction], [PKAlertAction cancelAction]]];
+    } else if ([cell.reuseIdentifier isEqualToString:CustomView]) {
+        [actions addObject:[PKAlertAction actionWithTitle:@"Close" handler:nil]];
     } else {
         [actions addObject:[PKAlertAction okAction]];
     }
