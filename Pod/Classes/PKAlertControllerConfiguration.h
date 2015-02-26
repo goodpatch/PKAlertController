@@ -16,6 +16,7 @@
 
 @property (copy) NSString *title;
 @property (copy) NSString *message;
+@property UIImage *headerImage;
 @property PKAlertControllerStyle preferredStyle;
 @property NSTextAlignment titleTextAlignment;
 @property NSTextAlignment messageTextAlignment;
