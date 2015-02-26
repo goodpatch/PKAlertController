@@ -29,6 +29,8 @@ static NSString *const TitleLeftMessageLeft = @"TitleLeftMessageLeft";
 static NSString *const LongTitleLongMessage = @"LongTitleLongMessage";
 static NSString *const LongTitleLeftLongMessageLeft = @"LongTitleLeftLongMessageLeft";
 static NSString *const CustomView = @"CustomView";
+static NSString *const MessageOnly = @"MessageOnly";
+static NSString *const TitleOnly = @"TitleOnly";
 
 static const CGFloat DefaultBarButtonItemLength = 22.0;
 
@@ -125,8 +127,7 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
 
     if ([cell.reuseIdentifier isEqualToString:OKCancel]) {
         [actions addObjectsFromArray:@[[PKAlertAction cancelAction], [PKAlertAction okAction]]];
-    } else if ([cell.reuseIdentifier isEqualToString:Other] ||
-               [cell.reuseIdentifier isEqualToString:NoMessage]) {
+    } else if ([@[Other, NoMessage] containsObject:cell.reuseIdentifier]) {
         [actions addObjectsFromArray:@[[PKAlertAction doneAction], [PKAlertAction okAction], [PKAlertAction cancelAction]]];
     } else if ([cell.reuseIdentifier isEqualToString:CustomView]) {
         [actions addObject:[PKAlertAction actionWithTitle:@"Close" handler:nil]];
@@ -136,13 +137,16 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
 
     PKAlertViewController *alertController = [PKAlertViewController alertControllerWithConfigurationBlock:^(PKAlertControllerConfiguration *configuration) {
         if (![cell.reuseIdentifier isEqualToString:NoMessage]) {
-            if ([cell.reuseIdentifier isEqualToString:LongTitleLongMessage] ||
-                [cell.reuseIdentifier isEqualToString:LongTitleLeftLongMessageLeft]) {
+            if ([@[LongTitleLongMessage, LongTitleLeftLongMessageLeft] containsObject:cell.reuseIdentifier]) {
                 configuration.title = LongTitle;
                 configuration.message = LongMessage;
             } else if ([cell.reuseIdentifier isEqualToString:CustomView]) {
                 configuration.headerImage = [UIImage imageNamed:@"bg"];
                 configuration.customView = self.customView;
+            } else if ([cell.reuseIdentifier isEqualToString:MessageOnly]) {
+                configuration.message = Message;
+            } else if ([cell.reuseIdentifier isEqualToString:TitleOnly]) {
+                configuration.title = Title;
             } else {
                 configuration.title = Title;
                 configuration.message = Message;

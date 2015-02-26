@@ -17,18 +17,34 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelLeadingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *subTitleHeightConstraint;
 
+@property (nonatomic) CALayer *subTitleBottomBorderLayer;
+
 @end
 
 
 @implementation PKCustomView
 
-/*
+- (CALayer *)createSubTitleBorderLayer {
+    CALayer *bottomBorder = [CALayer layer];
+    bottomBorder.borderColor = self.subTitleLabel.textColor.CGColor;
+    bottomBorder.borderWidth = 1 / [UIScreen mainScreen].scale;
+    bottomBorder.frame = CGRectMake(0, CGRectGetHeight(self.subTitleLabel.bounds), CGRectGetWidth(self.subTitleLabel.bounds), bottomBorder.borderWidth);
+    return bottomBorder;
+}
+
+#pragma mark -
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
     // Drawing code
+    if (self.subTitleBottomBorderLayer) {
+        [self.subTitleBottomBorderLayer removeFromSuperlayer];
+        self.subTitleBottomBorderLayer = nil;
+    }
+    self.subTitleBottomBorderLayer = [self createSubTitleBorderLayer];
+    [self.subTitleLabel.layer addSublayer:self.subTitleBottomBorderLayer];
 }
-*/
 
 - (CGSize)intrinsicContentSize {
     CGFloat subviewWidth = self.bounds.size.width - self.titleLabelLeadingConstraint.constant * 2;
@@ -36,7 +52,7 @@
     subviewHeight += self.subTitleHeightConstraint.constant;
     subviewHeight += [self.descriptionLabel sizeThatFits:CGSizeMake(subviewWidth, CGFLOAT_MAX)].height;
 
-    CGSize totalSize = CGSizeMake(self.bounds.size.width, subviewHeight);
+    CGSize totalSize = CGSizeMake(self.bounds.size.width, subviewHeight + 20);
     return totalSize;
 }
 

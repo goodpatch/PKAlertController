@@ -259,13 +259,30 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
             break;
     }
     if (self.scrollViewComponents.count > 0) {
+        if (headerImage) {
+            [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.headerParallaxView attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
+            [self.headerParallaxView addConstraint:[NSLayoutConstraint constraintWithItem:self.headerParallaxView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1 constant:self.headerParallaxHeight]];
+            NSArray *contentConstraints = @[
+                [NSLayoutConstraint constraintWithItem:self.headerParallaxView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:0],
+                [NSLayoutConstraint constraintWithItem:self.headerParallaxView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.
+                 scrollView attribute:NSLayoutAttributeLeading multiplier:1 constant:0],
+                [NSLayoutConstraint constraintWithItem:self.headerParallaxView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.
+                 scrollView attribute:NSLayoutAttributeTrailing multiplier:1 constant:0],
+            ];
+            [self.scrollView addConstraints:contentConstraints];
+        }
+
         [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
             [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeWidth multiplier:1 constant:PKAlertDefaultMargin * 2]];
             [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterX multiplier:1. constant:0]];
 
             NSMutableArray *contentConstraints = [NSMutableArray array];
             if (idx == 0) {
-                [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:PKAlertDefaultMargin]];
+                if (headerImage) {
+                    [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.headerParallaxView attribute:NSLayoutAttributeBottom multiplier:1 constant:PKAlertDefaultMargin]];
+                } else {
+                    [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:PKAlertDefaultMargin]];
+                }
             } else {
                 UIView *previousView = [self.scrollViewComponents objectAtIndex:idx - 1];
                 if (previousView) {
@@ -332,7 +349,11 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     }
 
     if (height > 0) {
-        self.contentViewHeightConstraint.constant = actionViewHeight + height + PKAlertDefaultMargin * 4;
+        if (self.headerImageView.image && !self.configuration.customView) {
+            self.contentViewHeightConstraint.constant = actionViewHeight + height;
+        } else {
+            self.contentViewHeightConstraint.constant = actionViewHeight + height + PKAlertDefaultMargin * 4;
+        }
     }
 }
 
