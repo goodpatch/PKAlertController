@@ -11,6 +11,17 @@
 #import "PKAlertUtility.h"
 
 @class PKAlertControllerConfiguration;
+@class PKAlertViewController;
+
+@protocol PKAlertViewControllerDelegate <NSObject>
+
+@optional
+- (void)viewWillLayoutAlertSubviewsWithContentView:(UIView *)contentView scrollView:(UIScrollView *)scrollView;
+- (void)viewDidLayoutAlertSubviewsWithContentView:(UIView *)contentView scrollView:(UIScrollView *)scrollView;
+
+@end
+
+#pragma mark - PKAlertViewController
 
 @interface PKAlertViewController : UIViewController
 

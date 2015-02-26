@@ -10,6 +10,8 @@
 
 #import "PKAlertUtility.h"
 
+@protocol PKAlertViewControllerDelegate;
+
 @interface PKAlertControllerConfiguration : NSObject <NSCopying>
 
 @property (copy) NSString *title;
@@ -17,7 +19,7 @@
 @property PKAlertControllerStyle preferredStyle;
 @property NSTextAlignment titleTextAlignment;
 @property NSTextAlignment messageTextAlignment;
-@property UIView *customView;
+@property UIView<PKAlertViewControllerDelegate> *customView;
 
 @property (readonly) NSArray *actions;
 

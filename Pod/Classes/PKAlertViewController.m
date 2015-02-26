@@ -312,6 +312,12 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     if (!self.isViewInitialized) {
         [self configureConstraintsInLayoutSubviews];
     }
+    if (self.configuration.customView) {
+        UIView<PKAlertViewControllerDelegate> *customView = self.configuration.customView;
+        if ([customView respondsToSelector:@selector(viewWillLayoutAlertSubviewsWithContentView:scrollView:)]) {
+            [customView viewWillLayoutAlertSubviewsWithContentView:self.contentView scrollView:self.scrollView];
+        }
+    }
 
     [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
         if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
@@ -330,6 +336,14 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
             height += size.height;
         }
     }
+    if (self.configuration.customView) {
+        UIView *customView = self.configuration.customView;
+        [self.configuration.customView layoutIfNeeded];
+        CGSize size = [customView sizeThatFits:CGSizeMake(self.contentView.bounds.size.width, CGFLOAT_MAX)];
+        NSLog(@"size: %@ %@", NSStringFromCGSize(size), NSStringFromCGSize(customView.intrinsicContentSize));
+        height += size.height;
+    }
+
     if (height > 0) {
         self.contentViewHeightConstraint.constant = actionViewHeight + height + PKAlertDefaultMargin * 4;
     }
@@ -347,6 +361,9 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
             view.alpha = 0;
         }];
+    }
+    if (self.configuration.customView) {
+        [self.configuration.customView layoutIfNeeded];
     }
 }
 

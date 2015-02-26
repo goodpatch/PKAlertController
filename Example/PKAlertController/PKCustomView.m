@@ -8,6 +8,13 @@
 
 #import "PKCustomView.h"
 
+#import <PKAlertController.h>
+
+@interface PKCustomView () <PKAlertViewControllerDelegate>
+
+@end
+
+
 @implementation PKCustomView
 
 /*
