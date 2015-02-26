@@ -4,6 +4,7 @@ PODS:
     - Expecta
     - FBSnapshotTestCase
   - FBSnapshotTestCase (1.5)
+  - FLEX (2.0.1)
   - FontAwesomeKit (2.2.0):
     - FontAwesomeKit/Core (= 2.2.0)
     - FontAwesomeKit/FontAwesome (= 2.2.0)
@@ -26,6 +27,7 @@ DEPENDENCIES:
   - Expecta
   - Expecta+Snapshots
   - FBSnapshotTestCase
+  - FLEX (~> 2.0.0)
   - FontAwesomeKit (~> 2.2.0)
   - PKAlertController (from `../`)
   - Specta
@@ -38,6 +40,7 @@ SPEC CHECKSUMS:
   Expecta: ee641011fe10aa1855d487b40e4976dac50ec342
   Expecta+Snapshots: 4a56b9411c6ed156987072e52c39de67d864015a
   FBSnapshotTestCase: e2914fbaabccea1dcc773d6a16b1c24540642488
+  FLEX: 773e76fe9df7f2b748908ef294ed6247a5ce42df
   FontAwesomeKit: 61f0b4f12f1b11b7489bc7d1507a8692547f3857
   PKAlertController: 0a07f8fec3bd18629c660b7e5009a2cb8d7a181f
   Specta: 698a58ffa5ec948327d3b92eab50ca58d7f4fbe8
