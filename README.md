@@ -7,9 +7,9 @@
 
 ## Screenshots
 
-[Default Theme](screenshotdefault.gif)
+![Default Theme](screenshotdefault.gif)
 
-[White Blue Theme](creenshotwhiteblue.gif)
+![White Blue Theme](screenshotwhiteblue.gif)
 
 ## Usage
 
