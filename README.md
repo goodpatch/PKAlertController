@@ -5,6 +5,12 @@
 [![License](https://img.shields.io/cocoapods/l/PKAlertController.svg?style=flat)](http://cocoadocs.org/docsets/PKAlertController)
 [![Platform](https://img.shields.io/cocoapods/p/PKAlertController.svg?style=flat)](http://cocoadocs.org/docsets/PKAlertController)
 
+## Screenshots
+
+[Default Theme](screenshotdefault.gif)
+
+[White Blue Theme](creenshotwhiteblue.gif)
+
 ## Usage
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
