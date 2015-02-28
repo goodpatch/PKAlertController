@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Alert View Controller-->
@@ -21,23 +20,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rq2-oz-jH8" userLabel="Alert Content View">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l4w-lZ-FuF" userLabel="Header View">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="320"/>
-                                        <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="80" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Njb-Ki-5TF" userLabel="Header image view">
-                                                <rect key="frame" x="0.0" y="0.0" width="600" height="320"/>
-                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            </imageView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="l4w-lZ-FuF" secondAttribute="height" multiplier="15:8" id="8bc-jx-oR7"/>
-                                            <constraint firstAttribute="trailing" secondItem="Njb-Ki-5TF" secondAttribute="trailing" id="BRZ-NC-eV8"/>
-                                            <constraint firstItem="Njb-Ki-5TF" firstAttribute="leading" secondItem="l4w-lZ-FuF" secondAttribute="leading" id="VNA-rG-dao"/>
-                                            <constraint firstItem="Njb-Ki-5TF" firstAttribute="top" secondItem="l4w-lZ-FuF" secondAttribute="top" id="Wei-t8-VvG"/>
-                                            <constraint firstAttribute="bottom" secondItem="Njb-Ki-5TF" secondAttribute="bottom" id="zbe-2h-iQg"/>
-                                        </constraints>
-                                    </view>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T6a-y8-cXW" customClass="PKAlertEffectScrollView">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                         <userDefinedRuntimeAttributes>
@@ -59,14 +41,11 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="0dg-hu-dha" secondAttribute="trailing" id="0a5-gm-NRu"/>
                                     <constraint firstAttribute="bottom" secondItem="0dg-hu-dha" secondAttribute="bottom" id="Mfl-P8-5vd"/>
-                                    <constraint firstItem="l4w-lZ-FuF" firstAttribute="leading" secondItem="Rq2-oz-jH8" secondAttribute="leading" id="NXI-5P-Gv9"/>
                                     <constraint firstItem="0dg-hu-dha" firstAttribute="top" secondItem="T6a-y8-cXW" secondAttribute="bottom" id="RqX-UP-mBF"/>
                                     <constraint firstItem="0dg-hu-dha" firstAttribute="leading" secondItem="Rq2-oz-jH8" secondAttribute="leading" id="eDW-9B-MQn"/>
                                     <constraint firstAttribute="height" priority="750" constant="600" id="fmh-I8-9rJ"/>
                                     <constraint firstItem="0dg-hu-dha" firstAttribute="top" secondItem="T6a-y8-cXW" secondAttribute="bottom" id="gXG-hM-R74"/>
                                     <constraint firstItem="T6a-y8-cXW" firstAttribute="leading" secondItem="Rq2-oz-jH8" secondAttribute="leading" id="hUp-ii-diT"/>
-                                    <constraint firstItem="l4w-lZ-FuF" firstAttribute="top" secondItem="Rq2-oz-jH8" secondAttribute="top" id="hZc-cB-Qv4"/>
-                                    <constraint firstAttribute="trailing" secondItem="l4w-lZ-FuF" secondAttribute="trailing" id="hxY-q2-IuQ"/>
                                     <constraint firstAttribute="trailing" secondItem="T6a-y8-cXW" secondAttribute="trailing" id="l1H-kO-amO"/>
                                     <constraint firstItem="T6a-y8-cXW" firstAttribute="top" secondItem="Rq2-oz-jH8" secondAttribute="top" id="lnr-PD-HFr"/>
                                 </constraints>
@@ -102,7 +81,6 @@
                         <outlet property="actionContainerViewHeightConstraint" destination="qLa-wv-Dqc" id="snX-Tf-MVJ"/>
                         <outlet property="contentView" destination="Rq2-oz-jH8" id="BFq-vg-JbE"/>
                         <outlet property="contentViewHeightConstraint" destination="fmh-I8-9rJ" id="cs0-Wl-VLa"/>
-                        <outlet property="headerImageView" destination="Njb-Ki-5TF" id="hUt-84-VFu"/>
                         <outlet property="scrollView" destination="T6a-y8-cXW" id="YMV-8j-Jdt"/>
                     </connections>
                 </viewController>
@@ -164,7 +142,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bV2-tl-Rgz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1086" y="177"/>
+            <point key="canvasLocation" x="1082" y="177"/>
         </scene>
     </scenes>
 </document>

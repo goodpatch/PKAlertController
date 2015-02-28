@@ -141,7 +141,6 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
                 configuration.title = LongTitle;
                 configuration.message = LongMessage;
             } else if ([cell.reuseIdentifier isEqualToString:CustomView]) {
-                configuration.headerImage = [UIImage imageNamed:@"bg"];
                 configuration.customView = self.customView;
             } else if ([cell.reuseIdentifier isEqualToString:MessageOnly]) {
                 configuration.message = Message;

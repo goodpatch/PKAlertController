@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+#import <PKAlertUtility.h>
+
 typedef NS_ENUM(NSInteger, PKCustomViewType) {
     PKCustomViewTypeTitleLabel = 1,
     PKCustomViewTypeSubTitleLabel,
     PKCustomViewTypeDescriptionLabel,
 };
 
-@interface PKCustomView : UIView
+@interface PKCustomView : UIView <PKAlertViewLayoutAdapter>
 
 @end
