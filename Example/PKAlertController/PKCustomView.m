@@ -99,7 +99,7 @@
 
 - (CGSize)visibleSizeInAlertView {
     CGSize size = self.layoutSize;
-    size.height -= PKAlertDefaultMargin * 2;
+    size.height -= PKAlertMessageMargin;
     return size;
 }
 

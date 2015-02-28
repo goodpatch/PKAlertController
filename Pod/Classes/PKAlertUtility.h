@@ -36,8 +36,8 @@ typedef NS_ENUM(NSInteger, PKAlertControllerStyle) {
     PKAlertControllerStyleAlert = 0,
     PKAlertControllerStyleFlexibleAlert,
     PKAlertControllerStyleFullScreen,
-    PKAlertControllerStyleActionSheet,
-    PKAlertControllerStyleFlexibleActionSheet,
+//    PKAlertControllerStyleActionSheet,
+//    PKAlertControllerStyleFlexibleActionSheet,
 };
 
 /*!

@@ -22,7 +22,6 @@
 @property (nonatomic, readonly) PKAlertControllerConfiguration *configuration;
 
 + (void)registerStoryboard:(UIStoryboard *)storyboard;
-+ (instancetype)alertControllerWithTitle:(NSString *)title message:(NSString *)message preferredStyle:(PKAlertControllerStyle)preferredStyle;
 + (instancetype)alertControllerWithConfigurationBlock:(PKAlertControllerConfigurationBlock)configurationBlock;
 + (instancetype)simpleAlertControllerWithConfigurationBlock:(PKAlertControllerConfigurationBlock)configurationBlock;
 + (instancetype)alertControllerWithConfiguration:(PKAlertControllerConfiguration *)configuration;
