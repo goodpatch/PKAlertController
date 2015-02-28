@@ -25,7 +25,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 @property (nonatomic) CGFloat mainScreenShortSideLength;
 @property (nonatomic) PKAlertControllerConfiguration *configuration;
 @property (nonatomic) PKAlertActionCollectionViewController *actionCollectionViewController;
-@property (nonatomic) NSMutableArray *scrollViewComponents;
 @property (nonatomic) NSLayoutConstraint *customViewHeightConstraint;
 @property (nonatomic) PKAlertLabelContainerView *labelContainerView;
 
@@ -115,7 +114,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     CGSize size = [UIScreen mainScreen].bounds.size;
     _mainScreenShortSideLength = MIN(size.width, size.height);
     _configuration = [[PKAlertControllerConfiguration alloc] init];
-    _scrollViewComponents = [NSMutableArray array];
 }
 
 - (void)setupAppearance {
@@ -249,8 +247,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     }
 
     if (height > 0) {
-        NSInteger count = self.scrollViewComponents.count;
-        CGFloat totalHeight = actionViewHeight + height + PKAlertDefaultMargin * 2 * count;
+        CGFloat totalHeight = actionViewHeight + height + PKAlertDefaultMargin * 2;
         self.contentViewHeightConstraint.constant = totalHeight;
     } else {
         self.contentViewHeightConstraint.constant = actionViewHeight;
@@ -282,9 +279,13 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
-        view.alpha = 0;
-    }];
+
+    if (self.labelContainerView || self.configuration.customView) {
+        UIView *view = self.labelContainerView ? self.labelContainerView : self.configuration.customView;
+        if ([view respondsToSelector:@selector(prepareTextAnimation)]) {
+            [(id<PKAlertViewLayoutAdapter>)view prepareTextAnimation];
+        }
+    }
 }
 
 - (void)viewWillLayoutSubviews {
@@ -309,13 +310,12 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     if (!self.viewInitialized) {
-        [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
-            view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -50);
-            [UIView animateWithDuration:.3 delay:.0 usingSpringWithDamping:.6 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                view.alpha = 1;
-                view.transform = CGAffineTransformIdentity;
-            } completion:nil];
-        }];
+        if (self.labelContainerView || self.configuration.customView) {
+            UIView *view = self.labelContainerView ? self.labelContainerView : self.configuration.customView;
+            if ([view respondsToSelector:@selector(performTextAnimation)]) {
+                [(id<PKAlertViewLayoutAdapter>)view performTextAnimation];
+            }
+        }
     }
     self.viewInitialized = YES;
 }

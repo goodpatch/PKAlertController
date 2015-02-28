@@ -168,10 +168,22 @@
             }
         }
         if (idx == components.count - 1) {
-            [constraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:scrollView attribute:NSLayoutAttributeBottom multiplier:1 constant:PKAlertMessageMargin]];
+            [constraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:scrollView attribute:NSLayoutAttributeBottom multiplier:1 constant:PKAlertDefaultMargin]];
         }
         [scrollView addConstraints:constraints];
     }];
+}
+
+- (void)prepareTextAnimation {
+    self.alpha = 0;
+}
+
+- (void)performTextAnimation {
+    self.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -50);
+    [UIView animateWithDuration:.3 delay:0 usingSpringWithDamping:.6 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        self.alpha = 1;
+        self.transform = CGAffineTransformIdentity;
+    } completion:nil];
 }
 
 @end

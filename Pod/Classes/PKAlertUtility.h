@@ -65,6 +65,9 @@ typedef void(^PKAlertControllerConfigurationBlock)(PKAlertControllerConfiguratio
 
 - (CGSize)visibleSizeInAlertView;
 
+- (void)prepareTextAnimation;
+- (void)performTextAnimation;
+
 @end
 
 #pragma mark -
