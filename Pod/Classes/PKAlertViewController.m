@@ -188,20 +188,15 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     }
 }
 
-- (void)configureConstraintsInLayoutSubviews {
+- (void)configureInitialConstraints {
     UIView *superview = self.contentView.superview;
     CGFloat width = self.mainScreenShortSideLength - self.alertOffset * 2;
     CGFloat actionViewHeight = self.actionCollectionViewController.estimatedContentHeight;
     self.actionContainerViewHeightConstraint.constant = actionViewHeight;
-    CGFloat messageHeight = self.alertMessageSize.height;
 
     switch (self.configuration.preferredStyle) {
         case PKAlertControllerStyleAlert:
         {
-            if (messageHeight > 0) {
-                messageHeight += PKAlertDefaultMargin * 4;
-            }
-            self.contentViewHeightConstraint.constant = actionViewHeight + messageHeight;
             NSArray *constraints = @[
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:superview
                  attribute:NSLayoutAttributeCenterX multiplier:1. constant:0],
@@ -219,10 +214,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         }
         case PKAlertControllerStyleFlexibleAlert:
         {
-            if (messageHeight > 0) {
-                messageHeight += PKAlertDefaultMargin * 4;
-            }
-            self.contentViewHeightConstraint.constant = actionViewHeight + self.alertMessageSize.height + messageHeight;
             NSArray *constraints = @[
                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview
                  attribute:NSLayoutAttributeCenterY multiplier:1. constant:0],
@@ -271,12 +262,14 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
              scrollView attribute:NSLayoutAttributeTrailing multiplier:1 constant:0],
             [NSLayoutConstraint constraintWithItem:customView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.
              scrollView attribute:NSLayoutAttributeBottom multiplier:1 constant:0],
+            [NSLayoutConstraint constraintWithItem:customView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:0],
         ].mutableCopy;
-        [contentConstraints addObject:[NSLayoutConstraint constraintWithItem:customView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual
-                                       toItem:self.scrollView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
         [self.scrollView addConstraints:contentConstraints];
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:customView attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:customView attribute:NSLayoutAttributeHeight multiplier:1 constant:0]];
+        // MARK: customview.height > contentView.height ? customView.height : contentView.height
+        NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:customView attribute:NSLayoutAttributeHeight multiplier:1 constant:0];
+        heightConstraint.priority = UILayoutPriorityDefaultHigh;
+        [self.contentView addConstraint:heightConstraint];
 
         if ([customView respondsToSelector:@selector(applyLayoutWithAlertComponentViews:)]) {
             NSMutableDictionary *viewDictionary = PKAlertRemoveSelfFromDictionaryOfVariableBindings( NSDictionaryOfVariableBindings(self.contentView, self.scrollView)).mutableCopy;
@@ -299,13 +292,15 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     }
     if (self.configuration.customView) {
         UIView *customView = self.configuration.customView;
-        [self.configuration.customView layoutIfNeeded];
+        [customView layoutIfNeeded];
         CGSize size = [customView intrinsicContentSize];
         height += size.height;
     }
 
     if (height > 0) {
         self.contentViewHeightConstraint.constant = actionViewHeight + height + PKAlertDefaultMargin * 4;
+    } else {
+        self.contentViewHeightConstraint.constant = actionViewHeight;
     }
 }
 
@@ -321,6 +316,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         [self setupMotionEffect];
     }
     [self setupAlertContents];
+    [self configureInitialConstraints];
     [self setupAppearance];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupAppearance) name:PKAlertDidReloadThemeNotification object:nil];
@@ -338,21 +334,11 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
 
-    if (!self.isViewInitialized) {
-        [self configureConstraintsInLayoutSubviews];
-    }
-
     [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
         if ([view respondsToSelector:@selector(preferredMaxLayoutWidth)]) {
             [(id)view setPreferredMaxLayoutWidth:self.contentView.bounds.size.width - PKAlertDefaultMargin * 2];
         }
     }];
-
-    // FIXME: iOS 7
-    // MARK: Resize Alert view size.
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
-        [self updateContentViewHeightConstraint];
-    }
 }
 
 - (void)viewDidLayoutSubviews {
@@ -371,11 +357,11 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     if (self.configuration.customView) {
         [self.configuration.customView setNeedsDisplay];
     }
-    // FIXME: iOS 7
-    // MARK: Resize Alert view size.
-    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
-        [self updateContentViewHeightConstraint];
-    }
+    [self updateContentViewHeightConstraint];
+
+    // MARK: Avoid aborting in iOS 7
+    // ISSUE: http://stackoverflow.com/questions/18429728/autolayout-and-subviews
+    [self.view layoutIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

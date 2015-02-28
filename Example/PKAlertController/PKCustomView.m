@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *subTitleHeightConstraint;
 
 @property (nonatomic) CALayer *subTitleBottomBorderLayer;
+@property (nonatomic) CGSize layoutSize;
 
 @end
 
@@ -45,21 +46,41 @@
     [self updateSubTitleBorderLayer:self.subTitleBottomBorderLayer];
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+
+    CGSize viewSize = self.bounds.size;
+    CGFloat labelWidth = viewSize.width - self.titleLabelLeadingConstraint.constant * 2;
+    self.titleLabel.preferredMaxLayoutWidth = labelWidth;
+    self.subTitleLabel.preferredMaxLayoutWidth = labelWidth;
+    self.descriptionLabel.preferredMaxLayoutWidth = labelWidth;
+
+    CGFloat subviewHeight = [self.titleLabel sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_MAX)].height;
+    subviewHeight += self.subTitleHeightConstraint.constant;
+    subviewHeight += [self.descriptionLabel sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_MAX)].height;
+
+    CGSize totalSize = CGSizeMake(viewSize.width, subviewHeight + self.titleLabelTopConstraint.constant);
+    if (!CGSizeEqualToSize(self.layoutSize, totalSize)) {
+        self.layoutSize = totalSize;
+        [self invalidateIntrinsicContentSize];
+    }
+}
+
 #pragma mark - (UIConstraintBasedLayoutLayering)
 
 - (CGSize)intrinsicContentSize {
-    CGFloat subviewWidth = self.bounds.size.width - self.titleLabelLeadingConstraint.constant * 2;
-    CGFloat subviewHeight = [self.titleLabel sizeThatFits:CGSizeMake(subviewWidth, CGFLOAT_MAX)].height;
-    subviewHeight += self.subTitleHeightConstraint.constant;
-    subviewHeight += [self.descriptionLabel sizeThatFits:CGSizeMake(subviewWidth, CGFLOAT_MAX)].height;
-
-    CGSize totalSize = CGSizeMake(self.bounds.size.width, subviewHeight + self.titleLabelTopConstraint.constant);
-    return totalSize;
+    return self.layoutSize;
 }
 
 #pragma mark - <PKAlertViewLayoutAdapter>
 
 - (void)applyLayoutWithAlertComponentViews:(NSDictionary *)views {
+    [self applyParallaxScrollableImageLayoutWithAlertComponentViews:views];
+}
+
+#pragma mark -
+
+- (void)applyParallaxScrollableImageLayoutWithAlertComponentViews:(NSDictionary *)views {
     UIView *contentView = PKAlertGetViewInViews(PKAlertContentViewKey, views);
 
     NSMutableArray *contentConstraints = @[

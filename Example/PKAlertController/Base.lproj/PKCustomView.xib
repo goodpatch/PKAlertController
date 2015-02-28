@@ -24,10 +24,10 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FvN-aj-Aqv" userLabel="Label Container View">
                     <rect key="frame" x="0.0" y="110" width="600" height="490"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTm-NI-Vxh" userLabel="Title Label">
-                            <rect key="frame" x="20" y="20" width="560" height="35"/>
+                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTm-NI-Vxh" userLabel="Title Label">
+                            <rect key="frame" x="20" y="20" width="560" height="36"/>
                             <constraints>
-                                <constraint firstAttribute="height" priority="750" constant="35" id="k0a-XM-YnG"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="36" id="k0a-XM-YnG"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -37,7 +37,7 @@
                             </userDefinedRuntimeAttributes>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qi5-ZC-eJi" userLabel="Sub Title Text Label">
-                            <rect key="frame" x="20" y="63" width="560" height="26"/>
+                            <rect key="frame" x="20" y="64" width="560" height="26"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="26" id="7ei-jl-Xb7"/>
                             </constraints>
@@ -49,7 +49,7 @@
                             </userDefinedRuntimeAttributes>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a6i-iS-kJ6" userLabel="Description Text Label">
-                            <rect key="frame" x="20" y="109" width="560" height="361"/>
+                            <rect key="frame" x="20" y="110" width="560" height="360"/>
                             <constraints>
                                 <constraint firstAttribute="height" priority="750" constant="409" id="4N5-hx-zB7"/>
                             </constraints>
