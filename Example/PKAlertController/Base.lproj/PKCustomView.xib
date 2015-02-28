@@ -104,6 +104,7 @@
                 <outletCollection property="verticalSpaceConstraints" destination="G6x-Fo-nwR" id="D1q-0T-QrZ"/>
                 <outletCollection property="verticalSpaceConstraints" destination="v00-Gp-0LQ" id="iIE-3F-w9g"/>
                 <outletCollection property="verticalSpaceConstraints" destination="9WV-Ap-sRZ" id="rBE-gG-Waj"/>
+                <outletCollection property="verticalSpaceConstraints" destination="Q16-9W-oPJ" id="fbI-JX-Dbo"/>
             </connections>
             <point key="canvasLocation" x="664" y="388"/>
         </view>

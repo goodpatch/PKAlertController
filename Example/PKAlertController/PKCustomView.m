@@ -59,6 +59,9 @@
     CGFloat subviewHeight = [self.titleLabel sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_MAX)].height;
     subviewHeight += self.subTitleHeightConstraint.constant;
     subviewHeight += [self.descriptionLabel sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_MAX)].height;
+    for (NSLayoutConstraint *constraint in self.verticalSpaceConstraints) {
+        subviewHeight += constraint.constant;
+    }
 
     CGSize totalSize = CGSizeMake(viewSize.width, subviewHeight + self.labelContainerTopConstraint.constant);
     if (!CGSizeEqualToSize(self.layoutSize, totalSize)) {
@@ -92,6 +95,12 @@
     constraint.priority = UILayoutPriorityDefaultHigh;
     [contentConstraints addObject:constraint];
     [contentView addConstraints:contentConstraints];
+}
+
+- (CGSize)visibleSizeInAlertView {
+    CGSize size = self.layoutSize;
+    size.height -= PKAlertDefaultMargin * 2;
+    return size;
 }
 
 @end

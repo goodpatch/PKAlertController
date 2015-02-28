@@ -63,6 +63,8 @@ typedef void(^PKAlertControllerConfigurationBlock)(PKAlertControllerConfiguratio
  */
 - (void)applyLayoutWithAlertComponentViews:(NSDictionary *)views;
 
+- (CGSize)visibleSizeInAlertView;
+
 @end
 
 #pragma mark -
