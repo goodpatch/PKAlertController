@@ -277,6 +277,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         [self.scrollView addConstraints:contentConstraints];
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:customView attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:customView attribute:NSLayoutAttributeHeight multiplier:1 constant:0]];
+
         if ([customView respondsToSelector:@selector(applyLayoutWithAlertComponentViews:)]) {
             NSMutableDictionary *viewDictionary = PKAlertRemoveSelfFromDictionaryOfVariableBindings( NSDictionaryOfVariableBindings(self.contentView, self.scrollView)).mutableCopy;
             viewDictionary[PKAlertTopLayoutGuideKey] = self.topLayoutGuide;

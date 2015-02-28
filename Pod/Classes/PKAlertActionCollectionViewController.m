@@ -14,6 +14,8 @@
 
 @interface PKAlertActionCollectionViewController () <UICollectionViewDelegateFlowLayout>
 
+@property (nonatomic, getter=isViewInitialized) BOOL viewInitialized;
+
 @end
 
 @implementation PKAlertActionCollectionViewController
@@ -55,29 +57,28 @@ static NSString * const reuseIdentifier = @"PKAlertViewControllerCellReuseIdenti
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.collectionView.collectionViewLayout invalidateLayout];
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    // FIXME: iOS7 not working invalidateLayout in willRoateToInterfaceOrientation
+    if (self.isViewInitialized && floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+        [self.collectionView.collectionViewLayout invalidateLayout];
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    self.viewInitialized = YES;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
         [self.collectionView.collectionViewLayout invalidateLayout];
-    }
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    // FIXME: iOS7 not working invalidateLayout in willRoateToInterfaceOrientation
-    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
-        [UIView animateWithDuration:0 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
-            [self.collectionView.collectionViewLayout invalidateLayout];
-        } completion:nil];
     }
 }
 
