@@ -15,9 +15,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *subTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *labelContainerTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelLeadingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *subTitleHeightConstraint;
+@property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *verticalSpaceConstraints;
 
 @property (nonatomic) CALayer *subTitleBottomBorderLayer;
 @property (nonatomic) CGSize layoutSize;
@@ -59,7 +60,7 @@
     subviewHeight += self.subTitleHeightConstraint.constant;
     subviewHeight += [self.descriptionLabel sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_MAX)].height;
 
-    CGSize totalSize = CGSizeMake(viewSize.width, subviewHeight + self.titleLabelTopConstraint.constant);
+    CGSize totalSize = CGSizeMake(viewSize.width, subviewHeight + self.labelContainerTopConstraint.constant);
     if (!CGSizeEqualToSize(self.layoutSize, totalSize)) {
         self.layoutSize = totalSize;
         [self invalidateIntrinsicContentSize];

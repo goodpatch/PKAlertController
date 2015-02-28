@@ -294,11 +294,13 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         UIView *customView = self.configuration.customView;
         [customView layoutIfNeeded];
         CGSize size = [customView intrinsicContentSize];
-        height += size.height;
+        height += size.height + PKAlertDefaultMargin * 2;
     }
 
     if (height > 0) {
-        self.contentViewHeightConstraint.constant = actionViewHeight + height + PKAlertDefaultMargin * 4;
+        NSInteger count = self.scrollViewComponents.count;
+        CGFloat totalHeight = actionViewHeight + height + PKAlertDefaultMargin * 2 * count;
+        self.contentViewHeightConstraint.constant = totalHeight;
     } else {
         self.contentViewHeightConstraint.constant = actionViewHeight;
     }
@@ -329,6 +331,9 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
+        view.alpha = 0;
+    }];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -349,11 +354,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         }
     }];
 
-    if (!self.viewInitialized) {
-        [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
-            view.alpha = 0;
-        }];
-    }
     if (self.configuration.customView) {
         [self.configuration.customView setNeedsDisplay];
     }
@@ -369,7 +369,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     if (!self.viewInitialized) {
         [self.scrollViewComponents enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
             view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -50);
-            [UIView animateWithDuration:.5 delay:.0 usingSpringWithDamping:.5 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
+            [UIView animateWithDuration:.3 delay:.0 usingSpringWithDamping:.6 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
                 view.alpha = 1;
                 view.transform = CGAffineTransformIdentity;
             } completion:nil];

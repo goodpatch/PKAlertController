@@ -96,11 +96,14 @@
             <connections>
                 <outlet property="descriptionLabel" destination="a6i-iS-kJ6" id="gJY-9Q-XKv"/>
                 <outlet property="headerImageView" destination="VAQ-26-ZDl" id="29T-Rw-six"/>
+                <outlet property="labelContainerTopConstraint" destination="uQA-Rc-5i7" id="TCL-zS-VTx"/>
                 <outlet property="subTitleHeightConstraint" destination="7ei-jl-Xb7" id="amU-mS-sGP"/>
                 <outlet property="subTitleLabel" destination="Qi5-ZC-eJi" id="2Z3-24-15T"/>
                 <outlet property="titleLabel" destination="PTm-NI-Vxh" id="8RB-L3-fvf"/>
                 <outlet property="titleLabelLeadingConstraint" destination="qEt-aU-KnW" id="blM-Vz-6dy"/>
-                <outlet property="titleLabelTopConstraint" destination="G6x-Fo-nwR" id="ga2-Vu-hS6"/>
+                <outletCollection property="verticalSpaceConstraints" destination="G6x-Fo-nwR" id="D1q-0T-QrZ"/>
+                <outletCollection property="verticalSpaceConstraints" destination="v00-Gp-0LQ" id="iIE-3F-w9g"/>
+                <outletCollection property="verticalSpaceConstraints" destination="9WV-Ap-sRZ" id="rBE-gG-Waj"/>
             </connections>
             <point key="canvasLocation" x="664" y="388"/>
         </view>
