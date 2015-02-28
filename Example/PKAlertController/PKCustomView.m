@@ -23,30 +23,29 @@
 
 @end
 
-
 @implementation PKCustomView
 
-- (CALayer *)createSubTitleBorderLayer {
-    CALayer *bottomBorder = [CALayer layer];
-    bottomBorder.borderColor = self.subTitleLabel.textColor.CGColor;
-    bottomBorder.borderWidth = 1 / [UIScreen mainScreen].scale;
-    bottomBorder.frame = CGRectMake(0, CGRectGetHeight(self.subTitleLabel.bounds), CGRectGetWidth(self.subTitleLabel.bounds), bottomBorder.borderWidth);
-    return bottomBorder;
+- (void)updateSubTitleBorderLayer:(CALayer *)layer {
+    layer.borderColor = self.subTitleLabel.textColor.CGColor;
+    layer.borderWidth = 1 / [UIScreen mainScreen].scale;
+    layer.frame = CGRectMake(0, CGRectGetHeight(self.subTitleLabel.bounds), CGRectGetWidth(self.subTitleLabel.bounds), layer.borderWidth);
 }
 
-#pragma mark -
+#pragma mark - (UIViewRendering)
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
     // Drawing code
-    if (self.subTitleBottomBorderLayer) {
-        [self.subTitleBottomBorderLayer removeFromSuperlayer];
-        self.subTitleBottomBorderLayer = nil;
+    if (!self.subTitleBottomBorderLayer) {
+        CALayer *bottomBorderLayer = [CALayer layer];
+        self.subTitleBottomBorderLayer = bottomBorderLayer;
+        [self.subTitleLabel.layer addSublayer:bottomBorderLayer];
     }
-    self.subTitleBottomBorderLayer = [self createSubTitleBorderLayer];
-    [self.subTitleLabel.layer addSublayer:self.subTitleBottomBorderLayer];
+    [self updateSubTitleBorderLayer:self.subTitleBottomBorderLayer];
 }
+
+#pragma mark - (UIConstraintBasedLayoutLayering)
 
 - (CGSize)intrinsicContentSize {
     CGFloat subviewWidth = self.bounds.size.width - self.titleLabelLeadingConstraint.constant * 2;

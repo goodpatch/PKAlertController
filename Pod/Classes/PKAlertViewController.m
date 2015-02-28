@@ -368,7 +368,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         }];
     }
     if (self.configuration.customView) {
-        [self.configuration.customView layoutIfNeeded];
+        [self.configuration.customView setNeedsDisplay];
     }
     // FIXME: iOS 7
     // MARK: Resize Alert view size.
