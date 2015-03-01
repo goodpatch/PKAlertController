@@ -39,6 +39,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 @property (nonatomic) CGFloat alertOffset;
 @property (nonatomic) CGFloat actionSheetOffset;
+@property (nonatomic) CGFloat transitionDuration;
 
 @end
 
@@ -282,7 +283,13 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
     if (self.labelContainerView || self.configuration.customView) {
         UIView *view = self.labelContainerView ? self.labelContainerView : self.configuration.customView;
-        view.alpha = 0;
+        switch (self.configuration.viewAppearInAnimationType) {
+            case PKAlertControllerViewAppearInAnimationTypeNone:
+                break;
+            case PKAlertControllerViewAppearInAnimationTypeDropIn:
+                view.alpha = 0;
+                break;
+        }
     }
 }
 
@@ -308,14 +315,21 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+
     if (!self.isViewInitialized) {
         if (self.labelContainerView || self.configuration.customView) {
             UIView *view = self.labelContainerView ? self.labelContainerView : self.configuration.customView;
-            view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -50);
-            [UIView animateWithDuration:.3 delay:0 usingSpringWithDamping:.6 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
-                view.alpha = 1;
-                view.transform = CGAffineTransformIdentity;
-            } completion:nil];
+            switch (self.configuration.viewAppearInAnimationType) {
+                case PKAlertControllerViewAppearInAnimationTypeNone:
+                    break;
+                case PKAlertControllerViewAppearInAnimationTypeDropIn:
+                    view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -50);
+                    [UIView animateWithDuration:.3 delay:0 usingSpringWithDamping:.6 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
+                        view.alpha = 1;
+                        view.transform = CGAffineTransformIdentity;
+                    } completion:nil];
+                    break;
+            }
         }
     }
     self.viewInitialized = YES;
@@ -340,7 +354,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 #pragma mark - <UIViewControllerAnimatedTransitioning>
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
-    return .3;
+    return self.transitionDuration;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
@@ -350,14 +364,26 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     UIView *fromView = fromViewController.view;
     UIView *toView = toViewController.view;
 
-    // AlertView
     if (toViewController == self) {
         toView.frame = containerView.frame;
-        UIColor *origianlContentViewBackgroundColor = self.contentView.backgroundColor;
         [containerView addSubview:toView];
-        self.contentView.transform = CGAffineTransformMakeScale(1.1, 1.1);
+        UIColor *origianlContentViewBackgroundColor = self.contentView.backgroundColor;
+
+        switch (self.configuration.presentationTransitionStyle) {
+            case PKAlertControllerPresentationTransitionStyleNone:
+                break;
+            case PKAlertControllerPresentationTransitionStyleFadeIn:
+                toView.alpha = 0;
+                break;
+            case PKAlertControllerPresentationTransitionStyleFocusIn:
+                toView.alpha = 0;
+                self.contentView.transform = CGAffineTransformMakeScale(1.1, 1.1);
+                break;
+            default:
+                break;
+        }
+
         self.contentView.backgroundColor = [origianlContentViewBackgroundColor colorWithAlphaComponent:1.];
-        toView.alpha = 0;
         fromView.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
         [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             toView.alpha = 1;
@@ -374,8 +400,20 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
             if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
                 [self.contentView removeConstraints:self.contentView.constraints];
             }
-            self.contentView.transform = CGAffineTransformMakeScale(0.8, 0.8);
-            fromView.alpha = 0;
+
+            switch (self.configuration.dismissTransitionStyle) {
+                case PKAlertControllerDismissStyleTransitionNone:
+                    break;
+                case PKAlertControllerDismissStyleTransitionFadeOut:
+                    fromView.alpha = 0;
+                    break;
+                case PKAlertControllerDismissStyleTransitionZoomOut:
+                    fromView.alpha = 0;
+                    self.contentView.transform = CGAffineTransformMakeScale(0.6, 0.6);
+                    break;
+                default:
+                    break;
+            }
         } completion:^(BOOL finished) {
             if (finished) {
                 toView.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;

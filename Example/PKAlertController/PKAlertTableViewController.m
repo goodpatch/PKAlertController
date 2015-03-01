@@ -33,16 +33,23 @@ static NSString *const MessageOnly = @"MessageOnly";
 static NSString *const TitleOnly = @"TitleOnly";
 
 static const CGFloat DefaultBarButtonItemLength = 22.0;
+static const CGSize DefaultBarButtonItemSize = {DefaultBarButtonItemLength, DefaultBarButtonItemLength};
 
 typedef NS_ENUM(NSInteger, PKActionButtonType) {
     PKActionButtonTypeTheme = 20,
-    PKActionButtonTypeFLEXMenu = 23,
+    PKActionButtonTypeTxIn = 21,
+    PKActionButtonTypeTxOut = 22,
+    PKActionButtonTypeAppearInAnimation = 23,
+    PKActionButtonTypeFLEXMenu = 24,
 };
 
 @interface PKAlertTableViewController () <UIActionSheetDelegate>
 
 @property (strong, nonatomic) IBOutletCollection(UIBarButtonItem) NSArray *switchActionButtons;
 @property (nonatomic) PKCustomView *customView;
+@property (nonatomic) PKAlertControllerPresentationTransitionStyle presentationTransitionStyle;
+@property (nonatomic) PKAlertControllerDismissTransitionStyle dismissTransitionStyle;
+@property (nonatomic) PKAlertControllerViewAppearInAnimationType viewAppearInAnimationType;
 
 @end
 
@@ -51,6 +58,9 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.presentationTransitionStyle = PKAlertControllerPresentationTransitionStyleFocusIn;
+    self.dismissTransitionStyle = PKAlertControllerDismissStyleTransitionFadeOut;
+    self.viewAppearInAnimationType = PKAlertControllerViewAppearInAnimationTypeDropIn;
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg"]];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     self.tableView.backgroundView = imageView;
@@ -58,7 +68,9 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     NSMutableArray *toolbarButtonItems = self.toolbarItems.mutableCopy;
     for (UIBarButtonItem *item in self.switchActionButtons) {
         if (item.tag == PKActionButtonTypeTheme) {
-            item.image = [[FAKFontAwesome paintBrushIconWithSize:DefaultBarButtonItemLength] imageWithSize:CGSizeMake(DefaultBarButtonItemLength, DefaultBarButtonItemLength)];
+            item.image = [[FAKFontAwesome paintBrushIconWithSize:DefaultBarButtonItemLength] imageWithSize:DefaultBarButtonItemSize];
+        } else if (item.tag == PKActionButtonTypeAppearInAnimation) {
+            item.image = [[FAKFontAwesome lineChartIconWithSize:DefaultBarButtonItemLength] imageWithSize:DefaultBarButtonItemSize];
         }
     }
     NSDictionary *env = [[NSProcessInfo processInfo] environment];
@@ -100,12 +112,45 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
     actionSheet.title = @"Change UI Theme";
     actionSheet.tag = PKActionButtonTypeTheme + 500;
-    actionSheet.delegate = self;
     [actionSheet addButtonWithTitle:@"Default"];
     [actionSheet addButtonWithTitle:@"WhiteBlue"];
     [actionSheet addButtonWithTitle:@"Cancel"];
-    actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
+    [self presentWithActionSheet:actionSheet];
+}
 
+- (IBAction)changePresentationTransition:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+    actionSheet.title = @"Change Presentation Transition style";
+    actionSheet.tag = PKActionButtonTypeTxIn + 500;
+    [@[@"None", @"Fade In", @"Focus In", @"Cancel"] enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
+        [actionSheet addButtonWithTitle:title];
+    }];
+    [self presentWithActionSheet:actionSheet];
+}
+
+- (IBAction)changeDismissTransition:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+    actionSheet.title = @"Change Dismiss Transition style";
+    actionSheet.tag = PKActionButtonTypeTxOut + 500;
+    [@[@"None", @"Fade Out", @"Zoom Out", @"Cancel"] enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
+        [actionSheet addButtonWithTitle:title];
+    }];
+    [self presentWithActionSheet:actionSheet];
+}
+
+- (IBAction)changeViewAppearInAnimation:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+    actionSheet.title = @"Change View Appear In Animation";
+    actionSheet.tag = PKActionButtonTypeAppearInAnimation + 500;
+    [@[@"None", @"Drop In", @"Cancel"] enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
+        [actionSheet addButtonWithTitle:title];
+    }];
+    [self presentWithActionSheet:actionSheet];
+}
+
+- (void)presentWithActionSheet:(UIActionSheet *)actionSheet {
+    actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
+    actionSheet.delegate = self;
     [actionSheet showFromToolbar:self.navigationController.toolbar];
 }
 
@@ -152,6 +197,9 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
             }
         }
         configuration.preferredStyle = style;
+        configuration.presentationTransitionStyle = self.presentationTransitionStyle;
+        configuration.dismissTransitionStyle = self.dismissTransitionStyle;
+        configuration.viewAppearInAnimationType = self.viewAppearInAnimationType;
         [configuration addActions:actions];
         if ([cell.reuseIdentifier isEqualToString:TitleCenterMessageLeft]) {
             configuration.messageTextAlignment = NSTextAlignmentLeft;
@@ -169,9 +217,17 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-
+    if (actionSheet.cancelButtonIndex == buttonIndex) {
+        return;
+    }
     if (actionSheet.tag == PKActionButtonTypeTheme + 500) {
         [self performChangeUIThemeWithButtonIndex:buttonIndex];
+    } else if (actionSheet.tag == PKActionButtonTypeTxIn + 500) {
+        [self performChangePresentationTransitionStyleWithButtonIndex:buttonIndex];
+    } else if (actionSheet.tag == PKActionButtonTypeTxOut + 500) {
+        [self performChangeDismissTransitionStyleWithButtonIndex:buttonIndex];
+    } else if (actionSheet.tag == PKActionButtonTypeAppearInAnimation + 500) {
+        [self performChangeViewAppearInAnimationWithButtonIndex:buttonIndex];
     }
 }
 
@@ -188,6 +244,25 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
             return;
     }
     [PKAlertThemeManager setRegisterDefaultTheme:theme];
+    [self performDisplayAlertAtIndexPath:self.tableView.indexPathsForVisibleRows.firstObject];
+}
+
+- (void)performChangePresentationTransitionStyleWithButtonIndex:(NSInteger)buttonIndex {
+    PKAlertControllerPresentationTransitionStyle style = (PKAlertControllerPresentationTransitionStyle)buttonIndex;
+    self.presentationTransitionStyle = style;
+    [self performDisplayAlertAtIndexPath:self.tableView.indexPathsForVisibleRows.firstObject];
+}
+
+- (void)performChangeDismissTransitionStyleWithButtonIndex:(NSInteger)buttonIndex {
+    PKAlertControllerDismissTransitionStyle style = (PKAlertControllerDismissTransitionStyle)buttonIndex;
+    self.dismissTransitionStyle = style;
+    [self performDisplayAlertAtIndexPath:self.tableView.indexPathsForVisibleRows.firstObject];
+}
+
+- (void)performChangeViewAppearInAnimationWithButtonIndex:(NSInteger)buttonIndex {
+    PKAlertControllerViewAppearInAnimationType type = (PKAlertControllerViewAppearInAnimationType)buttonIndex;
+    self.viewAppearInAnimationType = type;
+    [self performDisplayAlertAtIndexPath:self.tableView.indexPathsForVisibleRows.firstObject];
 }
 
 @end

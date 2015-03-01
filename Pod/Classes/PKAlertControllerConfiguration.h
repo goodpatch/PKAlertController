@@ -20,6 +20,9 @@
 @property PKAlertControllerStyle preferredStyle;
 @property NSTextAlignment titleTextAlignment;
 @property NSTextAlignment messageTextAlignment;
+@property PKAlertControllerPresentationTransitionStyle presentationTransitionStyle;
+@property PKAlertControllerDismissTransitionStyle dismissTransitionStyle;
+@property PKAlertControllerViewAppearInAnimationType viewAppearInAnimationType;
 @property UIView<PKAlertViewLayoutAdapter> *customView;
 
 @property (readonly) NSArray *actions;

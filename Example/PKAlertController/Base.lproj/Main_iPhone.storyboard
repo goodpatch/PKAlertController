@@ -461,11 +461,32 @@
                                 <action selector="changeTheme:" destination="tjv-ae-hTH" id="2cD-sL-zKP"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem width="21" style="plain" systemItem="fixedSpace" id="XQ9-dZ-BmU"/>
+                        <barButtonItem tag="21" systemItem="fastForward" id="DeP-ps-abr">
+                            <connections>
+                                <action selector="changePresentationTransition:" destination="tjv-ae-hTH" id="OX2-sV-fA7"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="21" style="plain" systemItem="fixedSpace" id="ylh-or-BtB"/>
+                        <barButtonItem tag="22" systemItem="rewind" id="yHX-pP-KR2">
+                            <connections>
+                                <action selector="changeDismissTransition:" destination="tjv-ae-hTH" id="BNU-tN-zC0"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="21" style="plain" systemItem="fixedSpace" id="vZP-hG-L5U"/>
+                        <barButtonItem tag="23" title="appearIn" id="RCe-Di-hV9">
+                            <connections>
+                                <action selector="changeViewAppearInAnimation:" destination="tjv-ae-hTH" id="io3-NI-8fg"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="E9q-nX-65w"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="PKAlertController" id="gN3-AC-J5Q"/>
                     <connections>
                         <outletCollection property="switchActionButtons" destination="duI-9f-SVJ" id="S2S-U9-BNr"/>
+                        <outletCollection property="switchActionButtons" destination="DeP-ps-abr" id="Uuk-EH-txq"/>
+                        <outletCollection property="switchActionButtons" destination="yHX-pP-KR2" id="7sR-mW-ZiF"/>
+                        <outletCollection property="switchActionButtons" destination="RCe-Di-hV9" id="L9x-pl-Zvc"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iJk-Zp-NwA" userLabel="First Responder" sceneMemberID="firstResponder"/>

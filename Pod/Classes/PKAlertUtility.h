@@ -32,25 +32,42 @@ extern void PKAlertReloadAppearance() __attribute__((const));
 extern UIView *PKAlertGetViewInViews(NSString *key, NSDictionary *views) __attribute__((pure));
 extern NSDictionary *PKAlertRemoveSelfFromDictionaryOfVariableBindings(NSDictionary *bindings);
 
-typedef NS_ENUM(NSInteger, PKAlertControllerStyle) {
+typedef NS_ENUM (NSInteger, PKAlertControllerStyle) {
     PKAlertControllerStyleAlert = 0,
     PKAlertControllerStyleFlexibleAlert,
     PKAlertControllerStyleFullScreen,
-//    PKAlertControllerStyleActionSheet,
-//    PKAlertControllerStyleFlexibleActionSheet,
+    //    PKAlertControllerStyleActionSheet,
+    //    PKAlertControllerStyleFlexibleActionSheet,
+};
+
+typedef NS_ENUM (NSInteger, PKAlertControllerPresentationTransitionStyle) {
+    PKAlertControllerPresentationTransitionStyleNone = 0,
+    PKAlertControllerPresentationTransitionStyleFadeIn,
+    PKAlertControllerPresentationTransitionStyleFocusIn,
+};
+
+typedef NS_ENUM (NSInteger, PKAlertControllerDismissTransitionStyle) {
+    PKAlertControllerDismissStyleTransitionNone = 0,
+    PKAlertControllerDismissStyleTransitionFadeOut,
+    PKAlertControllerDismissStyleTransitionZoomOut,
+};
+
+typedef NS_ENUM (NSInteger, PKAlertControllerViewAppearInAnimationType) {
+    PKAlertControllerViewAppearInAnimationTypeNone = 0,
+    PKAlertControllerViewAppearInAnimationTypeDropIn,
 };
 
 /*!
     @abstract A callback handler blocks with selected an action button cell.
  */
-typedef void(^PKActionHandler)(PKAlertAction *action);
+typedef void (^PKActionHandler)(PKAlertAction *action);
 
 /*!
     @abstract A builder blocks with <i>PKAlertControllerConfiguration</i> initializing.
     @discussion
         The builder pattern Software design pattern.
  */
-typedef void(^PKAlertControllerConfigurationBlock)(PKAlertControllerConfiguration *configuration);
+typedef void (^PKAlertControllerConfigurationBlock)(PKAlertControllerConfiguration *configuration);
 
 #pragma mark - <PKAlertViewLayoutAdapter>
 

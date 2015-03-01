@@ -44,6 +44,9 @@
         copiedObject->_preferredStyle = _preferredStyle;
         copiedObject->_titleTextAlignment = _titleTextAlignment;
         copiedObject->_messageTextAlignment = _messageTextAlignment;
+        copiedObject->_presentationTransitionStyle = _presentationTransitionStyle;
+        copiedObject->_dismissTransitionStyle = _dismissTransitionStyle;
+        copiedObject->_viewAppearInAnimationType = _viewAppearInAnimationType;
         copiedObject->_actions = [_actions copyWithZone:zone];
         copiedObject->_allowsMotionEffect = _allowsMotionEffect;
         copiedObject->_motionEffectMinimumRelativeValue = _motionEffectMinimumRelativeValue;
@@ -60,6 +63,9 @@
     if (self) {
         _titleTextAlignment = NSTextAlignmentCenter;
         _messageTextAlignment = NSTextAlignmentCenter;
+        _presentationTransitionStyle = PKAlertControllerPresentationTransitionStyleFocusIn;
+        _dismissTransitionStyle = PKAlertControllerDismissStyleTransitionFadeOut;
+        _viewAppearInAnimationType = PKAlertControllerViewAppearInAnimationTypeNone;
         _actions = @[];
         _allowsMotionEffect = YES;
         _motionEffectMinimumRelativeValue = -10.0;
