@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@interface UIScrollView (PKAlertAddtions)
+
+@property (nonatomic, readwrite) NSString *contentInsetFromString;
+
+@end
+
+#pragma mark - PKAlertEffectScrollView
+
 // Like a UIPickerView transparent edge effect.
 
 @interface PKAlertEffectScrollView : UIScrollView

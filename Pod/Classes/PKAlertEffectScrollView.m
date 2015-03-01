@@ -10,6 +10,19 @@
 
 static const CGFloat DefaultGradientFactor = .2;
 
+@implementation UIScrollView (PKAlertAddtions)
+
+- (void)setContentInsetFromString:(NSString *)contentInsetString {
+    self.contentInset = UIEdgeInsetsFromString(contentInsetString);
+}
+
+- (NSString *)contentInsetFromString {
+    return NSStringFromUIEdgeInsets(self.contentInset);
+}
+
+@end
+
+
 @interface PKAlertEffectScrollView ()
 
 @property (nonatomic) BOOL showTransparentBottomEdge;
@@ -101,6 +114,12 @@ static const CGFloat DefaultGradientFactor = .2;
 #pragma mark - Key value observiing
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (![NSThread isMainThread]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+        });
+        return;
+    }
     [self refreshTransparentEdge];
 }
 
