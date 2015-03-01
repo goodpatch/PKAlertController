@@ -54,6 +54,9 @@ typedef void(^PKAlertControllerConfigurationBlock)(PKAlertControllerConfiguratio
 
 #pragma mark - <PKAlertViewLayoutAdapter>
 
+/*!
+    @abstract Method definitions that called by <i>PKAlertViewController</i>
+ */
 @protocol PKAlertViewLayoutAdapter <NSObject>
 
 @optional
@@ -63,10 +66,10 @@ typedef void(^PKAlertControllerConfigurationBlock)(PKAlertControllerConfiguratio
  */
 - (void)applyLayoutWithAlertComponentViews:(NSDictionary *)views;
 
+/*!
+    @abstract Defines an alert content visible size to display scroll view transparent edges or do anything.
+ */
 - (CGSize)visibleSizeInAlertView;
-
-- (void)prepareTextAnimation;
-- (void)performTextAnimation;
 
 @end
 

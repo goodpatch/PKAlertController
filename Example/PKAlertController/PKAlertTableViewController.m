@@ -102,7 +102,7 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     actionSheet.tag = PKActionButtonTypeTheme + 500;
     actionSheet.delegate = self;
     [actionSheet addButtonWithTitle:@"Default"];
-    [actionSheet addButtonWithTitle:@"Blue"];
+    [actionSheet addButtonWithTitle:@"WhiteBlue"];
     [actionSheet addButtonWithTitle:@"Cancel"];
     actionSheet.cancelButtonIndex = actionSheet.numberOfButtons - 1;
 

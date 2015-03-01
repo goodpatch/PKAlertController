@@ -16,9 +16,6 @@
 
 @interface PKAlertViewController : UIViewController
 
-@property (nonatomic, copy) NSString *alertTitle;
-@property (nonatomic, copy) NSString *alertMessage;
-@property (nonatomic) UIView *customView;
 @property (nonatomic, readonly) PKAlertControllerConfiguration *configuration;
 
 + (void)registerStoryboard:(UIStoryboard *)storyboard;

@@ -39,7 +39,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 @property (nonatomic) CGFloat alertOffset;
 @property (nonatomic) CGFloat actionSheetOffset;
-@property (nonatomic) CGFloat headerParallaxHeight;
 
 @end
 
@@ -138,6 +137,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         UIView *customView = self.configuration.customView;
         customView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.scrollView addSubview:customView];
+        self.scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     } else {
         if (self.configuration.title || self.configuration.message) {
             PKAlertLabelContainerView *view = [PKAlertLabelContainerView viewWithConfiguration:self.configuration];
@@ -282,9 +282,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
     if (self.labelContainerView || self.configuration.customView) {
         UIView *view = self.labelContainerView ? self.labelContainerView : self.configuration.customView;
-        if ([view respondsToSelector:@selector(prepareTextAnimation)]) {
-            [(id<PKAlertViewLayoutAdapter>)view prepareTextAnimation];
-        }
+        view.alpha = 0;
     }
 }
 
@@ -297,6 +295,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     [self updateContentViewHeightConstraint];
 
     if (self.configuration.customView) {
+        // Refresh the custom view and layer display
         [self.configuration.customView setNeedsDisplay];
     }
 
@@ -309,12 +308,14 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    if (!self.viewInitialized) {
+    if (!self.isViewInitialized) {
         if (self.labelContainerView || self.configuration.customView) {
             UIView *view = self.labelContainerView ? self.labelContainerView : self.configuration.customView;
-            if ([view respondsToSelector:@selector(performTextAnimation)]) {
-                [(id<PKAlertViewLayoutAdapter>)view performTextAnimation];
-            }
+            view.transform = CGAffineTransformTranslate(CGAffineTransformIdentity, 0, -50);
+            [UIView animateWithDuration:.3 delay:0 usingSpringWithDamping:.6 initialSpringVelocity:.5 options:UIViewAnimationOptionCurveEaseIn animations:^{
+                view.alpha = 1;
+                view.transform = CGAffineTransformIdentity;
+            } completion:nil];
         }
     }
     self.viewInitialized = YES;
@@ -326,7 +327,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - UIViewControllerTransitioningDelegate
+#pragma mark - <UIViewControllerTransitioningDelegate>
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
     return self;
@@ -336,7 +337,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     return self;
 }
 
-#pragma mark - UIViewControllerAnimatedTransitioning
+#pragma mark - <UIViewControllerAnimatedTransitioning>
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
     return .3;
@@ -396,7 +397,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     }
 }
 
-#pragma mark - PKAlertActionCollectionViewControllerDelegate
+#pragma mark - <PKAlertActionCollectionViewControllerDelegate>
 
 - (void)actionCollectionViewController:(PKAlertActionCollectionViewController *)viewController didSelectForAction:(PKAlertAction *)action {
     [self dismiss:viewController];
