@@ -40,6 +40,8 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 @property (nonatomic) CGFloat alertOffset;
 @property (nonatomic) CGFloat actionSheetOffset;
 @property (nonatomic) CGFloat transitionDuration;
+@property (nonatomic) CGFloat alertTopOffset;
+@property (nonatomic) CGFloat alertBottomOffset;
 
 @end
 
@@ -168,25 +170,29 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
                   attribute:NSLayoutAttributeWidth multiplier:1. constant:width],
                  [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:
                   nil
-                  attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertOffset],
+                  attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertTopOffset],
                  [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationGreaterThanOrEqual
                   toItem:nil
-                  attribute:NSLayoutAttributeBottom multiplier:1. constant:self.alertOffset],
+                  attribute:NSLayoutAttributeBottom multiplier:1. constant:self.alertBottomOffset],
              ]];
             break;
         }
         case PKAlertControllerStyleFlexibleAlert:
         {
             [constraints addObjectsFromArray:@[
-                [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview
-                 attribute:NSLayoutAttributeCenterY multiplier:1. constant:0],
-                [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeLeft multiplier:1. constant:self.alertOffset],
-                [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeRight multiplier:1. constant:-self.alertOffset],
-                [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:nil
-                 attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertOffset],
-                [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:nil
-                 attribute:NSLayoutAttributeBottom multiplier:1. constant:self.alertOffset],
-            ]];
+                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview
+                  attribute:NSLayoutAttributeCenterY multiplier:1. constant:0],
+                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:superview
+                  attribute:NSLayoutAttributeLeft multiplier:1. constant:self.alertOffset],
+                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:superview
+                  attribute:NSLayoutAttributeRight multiplier:1. constant:-self.alertOffset],
+                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:
+                  nil
+                  attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertTopOffset],
+                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationGreaterThanOrEqual
+                  toItem:nil
+                  attribute:NSLayoutAttributeBottom multiplier:1. constant:self.alertBottomOffset],
+             ]];
             break;
         }
         case PKAlertControllerStyleFullScreen:
@@ -248,7 +254,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     }
 
     if (height > 0) {
-        CGFloat totalHeight = actionViewHeight + height + PKAlertDefaultMargin * 2;
+        CGFloat totalHeight = actionViewHeight + height;
         self.contentViewHeightConstraint.constant = totalHeight;
     } else {
         self.contentViewHeightConstraint.constant = actionViewHeight;
@@ -439,6 +445,9 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 - (void)actionCollectionViewController:(PKAlertActionCollectionViewController *)viewController didSelectForAction:(PKAlertAction *)action {
     [self dismiss:viewController];
+    if (action && action.handler) {
+        action.handler(action);
+    }
 }
 
 @end

@@ -76,6 +76,12 @@
                         <userDefinedRuntimeAttribute type="number" keyPath="transitionDuration">
                             <real key="value" value="0.29999999999999999"/>
                         </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="alertTopOffset">
+                            <integer key="value" value="30"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="alertBottomOffset">
+                            <integer key="value" value="36"/>
+                        </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="actionContainerView" destination="0dg-hu-dha" id="vON-bX-fDe"/>
