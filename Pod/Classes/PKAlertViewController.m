@@ -28,6 +28,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 @property (nonatomic) NSLayoutConstraint *customViewHeightConstraint;
 @property (nonatomic) PKAlertLabelContainerView *labelContainerView;
 @property (nonatomic) UIStatusBarStyle previousStatusBarStyle;
+@property (nonatomic) NSArray *changeableLayoutConstraints;
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -35,6 +36,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *actionContainerViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *viewBottomConstraint;
 
 #pragma mark - User defined runtime attributes
 
@@ -153,9 +155,53 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     }
 }
 
-- (void)configureInitialConstraints {
+- (NSLayoutConstraint *)centerYConstraint {
+    UIView *superview = self.contentView.superview;
+    NSLayoutConstraint *centerYConstraint = [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview attribute:NSLayoutAttributeCenterY multiplier:1 constant:0];
+    return centerYConstraint;
+}
+
+- (NSArray *)initialConstraintsForStyleAlert {
     UIView *superview = self.contentView.superview;
     CGFloat width = self.mainScreenShortSideLength - self.alertOffset * 2;
+    NSMutableArray *constraints = [NSMutableArray array];
+
+    NSLayoutConstraint *centerYConstraint = [self centerYConstraint];
+    self.changeableLayoutConstraints = @[centerYConstraint];
+
+    [constraints addObjectsFromArray:@[
+         centerYConstraint,
+         [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:superview
+          attribute:NSLayoutAttributeCenterX multiplier:1. constant:0],
+         [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil
+          attribute:NSLayoutAttributeWidth multiplier:1. constant:width],
+         [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:
+          nil attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertTopOffset],
+     ]];
+    return constraints;
+}
+
+- (NSArray *)initialConstraintsForStyleFlexibleAlert {
+    UIView *superview = self.contentView.superview;
+    NSMutableArray *constraints = [NSMutableArray array];
+
+    NSLayoutConstraint *centerYConstraint = [self centerYConstraint];
+    self.changeableLayoutConstraints = @[centerYConstraint];
+
+    [constraints addObjectsFromArray:@[
+         centerYConstraint,
+         [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:superview
+          attribute:NSLayoutAttributeLeft multiplier:1. constant:self.alertOffset],
+         [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:superview
+          attribute:NSLayoutAttributeRight multiplier:1. constant:-self.alertOffset],
+         [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:
+          nil attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertTopOffset],
+     ]];
+    return constraints;
+}
+
+- (void)configureInitialConstraints {
+    UIView *superview = self.contentView.superview;
     CGFloat actionViewHeight = self.actionCollectionViewController.estimatedContentHeight;
     self.actionContainerViewHeightConstraint.constant = actionViewHeight;
     NSMutableArray *constraints = [NSMutableArray array];
@@ -163,38 +209,15 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     switch (self.configuration.preferredStyle) {
         case PKAlertControllerStyleAlert:
         {
-            [constraints addObjectsFromArray:@[
-                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:superview
-                  attribute:NSLayoutAttributeCenterX multiplier:1. constant:0],
-                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview
-                  attribute:NSLayoutAttributeCenterY multiplier:1. constant:0],
-                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil
-                  attribute:NSLayoutAttributeWidth multiplier:1. constant:width],
-                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:
-                  nil
-                  attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertTopOffset],
-                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationGreaterThanOrEqual
-                  toItem:nil
-                  attribute:NSLayoutAttributeBottom multiplier:1. constant:self.alertBottomOffset],
-             ]];
+            constraints = [self initialConstraintsForStyleAlert].mutableCopy;
+            // TODO: move
+            self.viewBottomConstraint.constant = self.alertBottomOffset;
             break;
         }
         case PKAlertControllerStyleFlexibleAlert:
         {
-            [constraints addObjectsFromArray:@[
-                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:superview
-                  attribute:NSLayoutAttributeCenterY multiplier:1. constant:0],
-                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:superview
-                  attribute:NSLayoutAttributeLeft multiplier:1. constant:self.alertOffset],
-                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:superview
-                  attribute:NSLayoutAttributeRight multiplier:1. constant:-self.alertOffset],
-                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:
-                  nil
-                  attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertTopOffset],
-                 [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationGreaterThanOrEqual
-                  toItem:nil
-                  attribute:NSLayoutAttributeBottom multiplier:1. constant:self.alertBottomOffset],
-             ]];
+            constraints = [self initialConstraintsForStyleFlexibleAlert].mutableCopy;
+            self.viewBottomConstraint.constant = self.alertBottomOffset;
             break;
         }
         case PKAlertControllerStyleFullScreen:
@@ -263,6 +286,55 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     }
 }
 
+- (void)registerNotificationForKeyboard {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardWillShowNotification:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    CGRect keyboardFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    NSTimeInterval duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGFloat height = MIN(keyboardFrame.size.width, keyboardFrame.size.height);
+
+    [self.view removeConstraints:self.changeableLayoutConstraints];
+    self.viewBottomConstraint.constant = height;
+    self.changeableLayoutConstraints = @[];
+
+    [UIView animateWithDuration:duration animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (void)keyboardWillHideNotification:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    NSTimeInterval duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+
+    [self.view removeConstraints:self.changeableLayoutConstraints];
+
+    switch (self.configuration.preferredStyle) {
+        case PKAlertControllerStyleAlert:
+        case PKAlertControllerStyleFlexibleAlert:
+        {
+            self.viewBottomConstraint.constant = self.alertBottomOffset;
+            NSLayoutConstraint *centerYConstraint = [self centerYConstraint];
+            [self.view addConstraint:centerYConstraint];
+            self.changeableLayoutConstraints = @[centerYConstraint];
+            break;
+        }
+        case PKAlertControllerStyleFullScreen:
+            self.viewBottomConstraint.constant = 0;
+            break;
+
+        default:
+            break;
+    }
+
+    [UIView animateWithDuration:duration animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
 #pragma mark - View life cycle
 
 - (void)viewDidLoad {
@@ -279,6 +351,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     [self setupAppearance];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupAppearance) name:PKAlertDidReloadThemeNotification object:nil];
+    [self registerNotificationForKeyboard];
 }
 
 - (void)didReceiveMemoryWarning {

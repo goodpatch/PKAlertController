@@ -60,7 +60,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ogX-gL-ioM" firstAttribute="top" secondItem="Rq2-oz-jH8" secondAttribute="bottom" placeholder="YES" id="8Th-jK-2iz"/>
+                            <constraint firstItem="ogX-gL-ioM" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Rq2-oz-jH8" secondAttribute="bottom" id="8Th-jK-2iz"/>
                             <constraint firstAttribute="trailing" secondItem="Rq2-oz-jH8" secondAttribute="trailing" placeholder="YES" id="98C-sN-6DS"/>
                             <constraint firstItem="Rq2-oz-jH8" firstAttribute="top" secondItem="zRb-PG-ev1" secondAttribute="top" placeholder="YES" id="JC9-ph-bqf"/>
                             <constraint firstItem="Rq2-oz-jH8" firstAttribute="leading" secondItem="zRb-PG-ev1" secondAttribute="leading" placeholder="YES" id="t2e-kL-NQk"/>
@@ -89,6 +89,7 @@
                         <outlet property="contentView" destination="Rq2-oz-jH8" id="BFq-vg-JbE"/>
                         <outlet property="contentViewHeightConstraint" destination="fmh-I8-9rJ" id="cs0-Wl-VLa"/>
                         <outlet property="scrollView" destination="T6a-y8-cXW" id="YMV-8j-Jdt"/>
+                        <outlet property="viewBottomConstraint" destination="8Th-jK-2iz" id="ZwF-v6-AuE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="upr-Nz-Ohv" userLabel="First Responder" sceneMemberID="firstResponder"/>
