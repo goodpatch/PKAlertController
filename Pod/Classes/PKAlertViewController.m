@@ -14,12 +14,13 @@
 #import "PKAlertActionCollectionViewController.h"
 #import "PKAlertLabelContainerView.h"
 #import "PKAlertThemeManager.h"
+#import "PKAlertControllerAnimatedTransitioning.h"
 
 static UIStoryboard *pk_registeredStoryboard;
 static NSString *pk_defaultStoryboardName = @"PKAlert";
 static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSegue";
 
-@interface PKAlertViewController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, PKAlertActionCollectionViewControllerDelegate>
+@interface PKAlertViewController () <UIViewControllerTransitioningDelegate, PKAlertActionCollectionViewControllerDelegate>
 
 @property (nonatomic, getter=isViewInitialized) BOOL viewInitialized;
 @property (nonatomic) CGFloat mainScreenShortSideLength;
@@ -443,83 +444,15 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 #pragma mark - <UIViewControllerTransitioningDelegate>
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
-    return self;
+    PKAlertControllerPresentingAnimatedTransitioning *transitioning = [[PKAlertControllerPresentingAnimatedTransitioning alloc] init];
+    transitioning.style = self.configuration.presentationTransitionStyle;
+    return transitioning;
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-    return self;
-}
-
-#pragma mark - <UIViewControllerAnimatedTransitioning>
-
-- (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
-    return self.transitionDuration;
-}
-
-- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
-    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    UIView *containerView = [transitionContext containerView];
-    UIView *fromView = fromViewController.view;
-    UIView *toView = toViewController.view;
-
-    if (toViewController == self) {
-        toView.frame = containerView.frame;
-        [containerView addSubview:toView];
-        UIColor *origianlContentViewBackgroundColor = self.contentView.backgroundColor;
-
-        switch (self.configuration.presentationTransitionStyle) {
-            case PKAlertControllerPresentationTransitionStyleNone:
-                break;
-            case PKAlertControllerPresentationTransitionStyleFadeIn:
-                toView.alpha = 0;
-                break;
-            case PKAlertControllerPresentationTransitionStyleFocusIn:
-                toView.alpha = 0;
-                self.contentView.transform = CGAffineTransformMakeScale(1.1, 1.1);
-                break;
-            default:
-                break;
-        }
-
-        self.contentView.backgroundColor = [origianlContentViewBackgroundColor colorWithAlphaComponent:1.];
-        fromView.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
-        [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-            toView.alpha = 1;
-            self.contentView.transform = CGAffineTransformIdentity;
-        } completion:^(BOOL finished) {
-            if (finished) {
-                self.contentView.backgroundColor = origianlContentViewBackgroundColor;
-                [transitionContext completeTransition:YES];
-            }
-        }];
-    } else {
-        [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            // HACK: Avoid abort.
-            if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
-                [self.contentView removeConstraints:self.contentView.constraints];
-            }
-
-            switch (self.configuration.dismissTransitionStyle) {
-                case PKAlertControllerDismissStyleTransitionNone:
-                    break;
-                case PKAlertControllerDismissStyleTransitionFadeOut:
-                    fromView.alpha = 0;
-                    break;
-                case PKAlertControllerDismissStyleTransitionZoomOut:
-                    fromView.alpha = 0;
-                    self.contentView.transform = CGAffineTransformMakeScale(0.6, 0.6);
-                    break;
-                default:
-                    break;
-            }
-        } completion:^(BOOL finished) {
-            if (finished) {
-                toView.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
-                [transitionContext completeTransition:YES];
-            }
-        }];
-    }
+    PKAlertControllerDismissingAnimatedTransitioning *transitioning = [[PKAlertControllerDismissingAnimatedTransitioning alloc] init];
+    transitioning.style = self.configuration.dismissTransitionStyle;
+    return transitioning;
 }
 
 #pragma mark - Navigation
