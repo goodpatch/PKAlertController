@@ -31,6 +31,8 @@ static NSString *const LongTitleLeftLongMessageLeft = @"LongTitleLeftLongMessage
 static NSString *const CustomView = @"CustomView";
 static NSString *const MessageOnly = @"MessageOnly";
 static NSString *const TitleOnly = @"TitleOnly";
+static NSString *const ActionHeight = @"ActionHeight";
+static NSString *const DropShadow = @"DropShadow";
 
 static const CGFloat DefaultBarButtonItemLength = 22.0;
 static const CGSize DefaultBarButtonItemSize = {DefaultBarButtonItemLength, DefaultBarButtonItemLength};
@@ -195,6 +197,12 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
                 configuration.title = Title;
                 configuration.message = Message;
             }
+        }
+        if ([cell.reuseIdentifier isEqualToString:ActionHeight]) {
+            configuration.actionControlHeight = cell.tag;
+        }
+        if ([cell.reuseIdentifier isEqualToString:DropShadow]) {
+            configuration.solid = YES;
         }
         configuration.preferredStyle = style;
         configuration.presentationTransitionStyle = self.presentationTransitionStyle;

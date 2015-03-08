@@ -21,6 +21,7 @@
 
 @property (weak, nonatomic) IBOutlet id<PKAlertActionCollectionViewControllerDelegate> delegate;
 @property (nonatomic) NSArray *actions;
+@property (nonatomic) CGFloat actionHeight;
 @property (nonatomic, readonly) CGSize collectionViewContentSize;
 @property (nonatomic, readonly) CGFloat estimatedContentHeight;
 

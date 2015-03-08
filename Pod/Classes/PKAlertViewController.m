@@ -125,7 +125,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 - (void)setupShadowWithlayer:(CALayer *)layer {
     CGFloat scale = [UIScreen mainScreen].scale;
-    layer.shadowColor = [[UIColor blackColor] colorWithAlphaComponent:.21].CGColor;
+    layer.shadowColor = [UIColor blackColor].CGColor;
     layer.shadowOpacity = .6;
     layer.shadowRadius = layer.cornerRadius;
     layer.shadowOffset = CGSizeMake(0, layer.cornerRadius / 2.);
@@ -484,6 +484,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     if ([segue.identifier isEqualToString:ActionsViewEmbededSegueIdentifier]) {
         PKAlertActionCollectionViewController *viewController = (PKAlertActionCollectionViewController *)segue.destinationViewController;
         viewController.actions = self.configuration.actions;
+        viewController.actionHeight = self.configuration.actionControlHeight;
         viewController.delegate = self;
         self.actionCollectionViewController = viewController;
     }

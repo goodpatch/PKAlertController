@@ -31,9 +31,9 @@ static NSString * const reuseIdentifier = @"PKAlertViewControllerCellReuseIdenti
     if (count == 0) {
         return 0;
     } else if (count <= 2) {
-        return PKAlertDefaultTappableHeight;
+        return self.actionHeight;
     }
-    return PKAlertDefaultTappableHeight * count;
+    return self.actionHeight * count;
 }
 
 - (void)configureCell:(PKAlertActionViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
@@ -50,6 +50,8 @@ static NSString * const reuseIdentifier = @"PKAlertViewControllerCellReuseIdenti
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    flowLayout.itemSize = CGSizeMake(flowLayout.itemSize.width, self.actionHeight);
 }
 
 - (void)didReceiveMemoryWarning {

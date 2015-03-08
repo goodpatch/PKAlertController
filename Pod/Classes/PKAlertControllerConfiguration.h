@@ -42,6 +42,8 @@
 
 @property (readonly) NSArray *actions;
 
+@property CGFloat actionControlHeight;
+
 @property BOOL allowsMotionEffect;
 @property CGFloat motionEffectMinimumRelativeValue;
 @property CGFloat motionEffectMaximumRelativeValue;

@@ -54,6 +54,7 @@
         copiedObject->_scrollViewTransparentEdgeEnabled = _scrollViewTransparentEdgeEnabled;
         copiedObject->_statusBarAppearanceUpdate = _statusBarAppearanceUpdate;
         copiedObject->_solid = _solid;
+        copiedObject->_actionControlHeight = _actionControlHeight;
     }
     return copiedObject;
 }
@@ -74,6 +75,7 @@
         _motionEffectMaximumRelativeValue = 10.0;
         _statusBarAppearanceUpdate = YES;
         _solid = NO;
+        _actionControlHeight = PKAlertDefaultTappableHeight;
     }
     return self;
 }
