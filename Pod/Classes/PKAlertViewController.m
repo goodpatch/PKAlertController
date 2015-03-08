@@ -365,10 +365,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 - (void)dismiss:(id)sender {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
     }];
-    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    if (keyWindow != self.view.window) {
-        [self.view.window removeFromSuperview];
-    }
 }
 
 #pragma mark - <UIViewControllerTransitioningDelegate>
