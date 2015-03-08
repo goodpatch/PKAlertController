@@ -53,6 +53,7 @@
         Disable when View controller-based status bar appearance.
  */
 @property BOOL statusBarAppearanceUpdate;
+@property (getter=isSolid) BOOL solid;
 
 + (instancetype)defaultConfiguration;
 + (instancetype)defaultConfigurationWithCancelHandler:(void(^)(PKAlertAction *action))handler;

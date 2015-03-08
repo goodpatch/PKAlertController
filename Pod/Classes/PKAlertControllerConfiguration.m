@@ -53,6 +53,7 @@
         copiedObject->_motionEffectMaximumRelativeValue = _motionEffectMaximumRelativeValue;
         copiedObject->_scrollViewTransparentEdgeEnabled = _scrollViewTransparentEdgeEnabled;
         copiedObject->_statusBarAppearanceUpdate = _statusBarAppearanceUpdate;
+        copiedObject->_solid = _solid;
     }
     return copiedObject;
 }
@@ -72,6 +73,7 @@
         _motionEffectMinimumRelativeValue = -10.0;
         _motionEffectMaximumRelativeValue = 10.0;
         _statusBarAppearanceUpdate = YES;
+        _solid = NO;
     }
     return self;
 }

@@ -123,6 +123,22 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     _previousStatusBarStyle = -1;
 }
 
+- (void)setupShadowWithlayer:(CALayer *)layer {
+    CGFloat scale = [UIScreen mainScreen].scale;
+    layer.shadowColor = [[UIColor blackColor] colorWithAlphaComponent:.21].CGColor;
+    layer.shadowOpacity = .6;
+    layer.shadowRadius = layer.cornerRadius;
+    layer.shadowOffset = CGSizeMake(0, layer.cornerRadius / 2.);
+    [self updateShadowPathWithLayer:layer];
+    layer.shouldRasterize = YES;
+    layer.rasterizationScale = scale;
+}
+
+- (void)updateShadowPathWithLayer:(CALayer *)layer {
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRect:self.contentView.bounds];
+    layer.shadowPath = shadowPath.CGPath;
+}
+
 - (void)setupAppearance {
     [PKAlertThemeManager customizeAlertDimView:self.view];
     [PKAlertThemeManager customizeAlertContentView:self.contentView];
@@ -350,6 +366,9 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     [self setupAlertContents];
     [self configureInitialConstraints];
     [self setupAppearance];
+    if (self.configuration.solid) {
+        [self setupShadowWithlayer:self.contentView.layer];
+    }
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupAppearance) name:PKAlertDidReloadThemeNotification object:nil];
     [self registerNotificationForKeyboard];
@@ -392,6 +411,9 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         [self.configuration.customView setNeedsDisplay];
     }
 
+    if (self.configuration.isSolid) {
+        [self updateShadowPathWithLayer:self.contentView.layer];
+    }
     // MARK: Avoid aborting in iOS 7
     // ISSUE: http://stackoverflow.com/questions/18429728/autolayout-and-subviews
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {

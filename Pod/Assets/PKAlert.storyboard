@@ -20,41 +20,57 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rq2-oz-jH8" userLabel="Alert Content View">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T6a-y8-cXW" customClass="PKAlertEffectScrollView">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="translatesAutoresizingMaskIntoConstraints" value="NO"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="transparentEdgeEnabled" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="string" keyPath="contentInsetFromString" value="{0,0,20,0}"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </scrollView>
-                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0dg-hu-dha">
-                                        <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9QG-cp-ar6">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                        <subviews>
+                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T6a-y8-cXW" customClass="PKAlertEffectScrollView">
+                                                <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="translatesAutoresizingMaskIntoConstraints" value="NO"/>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="transparentEdgeEnabled" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="contentInsetFromString" value="{0,0,20,0}"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </scrollView>
+                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0dg-hu-dha">
+                                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" priority="750" constant="44" id="qLa-wv-Dqc"/>
+                                                </constraints>
+                                                <connections>
+                                                    <segue destination="zlm-QG-Pct" kind="embed" identifier="actionsViewEmbedSegue" id="ON0-Ke-h6B"/>
+                                                </connections>
+                                            </containerView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" priority="750" constant="44" id="qLa-wv-Dqc"/>
+                                            <constraint firstItem="T6a-y8-cXW" firstAttribute="top" secondItem="9QG-cp-ar6" secondAttribute="top" id="DiU-QL-JnA"/>
+                                            <constraint firstItem="0dg-hu-dha" firstAttribute="top" secondItem="T6a-y8-cXW" secondAttribute="bottom" id="Zw1-or-iug"/>
+                                            <constraint firstAttribute="trailing" secondItem="T6a-y8-cXW" secondAttribute="trailing" id="aqn-90-NYf"/>
+                                            <constraint firstAttribute="trailing" secondItem="0dg-hu-dha" secondAttribute="trailing" id="ghq-zj-B2K"/>
+                                            <constraint firstItem="0dg-hu-dha" firstAttribute="top" secondItem="T6a-y8-cXW" secondAttribute="bottom" id="l5x-tp-I5j"/>
+                                            <constraint firstItem="T6a-y8-cXW" firstAttribute="leading" secondItem="9QG-cp-ar6" secondAttribute="leading" id="lVA-tU-aE8"/>
+                                            <constraint firstAttribute="bottom" secondItem="0dg-hu-dha" secondAttribute="bottom" id="oCv-9Y-lDy"/>
+                                            <constraint firstItem="0dg-hu-dha" firstAttribute="leading" secondItem="9QG-cp-ar6" secondAttribute="leading" id="wHX-Dn-tAY"/>
                                         </constraints>
-                                        <connections>
-                                            <segue destination="zlm-QG-Pct" kind="embed" identifier="actionsViewEmbedSegue" id="ON0-Ke-h6B"/>
-                                        </connections>
-                                    </containerView>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="6"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="0dg-hu-dha" secondAttribute="trailing" id="0a5-gm-NRu"/>
-                                    <constraint firstAttribute="bottom" secondItem="0dg-hu-dha" secondAttribute="bottom" id="Mfl-P8-5vd"/>
-                                    <constraint firstItem="0dg-hu-dha" firstAttribute="top" secondItem="T6a-y8-cXW" secondAttribute="bottom" id="RqX-UP-mBF"/>
-                                    <constraint firstItem="0dg-hu-dha" firstAttribute="leading" secondItem="Rq2-oz-jH8" secondAttribute="leading" id="eDW-9B-MQn"/>
+                                    <constraint firstAttribute="bottom" secondItem="9QG-cp-ar6" secondAttribute="bottom" id="OqW-aB-B21"/>
                                     <constraint firstAttribute="height" priority="750" constant="600" id="fmh-I8-9rJ"/>
-                                    <constraint firstItem="0dg-hu-dha" firstAttribute="top" secondItem="T6a-y8-cXW" secondAttribute="bottom" id="gXG-hM-R74"/>
-                                    <constraint firstItem="T6a-y8-cXW" firstAttribute="leading" secondItem="Rq2-oz-jH8" secondAttribute="leading" id="hUp-ii-diT"/>
-                                    <constraint firstAttribute="trailing" secondItem="T6a-y8-cXW" secondAttribute="trailing" id="l1H-kO-amO"/>
-                                    <constraint firstItem="T6a-y8-cXW" firstAttribute="top" secondItem="Rq2-oz-jH8" secondAttribute="top" id="lnr-PD-HFr"/>
+                                    <constraint firstItem="9QG-cp-ar6" firstAttribute="leading" secondItem="Rq2-oz-jH8" secondAttribute="leading" id="pOr-BI-Rxm"/>
+                                    <constraint firstItem="9QG-cp-ar6" firstAttribute="top" secondItem="Rq2-oz-jH8" secondAttribute="top" id="vD4-df-fcs"/>
+                                    <constraint firstAttribute="trailing" secondItem="9QG-cp-ar6" secondAttribute="trailing" id="xPe-Zu-0JV"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="6"/>
                                     </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="clipsToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
