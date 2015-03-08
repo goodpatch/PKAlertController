@@ -16,13 +16,28 @@
 
 @property (copy) NSString *title;
 @property (copy) NSString *message;
-@property UIImage *headerImage;
 @property PKAlertControllerStyle preferredStyle;
 @property NSTextAlignment titleTextAlignment;
 @property NSTextAlignment messageTextAlignment;
+
+/*!
+    @abstract Set the view controller transition type to dismiss an alert view controller.
+ */
 @property PKAlertControllerPresentationTransitionStyle presentationTransitionStyle;
+
+/*!
+    @abstract Set the view controller transition type to present an alert view controller.
+ */
 @property PKAlertControllerDismissTransitionStyle dismissTransitionStyle;
+
+/*!
+    @abstract Set the animation type to animate an alert content after the view controller transition.
+ */
 @property PKAlertControllerViewAppearInAnimationType viewAppearInAnimationType;
+
+/*!
+    @abstract UIView to display on the alert view content.
+ */
 @property UIView<PKAlertViewLayoutAdapter> *customView;
 
 @property (readonly) NSArray *actions;
@@ -32,9 +47,12 @@
 @property CGFloat motionEffectMaximumRelativeValue;
 @property BOOL scrollViewTransparentEdgeEnabled;
 
-// TODO: title font(NSAttributedString), color, backgroundColor
-// TODO: message font(NSAttributedString), color, backgroundColor
-// TODO: action font(NSAttributedString>, color, backgroundColor
+/*!
+    @abstract If status bar style update that an alert view presented. default value is `YES`
+    @discussion
+        Disable when View controller-based status bar appearance.
+ */
+@property BOOL statusBarAppearanceUpdate;
 
 + (instancetype)defaultConfiguration;
 + (instancetype)defaultConfigurationWithCancelHandler:(void(^)(PKAlertAction *action))handler;

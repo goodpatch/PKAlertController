@@ -52,6 +52,7 @@
         copiedObject->_motionEffectMinimumRelativeValue = _motionEffectMinimumRelativeValue;
         copiedObject->_motionEffectMaximumRelativeValue = _motionEffectMaximumRelativeValue;
         copiedObject->_scrollViewTransparentEdgeEnabled = _scrollViewTransparentEdgeEnabled;
+        copiedObject->_statusBarAppearanceUpdate = _statusBarAppearanceUpdate;
     }
     return copiedObject;
 }
@@ -70,6 +71,7 @@
         _allowsMotionEffect = YES;
         _motionEffectMinimumRelativeValue = -10.0;
         _motionEffectMaximumRelativeValue = 10.0;
+        _statusBarAppearanceUpdate = YES;
     }
     return self;
 }

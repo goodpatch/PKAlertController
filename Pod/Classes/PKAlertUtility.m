@@ -22,6 +22,8 @@ NSString *const PKAlertDidRefreshAppearanceNotification = @"com.goodpatch.PKAler
 NSString *const PKAlertWillReloadThemeNotification = @"com.goodpatch.PKAlertWillReloadThemeNotificaiton";
 NSString *const PKAlertDidReloadThemeNotification = @"com.goodpatch.PKAlertDidReloadThemeNotification";
 
+static NSString *const UIViewControllerBasedStatusBarAppearance = @"UIViewControllerBasedStatusBarAppearance";
+
 #pragma mark - Functions
 
 NSString *PKAlert_UIKitLocalizedString(NSString *key, NSString *comment)
@@ -79,6 +81,12 @@ NSDictionary *PKAlertRemoveSelfFromDictionaryOfVariableBindings(NSDictionary *bi
     }
 
     return newBindings;
+}
+
+BOOL PKAlertViewControllerBasedStatusBarAppearance()
+{
+    NSDictionary *infoPlist = [NSBundle mainBundle].infoDictionary;
+    return [infoPlist[UIViewControllerBasedStatusBarAppearance] boolValue];
 }
 
 @implementation PKAlertUtility

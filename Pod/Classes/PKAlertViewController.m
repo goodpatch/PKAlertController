@@ -27,6 +27,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 @property (nonatomic) PKAlertActionCollectionViewController *actionCollectionViewController;
 @property (nonatomic) NSLayoutConstraint *customViewHeightConstraint;
 @property (nonatomic) PKAlertLabelContainerView *labelContainerView;
+@property (nonatomic) UIStatusBarStyle previousStatusBarStyle;
 
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -116,6 +117,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     CGSize size = [UIScreen mainScreen].bounds.size;
     _mainScreenShortSideLength = MIN(size.width, size.height);
     _configuration = [[PKAlertControllerConfiguration alloc] init];
+    _previousStatusBarStyle = -1;
 }
 
 - (void)setupAppearance {
@@ -297,6 +299,10 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
                 break;
         }
     }
+    if (self.configuration.statusBarAppearanceUpdate) {
+        self.previousStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+    }
 }
 
 - (void)viewWillLayoutSubviews {
@@ -339,6 +345,19 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
         }
     }
     self.viewInitialized = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if (self.configuration.statusBarAppearanceUpdate && self.previousStatusBarStyle != [UIApplication sharedApplication].statusBarStyle) {
+        [UIApplication sharedApplication].statusBarStyle = self.previousStatusBarStyle;
+    }
+}
+
+#pragma mark - Status bar
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark - Target actions

@@ -31,6 +31,7 @@ extern NSBundle *PKAlertControllerBundle(void)  __attribute__((const));
 extern void PKAlertReloadAppearance() __attribute__((const));
 extern UIView *PKAlertGetViewInViews(NSString *key, NSDictionary *views) __attribute__((pure));
 extern NSDictionary *PKAlertRemoveSelfFromDictionaryOfVariableBindings(NSDictionary *bindings);
+extern BOOL PKAlertViewControllerBasedStatusBarAppearance();
 
 typedef NS_ENUM (NSInteger, PKAlertControllerStyle) {
     PKAlertControllerStyleAlert = 0,
