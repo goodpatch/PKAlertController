@@ -13,7 +13,7 @@
 typedef NS_ENUM(NSInteger, PKCustomViewType) {
     PKCustomViewTypeTitleLabel = 1,
     PKCustomViewTypeSubTitleLabel,
-    PKCustomViewTypeDescriptionLabel,
+    PKCustomViewTypeDescriptionTextView,
 };
 
 @interface PKCustomView : UIView <PKAlertViewLayoutAdapter>

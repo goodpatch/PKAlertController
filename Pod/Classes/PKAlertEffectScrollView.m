@@ -68,9 +68,9 @@ static const CGFloat DefaultGradientFactor = .2;
 }
 
 - (void)layoutSubviews {
-    [super layoutSubviews];
     // MARK: Responds to device orientation or view resizing.
     [self refreshTransparentEdge];
+    [super layoutSubviews];
 }
 
 #pragma mark -

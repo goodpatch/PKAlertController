@@ -13,7 +13,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HeaderImage" translatesAutoresizingMaskIntoConstraints="NO" id="VAQ-26-ZDl">
-                    <rect key="frame" x="0.0" y="-221" width="600" height="331"/>
+                    <rect key="frame" x="0.0" y="-201" width="600" height="331"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="VAQ-26-ZDl" secondAttribute="height" multiplier="580:320" placeholder="YES" id="nKU-CU-8ez"/>
                     </constraints>
@@ -21,8 +21,8 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="translatesAutoresizingMaskIntoConstraints" value="NO"/>
                     </userDefinedRuntimeAttributes>
                 </imageView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FvN-aj-Aqv" userLabel="Label Container View">
-                    <rect key="frame" x="0.0" y="110" width="600" height="490"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FvN-aj-Aqv" userLabel="Message Container View">
+                    <rect key="frame" x="0.0" y="130" width="600" height="470"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTm-NI-Vxh" userLabel="Title Label">
                             <rect key="frame" x="20" y="20" width="560" height="36"/>
@@ -48,28 +48,31 @@
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="translatesAutoresizingMaskIntoConstraints" value="NO"/>
                             </userDefinedRuntimeAttributes>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a6i-iS-kJ6" userLabel="Description Text Label">
-                            <rect key="frame" x="20" y="110" width="560" height="360"/>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kQE-41-LHg">
+                            <rect key="frame" x="20" y="110" width="560" height="340"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" priority="750" constant="409" id="4N5-hx-zB7"/>
+                                <constraint firstAttribute="height" priority="750" constant="360" id="uJ3-CA-PvM"/>
                             </constraints>
+                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                            <nil key="highlightedColor"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
+                            <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="translatesAutoresizingMaskIntoConstraints" value="NO"/>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="scrollsToTop" value="NO"/>
                             </userDefinedRuntimeAttributes>
-                        </label>
+                        </textView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="a6i-iS-kJ6" firstAttribute="top" secondItem="Qi5-ZC-eJi" secondAttribute="bottom" constant="20" id="9WV-Ap-sRZ"/>
+                        <constraint firstItem="PTm-NI-Vxh" firstAttribute="trailing" secondItem="Qi5-ZC-eJi" secondAttribute="trailing" id="2Yi-Ri-yF1"/>
                         <constraint firstItem="PTm-NI-Vxh" firstAttribute="top" secondItem="FvN-aj-Aqv" secondAttribute="top" constant="20" id="G6x-Fo-nwR"/>
-                        <constraint firstAttribute="trailing" secondItem="a6i-iS-kJ6" secondAttribute="trailing" constant="20" id="HwS-Ty-KBz"/>
-                        <constraint firstItem="a6i-iS-kJ6" firstAttribute="leading" secondItem="FvN-aj-Aqv" secondAttribute="leading" constant="20" id="I6u-eA-Bpe"/>
-                        <constraint firstAttribute="bottom" secondItem="a6i-iS-kJ6" secondAttribute="bottom" constant="20" id="Q16-9W-oPJ"/>
-                        <constraint firstItem="Qi5-ZC-eJi" firstAttribute="leading" secondItem="FvN-aj-Aqv" secondAttribute="leading" constant="20" id="RPK-jU-FDy"/>
-                        <constraint firstAttribute="trailing" secondItem="Qi5-ZC-eJi" secondAttribute="trailing" constant="20" id="ocx-We-PHD"/>
+                        <constraint firstItem="kQE-41-LHg" firstAttribute="top" secondItem="Qi5-ZC-eJi" secondAttribute="bottom" constant="20" id="OJb-pV-WdT"/>
+                        <constraint firstItem="PTm-NI-Vxh" firstAttribute="trailing" secondItem="kQE-41-LHg" secondAttribute="trailing" id="PNh-gy-h0H"/>
+                        <constraint firstAttribute="bottom" secondItem="kQE-41-LHg" secondAttribute="bottom" constant="20" id="coJ-Ha-MJH"/>
+                        <constraint firstItem="PTm-NI-Vxh" firstAttribute="leading" secondItem="kQE-41-LHg" secondAttribute="leading" id="fLe-Me-ywh"/>
+                        <constraint firstItem="PTm-NI-Vxh" firstAttribute="leading" secondItem="Qi5-ZC-eJi" secondAttribute="leading" id="ofI-hl-yZg"/>
                         <constraint firstAttribute="trailing" secondItem="PTm-NI-Vxh" secondAttribute="trailing" constant="20" id="pf6-dP-m6v"/>
                         <constraint firstItem="PTm-NI-Vxh" firstAttribute="leading" secondItem="FvN-aj-Aqv" secondAttribute="leading" constant="20" id="qEt-aU-KnW"/>
                         <constraint firstItem="Qi5-ZC-eJi" firstAttribute="top" secondItem="PTm-NI-Vxh" secondAttribute="bottom" constant="8" id="v00-Gp-0LQ"/>
@@ -89,12 +92,12 @@
                 <constraint firstItem="FvN-aj-Aqv" firstAttribute="leading" secondItem="e6U-xO-7yS" secondAttribute="leading" id="flb-wX-3od"/>
                 <constraint firstAttribute="bottom" secondItem="FvN-aj-Aqv" secondAttribute="bottom" id="iiQ-XT-jWp"/>
                 <constraint firstItem="FvN-aj-Aqv" firstAttribute="top" secondItem="VAQ-26-ZDl" secondAttribute="bottom" id="tka-tk-gyT"/>
-                <constraint firstItem="FvN-aj-Aqv" firstAttribute="top" secondItem="e6U-xO-7yS" secondAttribute="top" constant="110" id="uQA-Rc-5i7"/>
+                <constraint firstItem="FvN-aj-Aqv" firstAttribute="top" secondItem="e6U-xO-7yS" secondAttribute="top" constant="130" id="uQA-Rc-5i7"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="descriptionLabel" destination="a6i-iS-kJ6" id="gJY-9Q-XKv"/>
+                <outlet property="descriptionTextView" destination="kQE-41-LHg" id="Hpo-yG-eM8"/>
                 <outlet property="headerImageView" destination="VAQ-26-ZDl" id="29T-Rw-six"/>
                 <outlet property="labelContainerTopConstraint" destination="uQA-Rc-5i7" id="TCL-zS-VTx"/>
                 <outlet property="subTitleHeightConstraint" destination="7ei-jl-Xb7" id="amU-mS-sGP"/>
@@ -103,8 +106,8 @@
                 <outlet property="titleLabelLeadingConstraint" destination="qEt-aU-KnW" id="blM-Vz-6dy"/>
                 <outletCollection property="verticalSpaceConstraints" destination="G6x-Fo-nwR" id="D1q-0T-QrZ"/>
                 <outletCollection property="verticalSpaceConstraints" destination="v00-Gp-0LQ" id="iIE-3F-w9g"/>
-                <outletCollection property="verticalSpaceConstraints" destination="9WV-Ap-sRZ" id="rBE-gG-Waj"/>
-                <outletCollection property="verticalSpaceConstraints" destination="Q16-9W-oPJ" id="fbI-JX-Dbo"/>
+                <outletCollection property="verticalSpaceConstraints" destination="coJ-Ha-MJH" id="3W2-AY-nel"/>
+                <outletCollection property="verticalSpaceConstraints" destination="OJb-pV-WdT" id="Lq9-mR-ERy"/>
             </connections>
             <point key="canvasLocation" x="664" y="388"/>
         </view>

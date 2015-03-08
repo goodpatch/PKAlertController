@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *subTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *labelContainerTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelLeadingConstraint;
@@ -48,17 +49,14 @@
 }
 
 - (void)layoutSubviews {
-    [super layoutSubviews];
-
     CGSize viewSize = self.bounds.size;
     CGFloat labelWidth = viewSize.width - self.titleLabelLeadingConstraint.constant * 2;
     self.titleLabel.preferredMaxLayoutWidth = labelWidth;
     self.subTitleLabel.preferredMaxLayoutWidth = labelWidth;
-    self.descriptionLabel.preferredMaxLayoutWidth = labelWidth;
 
     CGFloat subviewHeight = [self.titleLabel sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_MAX)].height;
     subviewHeight += self.subTitleHeightConstraint.constant;
-    subviewHeight += [self.descriptionLabel sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_MAX)].height;
+    subviewHeight += [self.descriptionTextView sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_MAX)].height;
     for (NSLayoutConstraint *constraint in self.verticalSpaceConstraints) {
         subviewHeight += constraint.constant;
     }
@@ -68,6 +66,7 @@
         self.layoutSize = totalSize;
         [self invalidateIntrinsicContentSize];
     }
+    [super layoutSubviews];
 }
 
 #pragma mark - (UIConstraintBasedLayoutLayering)

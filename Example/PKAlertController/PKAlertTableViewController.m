@@ -85,11 +85,11 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     PKCustomView *customView = [[nib instantiateWithOwner:nil options:nil] firstObject];
     UILabel *titleLabel = (UILabel *)[customView viewWithTag:PKCustomViewTypeTitleLabel];
     UILabel *subTitleLabel = (UILabel *)[customView viewWithTag:PKCustomViewTypeSubTitleLabel];
-    UILabel *descriptionLabel = (UILabel *)[customView viewWithTag:PKCustomViewTypeDescriptionLabel];
+    UITextView *descriptionTextView = (UITextView *)[customView viewWithTag:PKCustomViewTypeDescriptionTextView];
 
     titleLabel.text = Title;
     subTitleLabel.text = @"Version 0.0.1";
-    descriptionLabel.text = Message;
+    descriptionTextView.text = Message;
 
     self.customView = customView;
 }
@@ -122,7 +122,7 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
     actionSheet.title = @"Change Presentation Transition style";
     actionSheet.tag = PKActionButtonTypeTxIn + 500;
-    [@[@"None", @"Fade In", @"Focus In", @"Cancel"] enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
+    [@[@"None", @"Fade In", @"Focus In", @"Drop In", @"Cancel"] enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
         [actionSheet addButtonWithTitle:title];
     }];
     [self presentWithActionSheet:actionSheet];
