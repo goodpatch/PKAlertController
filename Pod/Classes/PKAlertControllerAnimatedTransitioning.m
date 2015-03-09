@@ -130,8 +130,10 @@
         }
         case PKAlertControllerPresentationTransitionStyleSlideDown:
         {
-            CGAffineTransform translate = CGAffineTransformMakeTranslation(0, -1 * CGRectGetHeight(contentView.bounds) - contentView.frame.origin.y);
-            contentView.transform = translate;
+            NSAssert(floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1, @"Requires iOS version 8.0 or latar");
+            CGAffineTransform t1 = CGAffineTransformMakeTranslation(0, -1 * CGRectGetHeight(contentView.bounds) - contentView.frame.origin.y);
+            contentView.transform = t1;
+            [toView setNeedsLayout];
             [UIView animateWithDuration:totalDuration animations:^{
                 contentView.transform = CGAffineTransformIdentity;
             } completion:^(BOOL finished) {
@@ -144,6 +146,7 @@
         }
         case PKAlertControllerPresentationTransitionStylePushDown:
         {
+            NSAssert(floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1, @"Requires iOS version 8.0 or latar");
             CGPoint center = contentView.center;
             contentView.center = CGPointMake(center.x, -1 * CGRectGetHeight(contentView.bounds));
             CGFloat distance = center.y + fabsf(contentView.center.y);
@@ -237,9 +240,12 @@
     }
     NSTimeInterval totalDuration = [self transitionDuration:transitionContext];
 
+    NSArray *contentConstraints = contentView.constraints;
+    NSArray *rootViewConstraints = fromView.constraints;
     // HACK: Avoid abort.
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
-        [contentView removeConstraints:contentView.constraints];
+        [fromView removeConstraints:rootViewConstraints];
+        [contentView removeConstraints:contentConstraints];
     }
     switch (self.style) {
         case PKAlertControllerDismissStyleTransitionNone:

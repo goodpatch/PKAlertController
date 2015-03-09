@@ -45,8 +45,8 @@ typedef NS_ENUM (NSInteger, PKAlertControllerPresentationTransitionStyle) {
     PKAlertControllerPresentationTransitionStyleNone = 0,
     PKAlertControllerPresentationTransitionStyleFadeIn,
     PKAlertControllerPresentationTransitionStyleFocusIn,
-    PKAlertControllerPresentationTransitionStyleSlideDown,
-    PKAlertControllerPresentationTransitionStylePushDown,
+    PKAlertControllerPresentationTransitionStyleSlideDown NS_ENUM_AVAILABLE_IOS(8_0),
+    PKAlertControllerPresentationTransitionStylePushDown  NS_ENUM_AVAILABLE_IOS(8_0),
 };
 
 typedef NS_ENUM (NSInteger, PKAlertControllerDismissTransitionStyle) {
