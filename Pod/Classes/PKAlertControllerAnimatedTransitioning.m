@@ -157,6 +157,9 @@
             CGFloat sizeForNewton = contentSize / fundamentalSize;
             CGFloat d1 = distance / fundamentalVelocityLength;
             CGFloat magnitude = sizeForNewton * d1 / (totalDuration * 0.8);    // timeOffset=0.8
+//            NSLog(@"%@ %@ %@: dis: %@", NSStringFromCGRect(contentView.frame), NSStringFromCGRect(contentView.bounds), @(magnitude), @(distance));
+
+            magnitude = 180;
 
             UIDynamicAnimator *animator = alertViewController.animator;
             UIPushBehavior *push = [[UIPushBehavior alloc] initWithItems:@[contentView] mode:UIPushBehaviorModeInstantaneous];
@@ -171,7 +174,8 @@
                         remainTime = 0;
                     }
 //                    remainTime += sizeForNewton * remainTime;
-                    remainTime = sizeForNewton * (totalDuration * 0.2);
+//                    remainTime = sizeForNewton * (totalDuration * 0.2);
+                    remainTime = 0.2;
                     [animator removeAllBehaviors];
 
                     [UIView animateKeyframesWithDuration:remainTime delay:0 options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
@@ -301,6 +305,7 @@
             CGFloat sizeForNewton = contentSize / fundamentalSize;
             CGFloat d1 = distance / fundamentalVelocityLength;
             CGFloat magnitude = sizeForNewton * d1 / totalDuration;
+            magnitude = 150;
 
             UIDynamicAnimator *animator = alertViewController.animator;
             UIPushBehavior *push = [[UIPushBehavior alloc] initWithItems:@[contentView] mode:UIPushBehaviorModeInstantaneous];
@@ -308,7 +313,8 @@
             push.magnitude = magnitude;
             [push setTargetOffsetFromCenter:UIOffsetMake(-5.0, 0) forItem:contentView];
             push.action = ^{
-                if (animator.elapsedTime >= totalDuration) {
+//                if (animator.elapsedTime >= totalDuration) {
+                if (contentView.frame.origin.y > fromView.frame.size.height) {
                     [animator removeAllBehaviors];
                     toView.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
                     [transitionContext completeTransition:YES];
