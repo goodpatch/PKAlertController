@@ -157,7 +157,6 @@
             CGFloat sizeForNewton = contentSize / fundamentalSize;
             CGFloat d1 = distance / fundamentalVelocityLength;
             CGFloat magnitude = sizeForNewton * d1 / (totalDuration * 0.8);    // timeOffset=0.8
-            magnitude /= 2;
 
             UIDynamicAnimator *animator = alertViewController.animator;
             UIPushBehavior *push = [[UIPushBehavior alloc] initWithItems:@[contentView] mode:UIPushBehaviorModeInstantaneous];
@@ -303,7 +302,6 @@
             CGFloat sizeForNewton = contentSize / fundamentalSize;
             CGFloat d1 = distance / fundamentalVelocityLength;
             CGFloat magnitude = sizeForNewton * d1 / totalDuration;
-            magnitude /= 1.5;
 
             UIDynamicAnimator *animator = alertViewController.animator;
             UIPushBehavior *push = [[UIPushBehavior alloc] initWithItems:@[contentView] mode:UIPushBehaviorModeInstantaneous];
