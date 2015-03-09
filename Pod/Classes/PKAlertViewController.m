@@ -363,6 +363,12 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     if (self.configuration.allowsMotionEffect) {
         [self setupMotionEffect];
     }
+    if (self.configuration.presentationTransitionStyle == PKAlertControllerPresentationTransitionStyleSemiModal) {
+        self.configuration.dismissTransitionStyle = PKAlertControllerDismissTransitionStyleSemiModal;
+    } else if (self.configuration.dismissTransitionStyle == PKAlertControllerDismissTransitionStyleSemiModal) {
+        self.configuration.presentationTransitionStyle = PKAlertControllerPresentationTransitionStyleSemiModal;
+    }
+
     [self setupAlertContents];
     [self configureInitialConstraints];
     [self setupAppearance];

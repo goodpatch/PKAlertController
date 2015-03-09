@@ -66,6 +66,10 @@
             return .3;
         case PKAlertControllerPresentationTransitionStylePushDown:
             return .3;
+        case PKAlertControllerPresentationTransitionStyleScale:
+            return .3;
+        case PKAlertControllerPresentationTransitionStyleSemiModal:
+            return .5;
     }
     return [super transitionDuration:transitionContext];
 }
@@ -195,6 +199,38 @@
             [animator addBehavior:push];
             return;
         }
+        case PKAlertControllerPresentationTransitionStyleScale:
+        {
+            toView.alpha = 0;
+            contentView.transform = CGAffineTransformMakeScale(0.6, 0.6);
+            [UIView animateWithDuration:totalDuration animations:^{
+                contentView.transform = CGAffineTransformIdentity;
+                toView.alpha = 1.;
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    contentView.backgroundColor = origianlContentViewBackgroundColor;
+                    [transitionContext completeTransition:YES];
+                }
+            }];
+            return;
+        }
+        case PKAlertControllerPresentationTransitionStyleSemiModal:
+        {
+            NSAssert(floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1, @"Requires iOS version 8.0 or latar");
+            CGAffineTransform t1 = CGAffineTransformMakeTranslation(0, CGRectGetHeight(toView.bounds) + CGRectGetHeight(contentView.bounds) + contentView.frame.origin.y);
+            contentView.transform = t1;
+            [toView setNeedsLayout];
+            [UIView animateWithDuration:totalDuration animations:^{
+                contentView.transform = CGAffineTransformIdentity;
+                fromView.transform = CGAffineTransformMakeScale(.95, .95);
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    contentView.backgroundColor = origianlContentViewBackgroundColor;
+                    [transitionContext completeTransition:YES];
+                }
+            }];
+            return;
+        }
         default:
             break;
     }
@@ -221,6 +257,8 @@
         case PKAlertControllerDismissTransitionStyleSlideDown:
             return .3;
         case PKAlertControllerDismissTransitionStylePushDown:
+            return .5;
+        case PKAlertControllerDismissTransitionStyleSemiModal:
             return .5;
         default:
             break;
@@ -317,6 +355,20 @@
                 }
             };
             [animator addBehavior:push];
+            return;
+        }
+        case PKAlertControllerDismissTransitionStyleSemiModal:
+        {
+            CGPoint center = contentView.center;
+            [UIView animateWithDuration:totalDuration animations:^{
+                toView.transform = CGAffineTransformIdentity;
+                contentView.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(fromView.bounds) - center.y + CGRectGetHeight(contentView.bounds) / 2.0);
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    toView.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
+                    [transitionContext completeTransition:YES];
+                }
+            }];
             return;
         }
     }
