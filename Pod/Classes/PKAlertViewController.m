@@ -218,6 +218,26 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     return constraints;
 }
 
+- (NSArray *)initialConstraintsForStyleFullScreen {
+    UIView *superview = self.contentView.superview;
+    NSMutableArray *constraints = [NSMutableArray array];
+
+    NSLayoutConstraint *bottomConstraint =
+        [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:superview
+         attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
+    bottomConstraint.priority = UILayoutPriorityDefaultHigh;
+    [constraints addObjectsFromArray:@[
+         [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:superview
+          attribute:NSLayoutAttributeTop multiplier:1 constant:0],
+         [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:superview
+          attribute:NSLayoutAttributeLeft multiplier:1 constant:0],
+         bottomConstraint,
+         [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:superview
+          attribute:NSLayoutAttributeRight multiplier:1 constant:0],
+     ]];
+    return constraints;
+}
+
 - (void)configureInitialConstraints {
     UIView *superview = self.contentView.superview;
     CGFloat actionViewHeight = self.actionCollectionViewController.estimatedContentHeight;
@@ -239,6 +259,8 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
             break;
         }
         case PKAlertControllerStyleFullScreen:
+            constraints = [self initialConstraintsForStyleFullScreen].mutableCopy;
+            [self.contentView removeConstraint:self.contentViewHeightConstraint];
             break;
     }
     [superview addConstraints:constraints];
@@ -315,7 +337,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     NSTimeInterval duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     CGFloat height = MIN(keyboardFrame.size.width, keyboardFrame.size.height);
 
-    [self.view removeConstraints:self.changeableLayoutConstraints];
+    [self.view removeConstraints:self.changeableLayoutConstraints ? self.changeableLayoutConstraints : @[]];
     self.viewBottomConstraint.constant = height;
     self.changeableLayoutConstraints = @[];
 
@@ -328,7 +350,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     NSDictionary *userInfo = notification.userInfo;
     NSTimeInterval duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 
-    [self.view removeConstraints:self.changeableLayoutConstraints];
+    [self.view removeConstraints:self.changeableLayoutConstraints ? self.changeableLayoutConstraints : @[]];
 
     switch (self.configuration.preferredStyle) {
         case PKAlertControllerStyleAlert:
