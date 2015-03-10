@@ -15,6 +15,7 @@
 #import "PKAlertLabelContainerView.h"
 #import "PKAlertThemeManager.h"
 #import "PKAlertControllerAnimatedTransitioning.h"
+#import "PKAlertEffectScrollView.h"
 
 static UIStoryboard *pk_registeredStoryboard;
 static NSString *pk_defaultStoryboardName = @"PKAlert";
@@ -363,6 +364,8 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     if (self.configuration.allowsMotionEffect) {
         [self setupMotionEffect];
     }
+    [(PKAlertEffectScrollView *)self.scrollView setTransparentEdgeEnabled:self.configuration.scrollViewTransparentEdgeEnabled];
+
     if (self.configuration.presentationTransitionStyle == PKAlertControllerPresentationTransitionStyleSemiModal) {
         self.configuration.dismissTransitionStyle = PKAlertControllerDismissTransitionStyleSemiModal;
     } else if (self.configuration.dismissTransitionStyle == PKAlertControllerDismissTransitionStyleSemiModal) {

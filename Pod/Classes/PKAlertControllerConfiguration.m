@@ -74,6 +74,7 @@
         _allowsMotionEffect = YES;
         _motionEffectMinimumRelativeValue = -10.0;
         _motionEffectMaximumRelativeValue = 10.0;
+        _scrollViewTransparentEdgeEnabled = YES;
         _statusBarAppearanceUpdate = YES;
         _solid = NO;
         _actionControlHeight = PKAlertDefaultTappableHeight;
