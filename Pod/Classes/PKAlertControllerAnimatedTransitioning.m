@@ -67,7 +67,7 @@
         case PKAlertControllerPresentationTransitionStylePushDown:
             return .3;
         case PKAlertControllerPresentationTransitionStyleScale:
-            return .3;
+            return .5;
         case PKAlertControllerPresentationTransitionStyleSemiModal:
             return .5;
     }
@@ -102,7 +102,7 @@
         case PKAlertControllerPresentationTransitionStyleFadeIn:
         {
             toView.alpha = 0;
-            [UIView animateKeyframesWithDuration:totalDuration delay:0 options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
+            [UIView animateKeyframesWithDuration:totalDuration delay:self.delay options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
                 [UIView addKeyframeWithRelativeStartTime:0. relativeDuration:.6 animations:^{
                     toView.alpha = 0.5;
                 }];
@@ -121,7 +121,7 @@
         {
             toView.alpha = 0;
             contentView.transform = CGAffineTransformMakeScale(1.1, 1.1);
-            [UIView animateWithDuration:totalDuration delay:0 usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [UIView animateWithDuration:totalDuration delay:self.delay usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 contentView.transform = CGAffineTransformIdentity;
                 toView.alpha = 1.;
             } completion:^(BOOL finished) {
@@ -138,7 +138,7 @@
             CGAffineTransform t1 = CGAffineTransformMakeTranslation(0, -1 * CGRectGetHeight(contentView.bounds) - contentView.frame.origin.y);
             contentView.transform = t1;
             [toView setNeedsLayout];
-            [UIView animateWithDuration:totalDuration delay:0 usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [UIView animateWithDuration:totalDuration delay:self.delay usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 contentView.transform = CGAffineTransformIdentity;
             } completion:^(BOOL finished) {
                 if (finished) {
@@ -179,7 +179,7 @@
                     remainTime = 0.2;
                     [animator removeAllBehaviors];
 
-                    [UIView animateKeyframesWithDuration:remainTime delay:0 options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
+                    [UIView animateKeyframesWithDuration:remainTime delay:self.delay options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
                         [UIView addKeyframeWithRelativeStartTime:0. relativeDuration:.4 animations:^{
                             contentView.center = CGPointMake(center.x, center.y - 15);
                             contentView.transform = CGAffineTransformMakeRotation(M_PI / 90.0);
@@ -203,7 +203,7 @@
         {
             toView.alpha = 0;
             contentView.transform = CGAffineTransformMakeScale(0.6, 0.6);
-            [UIView animateWithDuration:totalDuration delay:0 usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [UIView animateWithDuration:totalDuration delay:self.delay usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 contentView.transform = CGAffineTransformIdentity;
                 toView.alpha = 1.;
             } completion:^(BOOL finished) {
@@ -220,7 +220,7 @@
             CGAffineTransform t1 = CGAffineTransformMakeTranslation(0, CGRectGetHeight(toView.bounds) + CGRectGetHeight(contentView.bounds) + contentView.frame.origin.y);
             contentView.transform = t1;
             [toView setNeedsLayout];
-            [UIView animateWithDuration:totalDuration delay:0 usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            [UIView animateWithDuration:totalDuration delay:self.delay usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 contentView.transform = CGAffineTransformIdentity;
                 fromView.transform = CGAffineTransformMakeScale(.95, .95);
             } completion:^(BOOL finished) {
@@ -376,7 +376,7 @@
         case PKAlertControllerDismissTransitionStyleBounceOut:
             [UIView animateKeyframesWithDuration:totalDuration delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
                 [UIView addKeyframeWithRelativeStartTime:0. relativeDuration:.2 animations:^{
-                    contentView.transform = CGAffineTransformScale(CGAffineTransformIdentity, .95, .95);
+                    contentView.transform = CGAffineTransformScale(CGAffineTransformIdentity, .975, .975);
                 }];
                 [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.4 animations:^{
                     contentView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.05, 1.05);

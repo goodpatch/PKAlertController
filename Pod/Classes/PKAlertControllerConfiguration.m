@@ -56,6 +56,7 @@
         copiedObject->_solid = _solid;
         copiedObject->_actionControlHeight = _actionControlHeight;
         copiedObject->_presentingDampingRatio = _presentingDampingRatio;
+        copiedObject->_presentingDelay = _presentingDelay;
     }
     return copiedObject;
 }
@@ -79,6 +80,7 @@
         _solid = NO;
         _actionControlHeight = PKAlertDefaultTappableHeight;
         _presentingDampingRatio = 1;
+        _presentingDelay = 0;
     }
     return self;
 }

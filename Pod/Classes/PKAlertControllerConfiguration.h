@@ -54,6 +54,8 @@
  */
 @property CGFloat presentingDampingRatio;
 
+@property NSTimeInterval presentingDelay;
+
 /*!
     @abstract If status bar style update that an alert view presented. default value is `YES`
     @discussion

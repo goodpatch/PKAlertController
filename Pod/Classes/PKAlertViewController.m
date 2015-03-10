@@ -500,6 +500,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     PKAlertControllerPresentingAnimatedTransitioning *transitioning = [[PKAlertControllerPresentingAnimatedTransitioning alloc] init];
     transitioning.style = self.configuration.presentationTransitionStyle;
     transitioning.dampingRatio = self.configuration.presentingDampingRatio;
+    transitioning.delay = self.configuration.presentingDelay;
     return transitioning;
 }
 
