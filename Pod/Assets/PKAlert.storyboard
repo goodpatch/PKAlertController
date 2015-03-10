@@ -91,9 +91,6 @@
                         <userDefinedRuntimeAttribute type="number" keyPath="actionSheetOffset">
                             <integer key="value" value="16"/>
                         </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="transitionDuration">
-                            <real key="value" value="0.5"/>
-                        </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="alertTopOffset">
                             <integer key="value" value="30"/>
                         </userDefinedRuntimeAttribute>
