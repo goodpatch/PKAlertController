@@ -50,6 +50,11 @@
 @property BOOL scrollViewTransparentEdgeEnabled;
 
 /*!
+    @abstract Set the spring damping ratio of presenting transition animation. default value is `1`
+ */
+@property CGFloat presentingDampingRatio;
+
+/*!
     @abstract If status bar style update that an alert view presented. default value is `YES`
     @discussion
         Disable when View controller-based status bar appearance.

@@ -55,6 +55,7 @@
         copiedObject->_statusBarAppearanceUpdate = _statusBarAppearanceUpdate;
         copiedObject->_solid = _solid;
         copiedObject->_actionControlHeight = _actionControlHeight;
+        copiedObject->_presentingDampingRatio = _presentingDampingRatio;
     }
     return copiedObject;
 }
@@ -76,6 +77,7 @@
         _statusBarAppearanceUpdate = YES;
         _solid = NO;
         _actionControlHeight = PKAlertDefaultTappableHeight;
+        _presentingDampingRatio = 1;
     }
     return self;
 }

@@ -474,6 +474,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
     PKAlertControllerPresentingAnimatedTransitioning *transitioning = [[PKAlertControllerPresentingAnimatedTransitioning alloc] init];
     transitioning.style = self.configuration.presentationTransitionStyle;
+    transitioning.dampingRatio = self.configuration.presentingDampingRatio;
     return transitioning;
 }
 

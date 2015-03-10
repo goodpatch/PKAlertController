@@ -26,6 +26,7 @@
 @interface PKAlertControllerPresentingAnimatedTransitioning : PKAlertControllerAnimatedTransitioning
 
 @property (nonatomic) PKAlertControllerPresentationTransitionStyle style;
+@property (nonatomic) CGFloat dampingRatio;
 
 @end
 
