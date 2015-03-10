@@ -260,6 +260,8 @@
             return .5;
         case PKAlertControllerDismissTransitionStyleSemiModal:
             return .5;
+        case PKAlertControllerDismissTransitionStyleBounceOut:
+            return .5;
         default:
             break;
     }
@@ -371,6 +373,28 @@
             }];
             return;
         }
+        case PKAlertControllerDismissTransitionStyleBounceOut:
+            [UIView animateKeyframesWithDuration:totalDuration delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
+                [UIView addKeyframeWithRelativeStartTime:0. relativeDuration:.2 animations:^{
+                    contentView.transform = CGAffineTransformScale(CGAffineTransformIdentity, .95, .95);
+                }];
+                [UIView addKeyframeWithRelativeStartTime:.2 relativeDuration:.4 animations:^{
+                    contentView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.05, 1.05);
+                }];
+                [UIView addKeyframeWithRelativeStartTime:.6 relativeDuration:.7 animations:^{
+                    contentView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.2, 0.2);
+                }];
+                [UIView addKeyframeWithRelativeStartTime:.8 relativeDuration:.9 animations:^{
+                    contentView.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.01, 0.01);
+                    fromView.alpha = 0;
+                }];
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    toView.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
+                    [transitionContext completeTransition:YES];
+                }
+            }];
+            return;
     }
 }
 

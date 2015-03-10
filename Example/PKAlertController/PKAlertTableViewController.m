@@ -134,7 +134,7 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
     actionSheet.title = @"Change Dismiss Transition style";
     actionSheet.tag = PKActionButtonTypeTxOut + 500;
-    [@[@"None", @"Fade Out", @"Zoom Out", @"Slide Down", @"Push Down", @"Semi Modal", @"Cancel"] enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
+    [@[@"None", @"Fade Out", @"Zoom Out", @"Slide Down", @"Push Down", @"Semi Modal", @"Bounce Out", @"Cancel"] enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
         [actionSheet addButtonWithTitle:title];
     }];
     [self presentWithActionSheet:actionSheet];
