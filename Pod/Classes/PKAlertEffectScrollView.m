@@ -59,6 +59,7 @@ static const CGFloat DefaultGradientFactor = .2;
     _gradientFactor = DefaultGradientFactor;
     // MARK: Responds to scroll transitions.
     [self addObserver:self forKeyPath:NSStringFromSelector(@selector(contentOffset)) options:0 context:NULL];
+    self.layer.drawsAsynchronously = YES;
 }
 
 #pragma mark - View life cycles
@@ -90,6 +91,7 @@ static const CGFloat DefaultGradientFactor = .2;
 - (void)updateGradient {
     CAGradientLayer *maskLayer = [CAGradientLayer layer];
 
+    maskLayer.drawsAsynchronously = YES;
     maskLayer.anchorPoint = CGPointZero;
     UIColor *outerColor = [UIColor colorWithWhite:0 alpha:0];
     UIColor *innerColor = [UIColor colorWithWhite:1 alpha:1];
