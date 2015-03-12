@@ -19,6 +19,7 @@
 @property (nonatomic, readonly) PKAlertControllerConfiguration *configuration;
 
 + (void)registerStoryboard:(UIStoryboard *)storyboard;
++ (instancetype)instantiateOwnerViewController;
 + (instancetype)alertControllerWithConfigurationBlock:(PKAlertControllerConfigurationBlock)configurationBlock;
 + (instancetype)simpleAlertControllerWithConfigurationBlock:(PKAlertControllerConfigurationBlock)configurationBlock;
 + (instancetype)alertControllerWithConfiguration:(PKAlertControllerConfiguration *)configuration;
