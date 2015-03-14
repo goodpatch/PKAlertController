@@ -81,6 +81,12 @@
     [self applyParallaxScrollableImageLayoutWithAlertComponentViews:views];
 }
 
+- (CGSize)visibleSizeInAlertView {
+    CGSize size = self.layoutSize;
+    size.height -= PKAlertMessageMargin;
+    return size;
+}
+
 #pragma mark -
 
 - (void)applyParallaxScrollableImageLayoutWithAlertComponentViews:(NSDictionary *)views {
@@ -94,12 +100,6 @@
     constraint.priority = UILayoutPriorityDefaultHigh;
     [contentConstraints addObject:constraint];
     [contentView addConstraints:contentConstraints];
-}
-
-- (CGSize)visibleSizeInAlertView {
-    CGSize size = self.layoutSize;
-    size.height -= PKAlertMessageMargin;
-    return size;
 }
 
 @end

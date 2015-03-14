@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "PKAlertController"
-  s.version          = "0.1.0"
+  s.version          = "0.1.1"
   s.summary          = "A short description of PKAlertController."
   s.description      = <<-DESC
                        An optional longer description of PKAlertController
@@ -17,11 +17,11 @@ Pod::Spec.new do |s|
                        * Markdown format.
                        * Don't worry about the indent, we strip it!
                        DESC
-  s.homepage         = "https://github.com/roothybrid7/PKAlertController"
+  s.homepage         = "https://github.com/goodpatch/PKAlertController"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
-  s.author           = { "Satoshi Ohki" => "roothybrid7@gmail.com" }
-  s.source           = { :git => "https://github.com/roothybrid7/PKAlertController.git", :tag => s.version.to_s }
+  s.author           = { "Satoshi Ohki" => "ohki@goodpatch.com" }
+  s.source           = { :git => "https://github.com/goodpatch/PKAlertController.git", :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.platform     = :ios, '7.0'
@@ -34,5 +34,4 @@ Pod::Spec.new do |s|
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'QuartzCore'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end
