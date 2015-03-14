@@ -158,31 +158,33 @@
             // UIKit newton 1 unit: size = 100point * 100point, dencity = 1.0, 100point/s2?
             CGFloat fundamentalSize = 100 * 100;
             CGFloat fundamentalVelocityLength = 100;
-            CGFloat sizeForNewton = contentSize / fundamentalSize;
+            CGFloat sizeOfNewton = contentSize / fundamentalSize;
             CGFloat d1 = distance / fundamentalVelocityLength;
-            CGFloat magnitude = sizeForNewton * d1 / totalDuration;
+            CGFloat magnitude = sizeOfNewton * d1 / totalDuration;
 
             UIDynamicAnimator *animator = alertViewController.animator;
             UIPushBehavior *push = [[UIPushBehavior alloc] initWithItems:@[contentView] mode:UIPushBehaviorModeInstantaneous];
             push.pushDirection = CGVectorMake(0, 1.0);
-            [push setTargetOffsetFromCenter:UIOffsetMake(-1.0, 0) forItem:contentView];
+            [push setTargetOffsetFromCenter:UIOffsetMake(-2.0, 0) forItem:contentView];
             push.magnitude = magnitude;
             push.action = ^{
-                if (contentView.center.y >= center.y - 30.0) {
+                if (contentView.center.y >= center.y - 30.0 * d1) {
                     NSTimeInterval elapsedTime = animator.elapsedTime;
                     NSTimeInterval remainTime = totalDuration - elapsedTime;
                     if (remainTime < 0) {
                         remainTime = 0;
                     }
-//                    remainTime += sizeForNewton * remainTime;
-//                    remainTime = sizeForNewton * (totalDuration * 0.2);
+//                    remainTime += sizeOfNewton * remainTime;
+//                    remainTime = sizeOfNewton * (totalDuration * 0.2);
                     remainTime = 0.2;
                     [animator removeAllBehaviors];
 
                     [UIView animateKeyframesWithDuration:remainTime delay:self.delay options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
                         [UIView addKeyframeWithRelativeStartTime:0. relativeDuration:.4 animations:^{
-                            contentView.center = CGPointMake(center.x, center.y - 15);
-                            contentView.transform = CGAffineTransformMakeRotation(M_PI / 90.0);
+                            contentView.center = CGPointMake(center.x, center.y - d1);
+                            if (sizeOfNewton <= 10) {
+                                contentView.transform = CGAffineTransformMakeRotation(M_PI / 90.0 * d1);
+                            }
                         }];
                         [UIView addKeyframeWithRelativeStartTime:0. relativeDuration:.6 animations:^{
                             contentView.center = center;
