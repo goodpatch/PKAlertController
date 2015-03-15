@@ -9,19 +9,24 @@
 
 Pod::Spec.new do |s|
   s.name             = "PKAlertController"
-  s.version          = "0.1.0"
-  s.summary          = "A short description of PKAlertController."
+  s.version          = "0.2.0"
+  s.summary          = "PKAlertController is a highly customizable alert view controller."
   s.description      = <<-DESC
-                       An optional longer description of PKAlertController
+                      PKAlertController is a flexible, highly customizable, many view transitional animation popup view controller.
 
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
-                       DESC
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/PKAlertController"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+                      * `PKAlertController` has the title and description label, and you can set a text alignment.
+                      * Made with UIViewController-based, so that you can call it as the modal view controller, or add it to some view controller.
+                      * There are many cutom view controller transitions.
+                      * There are some layout styles, and it is the style of the size about the same as a UIAlertview, the flexible size and the fullscreen size.
+                      * To customize UI Color theme, use the class that inherited `PKAlertDefaultTheme`.
+                      * The view content is customizable to set a custom view same as a titleView of UINavigationItem.
+
+  DESC
+  s.homepage         = "https://github.com/goodpatch/PKAlertController"
+  #s.screenshots     = "screenshotdefault.gif", "screenshotwhiteblue.gif", "screenshottransitions.gif"
   s.license          = 'MIT'
-  s.author           = { "Satoshi Ohki" => "roothybrid7@gmail.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/PKAlertController.git", :tag => s.version.to_s }
+  s.author           = { "Satoshi Ohki" => "ohki@goodpatch.com" }
+  s.source           = { :git => "https://github.com/goodpatch/PKAlertController.git", :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.platform     = :ios, '7.0'
@@ -29,10 +34,9 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Pod/Classes/**/*'
   s.resource_bundles = {
-    'PKAlertController' => ['Pod/Assets/*.png']
+    'PKAlertController' => ['Pod/Assets/*.{png,storyboard,lproj}']
   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.frameworks = 'QuartzCore'
 end
