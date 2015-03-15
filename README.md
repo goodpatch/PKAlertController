@@ -59,12 +59,6 @@ Use by including the following import:
 #import <PKAlertController.h>
 ```
 
-or if you use the embedded framework:
-
-```objective-c
-@import PKAlertController;
-```
-
 ### Getting started
 
 ```objective-c
