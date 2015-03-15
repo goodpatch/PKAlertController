@@ -9,14 +9,19 @@
 
 Pod::Spec.new do |s|
   s.name             = "PKAlertController"
-  s.version          = "0.1.1"
-  s.summary          = "A short description of PKAlertController."
+  s.version          = "0.2.0"
+  s.summary          = "PKAlertController is a highly customizable alert view controller."
   s.description      = <<-DESC
-                       An optional longer description of PKAlertController
+                      PKAlertController is a flexible, highly customizable, many view transitional animation popup view controller.
 
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
-                       DESC
+                      * `PKAlertController` has the title and description label, and you can set a text alignment.
+                      * Made with UIViewController-based, so that you can call it as the modal view controller, or add it to some view controller.
+                      * There are many cutom view controller transitions.
+                      * There are some layout styles, and it is the style of the size about the same as a UIAlertview, the flexible size and the fullscreen size.
+                      * To customize UI Color theme, use the class that inherited `PKAlertDefaultTheme`.
+                      * The view content is customizable to set a custom view same as a titleView of UINavigationItem.
+
+  DESC
   s.homepage         = "https://github.com/goodpatch/PKAlertController"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
