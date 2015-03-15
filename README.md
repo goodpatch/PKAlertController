@@ -1,6 +1,6 @@
 # PKAlertController
 
-[![CI Status](http://img.shields.io/travis/Satoshi Ohki/PKAlertController.svg?style=flat)](https://travis-ci.org/Satoshi Ohki/PKAlertController)
+<!-- [![CI Status](http://img.shields.io/travis/goodpatch/PKAlertController.svg?style=flat)](https://travis-ci.org/Satoshi Ohki/PKAlertController) -->
 [![Version](https://img.shields.io/cocoapods/v/PKAlertController.svg?style=flat)](http://cocoadocs.org/docsets/PKAlertController)
 [![License](https://img.shields.io/cocoapods/l/PKAlertController.svg?style=flat)](http://cocoadocs.org/docsets/PKAlertController)
 [![Platform](https://img.shields.io/cocoapods/p/PKAlertController.svg?style=flat)](http://cocoadocs.org/docsets/PKAlertController)
