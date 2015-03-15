@@ -13,6 +13,8 @@ PKAlertController is a flexible, highly customizable, many view transitional ani
 
 ![White Blue Theme](screenshotwhiteblue.gif)
 
+![View Controller transitions](screenshottransitions.gif)
+
 
 ## Features
 
@@ -29,7 +31,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
-* Supported build target - iOS 8.2 (Xcode 6.2, , Apple LLVM compiler 6.0)
+* Supported build target - iOS 8.2 (Xcode 6.2, Apple LLVM compiler 6.0)
 * supported deployment target - iOS 7.1
 
 ## Installation

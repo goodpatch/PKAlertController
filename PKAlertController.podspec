@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
 
   DESC
   s.homepage         = "https://github.com/goodpatch/PKAlertController"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  #s.screenshots     = "screenshotdefault.gif", "screenshotwhiteblue.gif", "screenshottransitions.gif"
   s.license          = 'MIT'
   s.author           = { "Satoshi Ohki" => "ohki@goodpatch.com" }
   s.source           = { :git => "https://github.com/goodpatch/PKAlertController.git", :tag => s.version.to_s }
