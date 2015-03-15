@@ -13,7 +13,7 @@ PKAlertController is a flexible, highly customizable, many view transitional ani
 
 ![White Blue Theme](screenshotwhiteblue.gif)
 
-![View Controller transitions](screenshottranstions.gif)
+![View Controller transitions](screenshottransitions.gif)
 
 
 ## Features
