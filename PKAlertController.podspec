@@ -23,7 +23,9 @@ Pod::Spec.new do |s|
 
   DESC
   s.homepage         = "https://github.com/goodpatch/PKAlertController"
-  #s.screenshots     = "screenshotdefault.gif", "screenshotwhiteblue.gif", "screenshottransitions.gif"
+
+  screenshot_url_prefix = "https://raw.githubusercontent.com/goodpatch/PKAlertController/master/"
+  s.screenshots     = "#{screenshot_url_prefix}screenshotdefault.gif", "#{screenshot_url_prefix}screenshotwhiteblue.gif", "#{screenshot_url_prefix}screenshottransitions.gif"
   s.license          = 'MIT'
   s.author           = { "Satoshi Ohki" => "ohki@goodpatch.com" }
   s.source           = { :git => "https://github.com/goodpatch/PKAlertController.git", :tag => s.version.to_s }
