@@ -347,6 +347,9 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
     [self.view removeConstraints:self.changeableLayoutConstraints ? self.changeableLayoutConstraints : @[]];
     self.viewBottomConstraint.constant = height;
+    if (self.configuration.preferredStyle != PKAlertControllerStyleFullScreen) {
+        self.viewBottomConstraint.constant += self.alertBottomOffset;
+    }
     self.changeableLayoutConstraints = @[];
 
     [UIView animateWithDuration:duration animations:^{
