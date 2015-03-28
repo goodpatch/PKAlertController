@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "PKAlertController"
-  s.version          = "0.2.2"
+  s.version          = "0.2.3"
   s.summary          = "PKAlertController is a highly customizable alert view controller."
   s.description      = <<-DESC
                       PKAlertController is a flexible, highly customizable, many view transitional animation popup view controller.
