@@ -302,7 +302,15 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     if (self.configuration.customView) {
         UIView *customView = self.configuration.customView;
         [customView layoutIfNeeded];
-        CGSize size = [customView intrinsicContentSize];
+
+        CGSize intrinsicContentSize = [customView intrinsicContentSize];
+        CGSize size = CGSizeZero;
+        if (intrinsicContentSize.height == UIViewNoIntrinsicMetric) {
+            size = customView.bounds.size;
+        } else {
+            size = intrinsicContentSize;
+        }
+
         CGFloat contentHeight = 0;
         contentHeight += size.height;
         if (!self.customViewHeightConstraint) {
