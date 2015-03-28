@@ -69,7 +69,7 @@
         _titleTextAlignment = NSTextAlignmentCenter;
         _messageTextAlignment = NSTextAlignmentCenter;
         _presentationTransitionStyle = PKAlertControllerPresentationTransitionStyleFocusIn;
-        _dismissTransitionStyle = PKAlertControllerDismissStyleTransitionFadeOut;
+        _dismissTransitionStyle = PKAlertControllerDismissTransitionStyleFadeOut;
         _viewAppearInAnimationType = PKAlertControllerViewAppearInAnimationTypeNone;
         _actions = @[];
         _allowsMotionEffect = YES;

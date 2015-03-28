@@ -250,11 +250,11 @@
     }
 
     switch (self.style) {
-        case PKAlertControllerDismissStyleTransitionNone:
+        case PKAlertControllerDismissTransitionStyleNone:
             return 0;
-        case PKAlertControllerDismissStyleTransitionFadeOut:
+        case PKAlertControllerDismissTransitionStyleFadeOut:
             return .5;
-        case PKAlertControllerDismissStyleTransitionZoomOut:
+        case PKAlertControllerDismissTransitionStyleZoomOut:
             return .3;
         case PKAlertControllerDismissTransitionStyleSlideDown:
             return .3;
@@ -291,10 +291,10 @@
         [contentView removeConstraints:contentConstraints];
     }
     switch (self.style) {
-        case PKAlertControllerDismissStyleTransitionNone:
+        case PKAlertControllerDismissTransitionStyleNone:
             [transitionContext completeTransition:YES];
             return;
-        case PKAlertControllerDismissStyleTransitionFadeOut:
+        case PKAlertControllerDismissTransitionStyleFadeOut:
         {
             [UIView animateWithDuration:totalDuration animations:^{
                 fromView.alpha = 0;
@@ -306,7 +306,7 @@
             }];
             return;
         }
-        case PKAlertControllerDismissStyleTransitionZoomOut:
+        case PKAlertControllerDismissTransitionStyleZoomOut:
         {
             [UIView animateWithDuration:totalDuration animations:^{
                 contentView.transform = CGAffineTransformMakeScale(0.6, 0.6);
