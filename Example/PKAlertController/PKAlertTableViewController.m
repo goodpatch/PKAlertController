@@ -61,7 +61,7 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     [super viewDidLoad];
 
     self.presentationTransitionStyle = PKAlertControllerPresentationTransitionStyleFocusIn;
-    self.dismissTransitionStyle = PKAlertControllerDismissStyleTransitionFadeOut;
+    self.dismissTransitionStyle = PKAlertControllerDismissTransitionStyleFadeOut;
     self.viewAppearInAnimationType = PKAlertControllerViewAppearInAnimationTypeDropIn;
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"bg"]];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
