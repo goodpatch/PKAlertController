@@ -56,6 +56,9 @@
 
 @property NSTimeInterval presentingDelay;
 
+@property NSTimeInterval presentingDuration;
+@property NSTimeInterval dismissingDuration;
+
 /*!
     @abstract If status bar style update that an alert view presented. default value is `YES`
     @discussion
