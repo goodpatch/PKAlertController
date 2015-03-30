@@ -39,7 +39,7 @@
 #pragma mark - <UIViewControllerAnimatedTransitioning>
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
-    return self.duration || .5;
+    return self.duration ? self.duration : 1;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
@@ -142,7 +142,7 @@
             contentView.transform = t1;
             [toView setNeedsLayout];
             CGFloat duration = totalDuration;
-            if (containerViewArea / contentViewArea > 2.5) {
+            if (!self.duration && containerViewArea / contentViewArea > 2.5) {
                 duration /= 2;
             }
             [UIView animateWithDuration:duration delay:self.delay usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -161,7 +161,7 @@
             contentView.transform = t1;
             [toView setNeedsLayout];
             CGFloat duration = totalDuration;
-            if (containerViewArea / contentViewArea > 2.5) {
+            if (!self.duration && containerViewArea / contentViewArea > 2.5) {
                 duration /= 2;
             }
             [UIView animateWithDuration:duration delay:self.delay usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -384,7 +384,7 @@
         {
             CGPoint center = contentView.center;
             CGFloat duration = totalDuration;
-            if (containerViewArea / contentViewArea > 2.5) {
+            if (!self.duration && containerViewArea / contentViewArea > 2.5) {
                 duration /= 2;
             }
             [UIView animateWithDuration:duration animations:^{
@@ -402,7 +402,7 @@
         {
             CGPoint center = contentView.center;
             CGFloat duration = totalDuration;
-            if (containerViewArea / contentViewArea > 2.5) {
+            if (!self.duration && containerViewArea / contentViewArea > 2.5) {
                 duration /= 2;
             }
             [UIView animateWithDuration:duration animations:^{
