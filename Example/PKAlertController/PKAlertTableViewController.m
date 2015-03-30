@@ -124,7 +124,7 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
     actionSheet.title = @"Change Presentation Transition style";
     actionSheet.tag = PKActionButtonTypeTxIn + 500;
-    [@[@"None", @"Fade In", @"Focus In", @"Slide Down", @"Push Down", @"Scale", @"Semi Modal", @"Cancel"] enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
+    [@[@"None", @"Fade In", @"Focus In", @"Slide Up", @"Slide Down", @"Slide Left", @"Slide Right", @"Push Down", @"Scale", @"Semi Modal", @"Cancel"] enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
         [actionSheet addButtonWithTitle:title];
     }];
     [self presentWithActionSheet:actionSheet];
@@ -134,7 +134,7 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
     actionSheet.title = @"Change Dismiss Transition style";
     actionSheet.tag = PKActionButtonTypeTxOut + 500;
-    [@[@"None", @"Fade Out", @"Zoom Out", @"Slide Down", @"Push Down", @"Semi Modal", @"Bounce Out", @"Cancel"] enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
+    [@[@"None", @"Fade Out", @"Zoom Out", @"Slide Up", @"Slide Down", @"Slide Left", @"Slide Right", @"Push Down", @"Semi Modal", @"Bounce Out", @"Cancel"] enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
         [actionSheet addButtonWithTitle:title];
     }];
     [self presentWithActionSheet:actionSheet];

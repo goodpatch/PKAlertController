@@ -44,7 +44,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 @property (nonatomic) CGFloat alertOffset;
 @property (nonatomic) CGFloat actionSheetOffset;
-@property (nonatomic) CGFloat transitionDuration;
 @property (nonatomic) CGFloat alertTopOffset;
 @property (nonatomic) CGFloat alertBottomOffset;
 
@@ -512,12 +511,14 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     transitioning.style = self.configuration.presentationTransitionStyle;
     transitioning.dampingRatio = self.configuration.presentingDampingRatio;
     transitioning.delay = self.configuration.presentingDelay;
+    transitioning.duration = self.configuration.presentingDuration;
     return transitioning;
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
     PKAlertControllerDismissingAnimatedTransitioning *transitioning = [[PKAlertControllerDismissingAnimatedTransitioning alloc] init];
     transitioning.style = self.configuration.dismissTransitionStyle;
+    transitioning.duration = self.configuration.dismissingDuration;
     return transitioning;
 }
 
