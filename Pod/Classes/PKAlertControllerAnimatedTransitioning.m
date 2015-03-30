@@ -61,15 +61,16 @@
         case PKAlertControllerPresentationTransitionStyleFadeIn:
             return .3;
         case PKAlertControllerPresentationTransitionStyleFocusIn:
-            return .3;
-        case PKAlertControllerPresentationTransitionStyleSlideDown:
-            return .3;
+            return .5;
+        case PKAlertControllerPresentationTransitionStyleSlideLeft:
+        case PKAlertControllerPresentationTransitionStyleSlideRight:
+            return .5;
         case PKAlertControllerPresentationTransitionStylePushDown:
             return .3;
         case PKAlertControllerPresentationTransitionStyleScale:
             return .5;
-        case PKAlertControllerPresentationTransitionStyleSemiModal:
-            return .5;
+        default:
+            return [super transitionDuration:transitionContext];
     }
     return [super transitionDuration:transitionContext];
 }
@@ -92,6 +93,9 @@
     [toView layoutIfNeeded];
     UIColor *origianlContentViewBackgroundColor = contentView.backgroundColor;
     NSTimeInterval totalDuration = [self transitionDuration:transitionContext];
+
+    CGFloat containerViewArea = containerView.bounds.size.width * containerView.bounds.size.height;
+    CGFloat contentViewArea = contentView.bounds.size.width * contentView.bounds.size.height;
 
     contentView.backgroundColor = [origianlContentViewBackgroundColor colorWithAlphaComponent:1.];
     fromView.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
@@ -132,10 +136,62 @@
             }];
             return;
         }
+        case PKAlertControllerPresentationTransitionStyleSlideUp:
+        {
+            CGAffineTransform t1 = CGAffineTransformMakeTranslation(0, CGRectGetHeight(toView.bounds) + CGRectGetHeight(contentView.bounds) + contentView.frame.origin.y);
+            contentView.transform = t1;
+            [toView setNeedsLayout];
+            CGFloat duration = totalDuration;
+            if (containerViewArea / contentViewArea > 2.5) {
+                duration /= 2;
+            }
+            [UIView animateWithDuration:duration delay:self.delay usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                contentView.transform = CGAffineTransformIdentity;
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    contentView.backgroundColor = origianlContentViewBackgroundColor;
+                    [transitionContext completeTransition:YES];
+                }
+            }];
+            return;
+        }
         case PKAlertControllerPresentationTransitionStyleSlideDown:
         {
-            NSAssert(floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1, @"Requires iOS version 8.0 or latar");
             CGAffineTransform t1 = CGAffineTransformMakeTranslation(0, -1 * CGRectGetHeight(contentView.bounds) - contentView.frame.origin.y);
+            contentView.transform = t1;
+            [toView setNeedsLayout];
+            CGFloat duration = totalDuration;
+            if (containerViewArea / contentViewArea > 2.5) {
+                duration /= 2;
+            }
+            [UIView animateWithDuration:duration delay:self.delay usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                contentView.transform = CGAffineTransformIdentity;
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    contentView.backgroundColor = origianlContentViewBackgroundColor;
+                    [transitionContext completeTransition:YES];
+                }
+            }];
+            return;
+        }
+        case PKAlertControllerPresentationTransitionStyleSlideLeft:
+        {
+            CGAffineTransform t1 = CGAffineTransformMakeTranslation(CGRectGetWidth(toView.bounds) + CGRectGetWidth(contentView.bounds) + contentView.frame.origin.x, 0);
+            contentView.transform = t1;
+            [toView setNeedsLayout];
+            [UIView animateWithDuration:totalDuration delay:self.delay usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                contentView.transform = CGAffineTransformIdentity;
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    contentView.backgroundColor = origianlContentViewBackgroundColor;
+                    [transitionContext completeTransition:YES];
+                }
+            }];
+            return;
+        }
+        case PKAlertControllerPresentationTransitionStyleSlideRight:
+        {
+            CGAffineTransform t1 = CGAffineTransformMakeTranslation(-1 * CGRectGetWidth(contentView.bounds) - contentView.frame.origin.x, 0);
             contentView.transform = t1;
             [toView setNeedsLayout];
             [UIView animateWithDuration:totalDuration delay:self.delay usingSpringWithDamping:self.dampingRatio initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -154,11 +210,10 @@
             CGPoint center = contentView.center;
             contentView.center = CGPointMake(center.x, -1 * CGRectGetHeight(contentView.bounds));
             CGFloat distance = center.y + fabsf(contentView.center.y);
-            CGFloat contentSize = contentView.bounds.size.width * contentView.bounds.size.height;
             // UIKit newton 1 unit: size = 100point * 100point, dencity = 1.0, 100point/s2?
-            CGFloat fundamentalSize = 100 * 100;
+            CGFloat fundamentalArea = 100 * 100;
             CGFloat fundamentalVelocityLength = 100;
-            CGFloat sizeOfNewton = contentSize / fundamentalSize;
+            CGFloat sizeOfNewton = contentViewArea / fundamentalArea;
             CGFloat d1 = distance / fundamentalVelocityLength;
             CGFloat magnitude = sizeOfNewton * d1 / totalDuration;
 
@@ -256,8 +311,9 @@
             return .5;
         case PKAlertControllerDismissTransitionStyleZoomOut:
             return .3;
-        case PKAlertControllerDismissTransitionStyleSlideDown:
-            return .3;
+        case PKAlertControllerDismissTransitionStyleSlideLeft:
+        case PKAlertControllerDismissTransitionStyleSlideRight:
+            return .5;
         case PKAlertControllerDismissTransitionStylePushDown:
             return .5;
         case PKAlertControllerDismissTransitionStyleSemiModal:
@@ -265,7 +321,7 @@
         case PKAlertControllerDismissTransitionStyleBounceOut:
             return .5;
         default:
-            break;
+            return [super transitionDuration:transitionContext];
     }
 
     return [super transitionDuration:transitionContext];
@@ -277,6 +333,7 @@
     UIView *fromView = fromViewController.view;
     UIView *toView = toViewController.view;
     UIView *contentView = fromView.subviews.firstObject;
+    UIView *containerView = [transitionContext containerView];
     PKAlertViewController *alertViewController = (PKAlertViewController *)fromViewController;
     if (!alertViewController.animator) {
         alertViewController.animator = [[UIDynamicAnimator alloc] initWithReferenceView:toView];
@@ -285,6 +342,10 @@
 
     NSArray *contentConstraints = contentView.constraints;
     NSArray *rootViewConstraints = fromView.constraints;
+
+    CGFloat containerViewArea = containerView.bounds.size.width * containerView.bounds.size.height;
+    CGFloat contentViewArea = contentView.bounds.size.width * contentView.bounds.size.height;
+
     // HACK: Avoid abort.
     if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
         [fromView removeConstraints:rootViewConstraints];
@@ -319,11 +380,57 @@
             }];
             return;
         }
+        case PKAlertControllerDismissTransitionStyleSlideUp:
+        {
+            CGPoint center = contentView.center;
+            CGFloat duration = totalDuration;
+            if (containerViewArea / contentViewArea > 2.5) {
+                duration /= 2;
+            }
+            [UIView animateWithDuration:duration animations:^{
+                toView.transform = CGAffineTransformIdentity;
+                contentView.transform = CGAffineTransformMakeTranslation(0, -1 * center.y - CGRectGetHeight(contentView.bounds) / 2.0);
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    toView.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
+                    [transitionContext completeTransition:YES];
+                }
+            }];
+            return;
+        }
         case PKAlertControllerDismissTransitionStyleSlideDown:
         {
             CGPoint center = contentView.center;
-            [UIView animateWithDuration:totalDuration animations:^{
+            CGFloat duration = totalDuration;
+            if (containerViewArea / contentViewArea > 2.5) {
+                duration /= 2;
+            }
+            [UIView animateWithDuration:duration animations:^{
                 contentView.transform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(fromView.bounds) - center.y + CGRectGetHeight(contentView.bounds) / 2.0);
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    toView.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
+                    [transitionContext completeTransition:YES];
+                }
+            }];
+            return;
+        }
+        case PKAlertControllerDismissTransitionStyleSlideLeft:
+        {
+            [UIView animateWithDuration:totalDuration animations:^{
+                contentView.transform = CGAffineTransformMakeTranslation(-1 * CGRectGetWidth(contentView.bounds) - contentView.frame.origin.x, 0);
+            } completion:^(BOOL finished) {
+                if (finished) {
+                    toView.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
+                    [transitionContext completeTransition:YES];
+                }
+            }];
+            return;
+        }
+        case PKAlertControllerDismissTransitionStyleSlideRight:
+        {
+            [UIView animateWithDuration:totalDuration animations:^{
+                contentView.transform = CGAffineTransformMakeTranslation(CGRectGetWidth(toView.bounds) + CGRectGetWidth(contentView.bounds) + contentView.frame.origin.x, 0);
             } completion:^(BOOL finished) {
                 if (finished) {
                     toView.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;
@@ -337,11 +444,10 @@
             CGPoint center = contentView.center;
             CGPoint targetCenter = CGPointMake(center.x, CGRectGetHeight(fromView.bounds) + center.y + CGRectGetHeight(contentView.bounds) / 2.0);
             CGFloat distance = targetCenter.y - center.y + CGRectGetHeight(contentView.bounds) / 2.0;
-            CGFloat contentSize = contentView.bounds.size.width * contentView.bounds.size.height;
             // UIKit newton 1 unit: size = 100point * 100point, dencity = 1.0, 100point/s2?
-            CGFloat fundamentalSize = 100 * 100;
+            CGFloat fundamentalArea = 100 * 100;
             CGFloat fundamentalVelocityLength = 100;
-            CGFloat sizeForNewton = contentSize / fundamentalSize;
+            CGFloat sizeForNewton = contentViewArea / fundamentalArea;
             CGFloat d1 = distance / fundamentalVelocityLength;
             CGFloat magnitude = sizeForNewton * d1 / totalDuration;
 
@@ -363,6 +469,7 @@
         }
         case PKAlertControllerDismissTransitionStyleSemiModal:
         {
+            NSAssert(floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1, @"Requires iOS version 8.0 or latar");
             CGPoint center = contentView.center;
             [UIView animateWithDuration:totalDuration animations:^{
                 toView.transform = CGAffineTransformIdentity;

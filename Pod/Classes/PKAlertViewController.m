@@ -44,7 +44,6 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 @property (nonatomic) CGFloat alertOffset;
 @property (nonatomic) CGFloat actionSheetOffset;
-@property (nonatomic) CGFloat transitionDuration;
 @property (nonatomic) CGFloat alertTopOffset;
 @property (nonatomic) CGFloat alertBottomOffset;
 
