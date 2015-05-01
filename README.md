@@ -4,7 +4,7 @@
 [![Version](https://img.shields.io/cocoapods/v/PKAlertController.svg?style=flat)](http://cocoadocs.org/docsets/PKAlertController)
 [![License](https://img.shields.io/cocoapods/l/PKAlertController.svg?style=flat)](http://cocoadocs.org/docsets/PKAlertController)
 [![Platform](https://img.shields.io/cocoapods/p/PKAlertController.svg?style=flat)](http://cocoadocs.org/docsets/PKAlertController)
-[![Dependency Status](https://www.versioneye.com/objective-c/pkalertcontroller/0.3.0/badge.svg)](https://www.versioneye.com/objective-c/pkalertcontroller/0.3.0)
+[![Dependency Status](https://www.versioneye.com/objective-c/pkalertcontroller/0.3.1/badge.svg)](https://www.versioneye.com/objective-c/pkalertcontroller/0.3.1)
 [![Reference Status](https://www.versioneye.com/objective-c/pkalertcontroller/reference_badge.svg?style=flat)](https://www.versioneye.com/objective-c/pkalertcontroller/references)
 
 PKAlertController is a flexible, highly customizable, many view transitional animation popup view controller.
