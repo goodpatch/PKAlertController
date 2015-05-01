@@ -246,19 +246,19 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     switch (self.configuration.preferredStyle) {
         case PKAlertControllerStyleAlert:
         {
-            constraints = [self initialConstraintsForStyleAlert].mutableCopy;
+            [constraints addObjectsFromArray:[self initialConstraintsForStyleAlert]];
             // TODO: move
             self.viewBottomConstraint.constant = self.alertBottomOffset;
             break;
         }
         case PKAlertControllerStyleFlexibleAlert:
         {
-            constraints = [self initialConstraintsForStyleFlexibleAlert].mutableCopy;
+            [constraints addObjectsFromArray:[self initialConstraintsForStyleFlexibleAlert]];
             self.viewBottomConstraint.constant = self.alertBottomOffset;
             break;
         }
         case PKAlertControllerStyleFullScreen:
-            constraints = [self initialConstraintsForStyleFullScreen].mutableCopy;
+            [constraints addObjectsFromArray:[self initialConstraintsForStyleFullScreen]];
             [self.contentView removeConstraint:self.contentViewHeightConstraint];
             break;
     }

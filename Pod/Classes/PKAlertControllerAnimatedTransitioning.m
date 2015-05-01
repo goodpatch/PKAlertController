@@ -209,7 +209,7 @@
             NSAssert(floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1, @"Requires iOS version 8.0 or latar");
             CGPoint center = contentView.center;
             contentView.center = CGPointMake(center.x, -1 * CGRectGetHeight(contentView.bounds));
-            CGFloat distance = center.y + fabsf(contentView.center.y);
+            CGFloat distance = center.y + fabs(contentView.center.y);
             // UIKit newton 1 unit: size = 100point * 100point, dencity = 1.0, 100point/s2?
             CGFloat fundamentalArea = 100 * 100;
             CGFloat fundamentalVelocityLength = 100;
@@ -224,11 +224,12 @@
             push.magnitude = magnitude;
             push.action = ^{
                 if (contentView.center.y >= center.y - 30.0 * d1) {
-                    NSTimeInterval elapsedTime = animator.elapsedTime;
-                    NSTimeInterval remainTime = totalDuration - elapsedTime;
-                    if (remainTime < 0) {
-                        remainTime = 0;
-                    }
+//                    NSTimeInterval elapsedTime = animator.elapsedTime;
+                    NSTimeInterval remainTime;
+//                    NSTimeInterval remainTime = totalDuration - elapsedTime;
+//                    if (remainTime < 0) {
+//                        remainTime = 0;
+//                    }
 //                    remainTime += sizeOfNewton * remainTime;
 //                    remainTime = sizeOfNewton * (totalDuration * 0.2);
                     remainTime = 0.2;
