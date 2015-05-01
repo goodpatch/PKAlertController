@@ -193,7 +193,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
          [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil
           attribute:NSLayoutAttributeWidth multiplier:1. constant:width],
          [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:
-          nil attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertTopOffset],
+          superview attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertTopOffset],
      ]];
     return constraints;
 }
@@ -212,7 +212,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
          [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:superview
           attribute:NSLayoutAttributeRight multiplier:1. constant:-self.alertOffset],
          [NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:
-          nil attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertTopOffset],
+          superview attribute:NSLayoutAttributeTop multiplier:1. constant:self.alertTopOffset],
      ]];
     return constraints;
 }
