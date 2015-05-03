@@ -18,10 +18,10 @@
 
 + (instancetype)actionWithTitle:(NSString *)title handler:(PKActionHandler)handler;
 + (instancetype)cancelAction;
-+ (instancetype)cancelActionWithHandler:(void(^)(PKAlertAction *))handler;
++ (instancetype)cancelActionWithHandler:(PKActionHandler)handler;
 + (instancetype)okAction;
-+ (instancetype)okActionWithHandler:(void(^)(PKAlertAction *))handler;
++ (instancetype)okActionWithHandler:(PKActionHandler)handler;
 + (instancetype)doneAction;
-+ (instancetype)doneActionWithHandler:(void(^)(PKAlertAction *))handler;
++ (instancetype)doneActionWithHandler:(PKActionHandler)handler;
 
 @end

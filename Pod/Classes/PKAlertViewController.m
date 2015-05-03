@@ -499,9 +499,8 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 
 #pragma mark - Target actions
 
-- (void)dismiss:(id)sender {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
-    }];
+- (void)dismiss:(id)sender completion:(void(^)(void))completionHandler {
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:completionHandler];
 }
 
 #pragma mark - <UIViewControllerTransitioningDelegate>
@@ -538,10 +537,15 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 #pragma mark - <PKAlertActionCollectionViewControllerDelegate>
 
 - (void)actionCollectionViewController:(PKAlertActionCollectionViewController *)viewController didSelectForAction:(PKAlertAction *)action {
-    [self dismiss:viewController];
+
+    void(^completionHandler)(void) = ^{};
     if (action && action.handler) {
-        action.handler(action);
+        action.handler(action, NO);
+        completionHandler = ^{
+            action.handler(action, YES);
+        };
     }
+    [self dismiss:viewController completion:completionHandler];
 }
 
 @end

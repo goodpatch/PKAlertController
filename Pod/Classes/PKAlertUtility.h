@@ -73,9 +73,13 @@ typedef NS_ENUM (NSInteger, PKAlertControllerViewAppearInAnimationType) {
 };
 
 /*!
-    @abstract A callback handler blocks with selected an action button cell.
+    @abstract A callback handler blocks when an action button cell selected and a PKAlertViewController object dismissed.
+    @discussion
+        This handler called twice when an action button cell selected and a PKAlertViewController object dismissed for each.
+    @param action an tapped alert action button
+    @param closed Whether PKAlertViewController dismissed
  */
-typedef void (^PKActionHandler)(PKAlertAction *action);
+typedef void (^PKActionHandler)(PKAlertAction *action, BOOL closed);
 
 /*!
     @abstract A builder blocks with <i>PKAlertControllerConfiguration</i> initializing.
