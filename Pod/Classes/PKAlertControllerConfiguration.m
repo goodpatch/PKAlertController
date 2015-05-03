@@ -22,13 +22,13 @@
     return object;
 }
 
-+ (instancetype)defaultConfigurationWithCancelHandler:(void(^)(PKAlertAction *action))handler {
++ (instancetype)defaultConfigurationWithCancelHandler:(PKActionHandler)handler {
     PKAlertControllerConfiguration *object = [[PKAlertControllerConfiguration alloc] init];
     [object addAction:[PKAlertAction cancelActionWithHandler:handler]];
     return object;
 }
 
-+ (instancetype)simpleAlertConfigurationWithHandler:(void(^)(PKAlertAction *action))handler {
++ (instancetype)simpleAlertConfigurationWithHandler:(PKActionHandler)handler {
     PKAlertControllerConfiguration *object = [[PKAlertControllerConfiguration alloc] init];
     [object addAction:[PKAlertAction okActionWithHandler:handler]];
     return object;

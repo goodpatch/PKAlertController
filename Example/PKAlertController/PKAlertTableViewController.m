@@ -177,7 +177,13 @@ typedef NS_ENUM(NSInteger, PKActionButtonType) {
     } else if ([@[Other, NoMessage] containsObject:cell.reuseIdentifier]) {
         [actions addObjectsFromArray:@[[PKAlertAction doneAction], [PKAlertAction okAction], [PKAlertAction cancelAction]]];
     } else if ([cell.reuseIdentifier isEqualToString:CustomView]) {
-        [actions addObject:[PKAlertAction actionWithTitle:@"Close" handler:nil]];
+        [actions addObject:[PKAlertAction actionWithTitle:@"Close" handler:^(PKAlertAction *action, BOOL closed) {
+            if (closed) {
+                NSLog(@"%s closed alert view", __PRETTY_FUNCTION__);
+            } else {
+                NSLog(@"%s tapped alert action button", __PRETTY_FUNCTION__);
+            }
+        }]];
     } else {
         [actions addObject:[PKAlertAction okAction]];
     }

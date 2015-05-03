@@ -68,8 +68,8 @@
 @property (getter=isSolid) BOOL solid;
 
 + (instancetype)defaultConfiguration;
-+ (instancetype)defaultConfigurationWithCancelHandler:(void(^)(PKAlertAction *action))handler;
-+ (instancetype)simpleAlertConfigurationWithHandler:(void(^)(PKAlertAction *action))handler;
++ (instancetype)defaultConfigurationWithCancelHandler:(PKActionHandler)handler;
++ (instancetype)simpleAlertConfigurationWithHandler:(PKActionHandler)handler;
 
 - (void)addAction:(PKAlertAction *)action;
 - (void)addActions:(NSArray *)actions;

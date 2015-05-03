@@ -98,12 +98,20 @@ PKAlertViewController *alertViewConroller = [PKAlertViewController simpleAlertCo
 // Add common actions.
 NSMutableArray *actions = [NSMutableArray array];
 [actions addObject:[PKAlertAction cancelAction]];
-[actions addObject:[PKAlertAction okActionWithHandler:^{
-	NSLog(@"Tap the ok button!");
+[actions addObject:[PKAlertAction okActionWithHandler:^(PKAlertAction *action, BOOL closed) {
+	if (closed) {
+		NSLog(@"Dismmied the PKAlertViewController!");
+	} else {
+		NSLog(@"Tap the ok button!");
+	}
 }]];
 // Add a custom action.
-[actions addObject:[PKAlertAction actionWithTitle:@"Close" handler:^{
-	NSLog(@"Tap the close button!");
+[actions addObject:[PKAlertAction actionWithTitle:@"Close" handler:^(PKAlertAction *action, BOOL closed) {
+	if (closed) {
+		NSLog(@"Dismmied the PKAlertViewController!");
+	} else {
+		NSLog(@"Tap the close button!");
+	}
 }]];
 
 PKAlertViewController *alertViewConroller = [PKAlertViewController simpleAlertControllerWithConfigurationBlock:^(PKAlertControllerConfiguration *configuration) {
@@ -214,11 +222,11 @@ The action button convenience constructor, one of the following:
 ```objective-c
 + (instancetype)actionWithTitle:(NSString *)title handler:(PKActionHandler)handler;
 + (instancetype)cancelAction;
-+ (instancetype)cancelActionWithHandler:(void(^)(PKAlertAction *))handler;
++ (instancetype)cancelActionWithHandler:(void(^)(PKAlertAction *action, BOOL closed))handler;
 + (instancetype)okAction;
-+ (instancetype)okActionWithHandler:(void(^)(PKAlertAction *))handler;
++ (instancetype)okActionWithHandler:(void(^)(PKAlertAction *action, BOOL closed))handler;
 + (instancetype)doneAction;
-+ (instancetype)doneActionWithHandler:(void(^)(PKAlertAction *))handler;
++ (instancetype)doneActionWithHandler:(void(^)(PKAlertAction *action, BOOL closed))handler;
 ```
 
 ## PKAlertViewController

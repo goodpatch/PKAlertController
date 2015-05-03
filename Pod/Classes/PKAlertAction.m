@@ -16,7 +16,7 @@
 
 @implementation PKAlertAction
 
-+ (instancetype)actionWithTitle:(NSString *)title handler:(void(^)(PKAlertAction *))handler {
++ (instancetype)actionWithTitle:(NSString *)title handler:(void(^)(PKAlertAction *action, BOOL closed))handler {
     PKAlertAction *object = [[self alloc] init];
     object.title = title;
     object.handler = handler;
@@ -28,7 +28,7 @@
     return object;
 }
 
-+ (instancetype)cancelActionWithHandler:(void(^)(PKAlertAction *))handler {
++ (instancetype)cancelActionWithHandler:(PKActionHandler)handler {
     PKAlertAction *object = [self actionWithTitle:PKAlert_UIKitLocalizedString(@"Cancel", @"") handler:handler];
     return object;
 }
@@ -38,7 +38,7 @@
     return object;
 }
 
-+ (instancetype)okActionWithHandler:(void(^)(PKAlertAction *))handler {
++ (instancetype)okActionWithHandler:(PKActionHandler)handler {
     PKAlertAction *object = [self actionWithTitle:PKAlert_UIKitLocalizedString(@"OK", @"") handler:handler];
     return object;
 }
@@ -48,7 +48,7 @@
     return object;
 }
 
-+ (instancetype)doneActionWithHandler:(void(^)(PKAlertAction *))handler {
++ (instancetype)doneActionWithHandler:(PKActionHandler)handler {
     PKAlertAction *object = [self actionWithTitle:PKAlert_UIKitLocalizedString(@"Done", @"") handler:handler];
     return object;
 }
