@@ -133,7 +133,7 @@
 
         constraints = [NSMutableArray array];
         if (idx == 0) {
-            [constraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:PKAlertDefaultMargin]];
+            [constraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:PKAlertDefaultMargin * 3]];
         } else {
             UIView *previousView = [components objectAtIndex:idx - 1];
             if (previousView) {
@@ -141,7 +141,7 @@
             }
         }
         if (idx == components.count - 1) {
-            [constraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:PKAlertDefaultMargin]];
+            [constraints addObject:[NSLayoutConstraint constraintWithItem:view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:PKAlertDefaultMargin * 3]];
         }
         [self addConstraints:constraints];
     }];
@@ -152,13 +152,27 @@
 
     CGSize viewSize = self.bounds.size;
     CGFloat labelWidth = viewSize.width - PKAlertDefaultMargin * 2;
-    self.titleLabel.preferredMaxLayoutWidth = labelWidth;
-    self.messageLabel.preferredMaxLayoutWidth = labelWidth;
+    CGFloat subviewHeight = 0;
 
-    CGFloat subviewHeight = [self.titleLabel sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_MAX)].height;
-    subviewHeight += [self.messageLabel sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_MAX)].height;
-    subviewHeight += PKAlertDefaultMargin * 3;
-    CGSize totalSize = CGSizeMake(viewSize.width, subviewHeight);
+    if (self.titleLabel) {
+        self.titleLabel.preferredMaxLayoutWidth = labelWidth;
+        subviewHeight += [self.titleLabel sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_MAX)].height;
+    }
+    if (self.messageLabel) {
+        self.messageLabel.preferredMaxLayoutWidth = labelWidth;
+        subviewHeight += [self.messageLabel sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_MAX)].height;
+    }
+
+    CGFloat verticalMargin = 0;
+    if (self.titleLabel) {
+        verticalMargin += PKAlertDefaultMargin * 3;
+    }
+    if (self.messageLabel) {
+        verticalMargin += verticalMargin ? PKAlertDefaultMargin : PKAlertDefaultMargin * 3;
+    }
+    verticalMargin += PKAlertDefaultMargin * 3;
+
+    CGSize totalSize = CGSizeMake(viewSize.width, subviewHeight + verticalMargin);
     if (!CGSizeEqualToSize(self.layoutSize, totalSize)) {
         self.layoutSize = totalSize;
         [self invalidateIntrinsicContentSize];
