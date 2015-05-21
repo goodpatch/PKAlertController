@@ -75,7 +75,7 @@ PKAlertViewController *alertViewController = [PKAlertViewController simpleAlertC
 }];
 
 // Call present view controller as modal view controller goes with custom view controller transitional animation.
-[self presentViewController:alertController animated:YES completion:nil];
+[self presentViewController:alertViewController animated:YES completion:nil];
 ```
 
 ### Text alignment
