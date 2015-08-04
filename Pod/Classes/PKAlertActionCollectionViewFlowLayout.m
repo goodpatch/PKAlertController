@@ -7,14 +7,10 @@
 //
 
 #import "PKAlertActionCollectionViewFlowLayout.h"
+#import "PKAlertThemeManager.h"
 
 static NSString *HorizontalSeparatorBorderDecoratorView = @"com.goodpatch.PKAlertHorizontalSeparator";
 static NSString *CenterXSeparatorBorderDecoratorView = @"com.goodpatch.PKAlertCenterXSeparator";
-
-static UIColor *defaultSeparatorColor(void)
-{
-    return [UIColor colorWithWhite:.75 alpha:1];
-}
 
 #pragma mark - PKAlertActionCollectionSeparatorView
 
@@ -27,7 +23,8 @@ static UIColor *defaultSeparatorColor(void)
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = defaultSeparatorColor();
+        id <PKAlertTheme> theme = [PKAlertThemeManager defaultTheme];
+        self.backgroundColor = [theme separatorColor];
     }
     return self;
 }
@@ -59,7 +56,8 @@ static UIColor *defaultSeparatorColor(void)
 }
 
 - (void)configureInit {
-    self.separatorColor = defaultSeparatorColor();
+    id <PKAlertTheme> theme = [PKAlertThemeManager defaultTheme];
+    self.separatorColor = [theme separatorColor];
     self.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
 }
 

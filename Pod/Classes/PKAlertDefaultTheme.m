@@ -38,4 +38,8 @@
     return [UIColor colorWithWhite:0 alpha:.5];
 }
 
+- (UIColor *)separatorColor {
+    return [UIColor colorWithWhite:.75 alpha:1];
+}
+
 @end

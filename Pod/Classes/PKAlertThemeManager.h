@@ -17,6 +17,7 @@
 - (UIColor *)highlightColor;
 - (UIColor *)backgroundColor;
 - (UIColor *)dimColor;
+- (UIColor *)separatorColor;
 
 @end
 
