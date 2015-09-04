@@ -72,6 +72,7 @@ PKAlertViewController *alertViewController = [PKAlertViewController simpleAlertC
     configuration.title = @"Alert title";
     configuration.message = @"Alert message";
 	configuration.preferredStyle = PKAlertControllerStyleAlert;
+	configuration.tintAdjustmentMode = UITintAdjustmentModeDimmed; // Dimmed view's tint color.
 }];
 
 // Call present view controller as modal view controller goes with custom view controller transitional animation.
@@ -88,6 +89,7 @@ PKAlertViewController *alertViewConroller = [PKAlertViewController simpleAlertCo
     configuration.message = @"Alert message";
 	configuration.titleTextAlignment = NSTextAlignmentLeft;
 	configuration.messageTextAlignment = NSTextAlignmentLeft;
+	configuration.tintAdjustmentMode = UITintAdjustmentModeDimmed;
 }];
 ```
 
@@ -212,6 +214,15 @@ PKAlertViewController *alertViewConroller = [PKAlertViewController simpleAlertCo
 	configuration.presentationTransitionStyle = PKAlertControllerPresentationTransitionStyleScale;
 	// Set the dismissing transition style
     configuration.dismissTransitionStyle = PKAlertControllerDismissStyleTransitionZoomOut;
+}];
+```
+
+### Change PKAlert view's tintAdjustmentMode
+
+```objective-c
+// Set the custom view
+PKAlertViewController *alertViewConroller = [PKAlertViewController simpleAlertControllerWithConfigurationBlock:^(PKAlertControllerConfiguration *configuration) {
+	configuration.tintAdjustmentMode = UIViewTintAdjustmentModeAutomatic;	// Default: UIViewTintAdjustmentModeDimmed;
 }];
 ```
 

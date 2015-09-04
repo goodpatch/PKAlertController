@@ -511,6 +511,7 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
     transitioning.dampingRatio = self.configuration.presentingDampingRatio;
     transitioning.delay = self.configuration.presentingDelay;
     transitioning.duration = self.configuration.presentingDuration;
+    transitioning.tintAdjustmentMode = self.configuration.tintAdjustmentMode;
     return transitioning;
 }
 

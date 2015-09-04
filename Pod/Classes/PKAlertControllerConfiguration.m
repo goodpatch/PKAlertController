@@ -57,6 +57,7 @@
         copiedObject->_actionControlHeight = _actionControlHeight;
         copiedObject->_presentingDampingRatio = _presentingDampingRatio;
         copiedObject->_presentingDelay = _presentingDelay;
+        copiedObject->_tintAdjustmentMode = _tintAdjustmentMode;
     }
     return copiedObject;
 }
@@ -81,6 +82,7 @@
         _actionControlHeight = PKAlertDefaultTappableHeight;
         _presentingDampingRatio = 1;
         _presentingDelay = 0;
+        _tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
     }
     return self;
 }

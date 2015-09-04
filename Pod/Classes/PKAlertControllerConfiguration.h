@@ -67,6 +67,8 @@
 @property BOOL statusBarAppearanceUpdate;
 @property (getter=isSolid) BOOL solid;
 
+@property UIViewTintAdjustmentMode tintAdjustmentMode;
+
 + (instancetype)defaultConfiguration;
 + (instancetype)defaultConfigurationWithCancelHandler:(PKActionHandler)handler;
 + (instancetype)simpleAlertConfigurationWithHandler:(PKActionHandler)handler;
