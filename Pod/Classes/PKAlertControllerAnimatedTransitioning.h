@@ -28,6 +28,7 @@
 @property (nonatomic) PKAlertControllerPresentationTransitionStyle style;
 @property (nonatomic) CGFloat dampingRatio;
 @property (nonatomic) NSTimeInterval delay;
+@property (nonatomic) UIViewTintAdjustmentMode tintAdjustmentMode;
 
 @end
 

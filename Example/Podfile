@@ -12,6 +12,6 @@ target 'Tests', :exclusive => true do
 
   pod 'Specta'
   pod 'Expecta'
-  pod 'FBSnapshotTestCase'
+  pod 'FBSnapshotTestCase', '~> 1.6.0'
   pod 'Expecta+Snapshots'
 end

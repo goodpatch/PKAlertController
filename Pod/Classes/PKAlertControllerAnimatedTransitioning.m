@@ -98,7 +98,7 @@
     CGFloat contentViewArea = contentView.bounds.size.width * contentView.bounds.size.height;
 
     contentView.backgroundColor = [origianlContentViewBackgroundColor colorWithAlphaComponent:1.];
-    fromView.tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
+    fromView.tintAdjustmentMode = self.tintAdjustmentMode;
     switch (self.style) {
         case PKAlertControllerPresentationTransitionStyleNone:
             [transitionContext completeTransition:YES];
