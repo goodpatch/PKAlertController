@@ -7,6 +7,7 @@
 //
 
 #import "PKAlertUtility.h"
+#import "PKAlertViewController.h"
 
 const CGFloat PKAlertDefaultMargin = 8.0;
 const CGFloat PKAlertDefaultTappableHeight = 44.0;
@@ -34,8 +35,9 @@ NSString *PKAlert_UIKitLocalizedString(NSString *key, NSString *comment)
 
 NSBundle *PKAlertControllerBundle(void)
 {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"PKAlertController" ofType:@"bundle"];
-    return [NSBundle bundleWithPath:path];
+    NSBundle *frameworkBundle = [NSBundle bundleForClass:[PKAlertViewController class]];
+    NSString *bundlePath = [[frameworkBundle resourcePath] stringByAppendingPathComponent:@"PKAlertController.bundle"];
+    return [NSBundle bundleWithPath:bundlePath];
 }
 
 void PKAlertReloadAppearance()
