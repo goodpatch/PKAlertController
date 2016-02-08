@@ -34,8 +34,9 @@ NSString *PKAlert_UIKitLocalizedString(NSString *key, NSString *comment)
 
 NSBundle *PKAlertControllerBundle(void)
 {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"PKAlertController" ofType:@"bundle"];
-    return [NSBundle bundleWithPath:path];
+    NSBundle *frameworkBundle = [NSBundle bundleForClass:[PKAlertUtility class]];
+    NSString *bundlePath = [[frameworkBundle resourcePath] stringByAppendingPathComponent:@"PKAlertController.bundle"];
+    return [NSBundle bundleWithPath:bundlePath];
 }
 
 void PKAlertReloadAppearance()

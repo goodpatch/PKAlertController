@@ -226,6 +226,7 @@
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
 				936C7B2139F3609A09F57627 /* Copy Pods Resources */,
+				E4017E52BA51BBAFDB2B29C2 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -374,6 +375,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PKAlertController/Pods-PKAlertController-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E4017E52BA51BBAFDB2B29C2 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PKAlertController/Pods-PKAlertController-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
