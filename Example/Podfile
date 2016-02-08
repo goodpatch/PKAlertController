@@ -7,11 +7,11 @@ target 'PKAlertController', :exclusive => true do
   pod 'FLEX', '~> 2.0.0'
 end
 
-target 'Tests', :exclusive => true do
-  pod "PKAlertController", :path => "../"
-
-  pod 'Specta'
-  pod 'Expecta'
-  pod 'FBSnapshotTestCase', '~> 1.6.0'
-  pod 'Expecta+Snapshots'
-end
+#target 'Tests', :exclusive => true do
+#  pod "PKAlertController", :path => "../"
+#
+#  pod 'Specta'
+#  pod 'Expecta'
+#  pod 'FBSnapshotTestCase', '~> 1.6.0'
+#  pod 'Expecta+Snapshots'
+#end
