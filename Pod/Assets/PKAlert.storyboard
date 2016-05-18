@@ -157,14 +157,14 @@
                                 </connections>
                             </collectionViewCell>
                         </cells>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="scrollsToTop" value="NO"/>
+                        </userDefinedRuntimeAttributes>
                         <connections>
                             <outlet property="dataSource" destination="zlm-QG-Pct" id="ENw-H6-0f3"/>
                             <outlet property="delegate" destination="zlm-QG-Pct" id="eyv-Dg-w8y"/>
                         </connections>
                     </collectionView>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="scrollsToTop" value="NO"/>
-                    </userDefinedRuntimeAttributes>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bV2-tl-Rgz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
