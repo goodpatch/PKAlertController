@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="D0V-NO-R5y">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="D0V-NO-R5y">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
         <!--Alert View Controller-->
@@ -111,7 +111,7 @@
             </objects>
             <point key="canvasLocation" x="367" y="-101"/>
         </scene>
-        <!--Alert Action Collection View Controller-->
+        <!--Delegate-->
         <scene sceneID="4fA-6s-Odq">
             <objects>
                 <collectionViewController id="zlm-QG-Pct" customClass="PKAlertActionCollectionViewController" sceneMemberID="viewController">
@@ -130,7 +130,7 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PKAlertViewControllerCellReuseIdentifier" id="5Xe-hH-KqT" customClass="PKAlertActionViewCell">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -162,6 +162,9 @@
                             <outlet property="delegate" destination="zlm-QG-Pct" id="eyv-Dg-w8y"/>
                         </connections>
                     </collectionView>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="scrollsToTop" value="NO"/>
+                    </userDefinedRuntimeAttributes>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bV2-tl-Rgz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
