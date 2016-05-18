@@ -20,6 +20,7 @@
 static UIStoryboard *pk_registeredStoryboard;
 static NSString *pk_defaultStoryboardName = @"PKAlert";
 static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSegue";
+static const NSInteger ContentClipViewTag = 15;
 
 @interface PKAlertViewController () <UIViewControllerTransitioningDelegate, PKAlertActionCollectionViewControllerDelegate>
 
@@ -390,8 +391,14 @@ static NSString *const ActionsViewEmbededSegueIdentifier = @"actionsViewEmbedSeg
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    UIView *contentView = self.contentView;
+    UIView *clipView = [self.contentView viewWithTag:ContentClipViewTag];
     if (self.configuration.preferredStyle == PKAlertControllerStyleFullScreen) {
-        self.contentView.layer.cornerRadius = 0;
+        contentView.layer.cornerRadius = 0;
+        clipView.layer.cornerRadius = 0;
+    } else {
+        contentView.layer.cornerRadius = self.configuration.cornerRadius;
+        clipView.layer.cornerRadius = self.configuration.cornerRadius;
     }
     if (self.configuration.allowsMotionEffect) {
         [self setupMotionEffect];

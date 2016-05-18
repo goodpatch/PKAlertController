@@ -10,6 +10,21 @@
 
 #import "PKAlertAction.h"
 
+static CGFloat cornerRadius() OS_CONST;
+
+CGFloat cornerRadius() {
+    static CGFloat radius;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_8_4) {
+            radius = 20.;
+        } else {
+            radius = 12.;
+        }
+    });
+    return radius;
+}
+
 @interface PKAlertControllerConfiguration ()
 
 @end
@@ -58,6 +73,7 @@
         copiedObject->_presentingDampingRatio = _presentingDampingRatio;
         copiedObject->_presentingDelay = _presentingDelay;
         copiedObject->_tintAdjustmentMode = _tintAdjustmentMode;
+        copiedObject->_cornerRadius = _cornerRadius;
     }
     return copiedObject;
 }
@@ -83,6 +99,7 @@
         _presentingDampingRatio = 1;
         _presentingDelay = 0;
         _tintAdjustmentMode = UIViewTintAdjustmentModeDimmed;
+        _cornerRadius = cornerRadius();
     }
     return self;
 }

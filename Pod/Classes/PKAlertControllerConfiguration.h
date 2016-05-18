@@ -69,6 +69,8 @@
 
 @property UIViewTintAdjustmentMode tintAdjustmentMode;
 
+@property CGFloat cornerRadius;
+
 + (instancetype)defaultConfiguration;
 + (instancetype)defaultConfigurationWithCancelHandler:(PKActionHandler)handler;
 + (instancetype)simpleAlertConfigurationWithHandler:(PKActionHandler)handler;
