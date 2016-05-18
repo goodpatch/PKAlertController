@@ -1,7 +1,6 @@
 ### 0.5.1 (Mon Feb 8 23:51:33 2016 +9000)
 
 - Enable scrolls to top #19
-- Change the corner radius of alert view #18
 
 ### 0.5.1 (Mon Feb 8 23:51:33 2016 +9000)
 

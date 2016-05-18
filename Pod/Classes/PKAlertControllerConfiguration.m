@@ -17,9 +17,9 @@ CGFloat cornerRadius() {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_8_4) {
-            radius = 20.;
+            radius = 10.;
         } else {
-            radius = 12.;
+            radius = 6.;
         }
     });
     return radius;
